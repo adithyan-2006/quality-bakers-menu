@@ -1,0 +1,21 @@
+{
+  "name": "@qbm/ui",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Shared React component library for the Quality Bakers Menu customer and admin applications.",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "build": "tsc --build",
+    "typecheck": "tsc --noEmit",
+    "clean": "git clean -xdf dist .turbo"
+  },
+  "dependencies": {
+    "@qbm/types": "workspace:*"
+  },
+  "peerDependencies": {
+    "react": ">=19.0.0",
+    "react-dom": ">=19.0.0"
+  }
+}

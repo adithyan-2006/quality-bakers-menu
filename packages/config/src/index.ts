@@ -1,0 +1,2 @@
+// @qbm/config
+export {};

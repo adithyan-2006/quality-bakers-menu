@@ -1,0 +1,14 @@
+{
+  "name": "@qbm/config",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Shared tooling configuration (TypeScript, ESLint, Prettier) for the Quality Bakers Menu monorepo.",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "build": "tsc --build",
+    "typecheck": "tsc --noEmit",
+    "clean": "git clean -xdf dist .turbo"
+  }
+}

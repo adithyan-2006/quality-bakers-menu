@@ -1,0 +1,17 @@
+{
+  "name": "@qbm/validators",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Shared Zod validation schemas for the Quality Bakers Menu API and Admin forms.",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "build": "tsc --build",
+    "typecheck": "tsc --noEmit",
+    "clean": "git clean -xdf dist .turbo"
+  },
+  "dependencies": {
+    "@qbm/types": "workspace:*"
+  }
+}

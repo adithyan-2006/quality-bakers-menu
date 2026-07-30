@@ -1,0 +1,13 @@
+{
+  "name": "@qbm/api",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "echo 'Not implemented'",
+    "build": "echo 'Not implemented'",
+    "start": "echo 'Not implemented'",
+    "lint": "echo 'Not implemented'",
+    "typecheck": "tsc --noEmit",
+    "clean": "git clean -xdf dist .turbo"
+  }
+}

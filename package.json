@@ -1,0 +1,23 @@
+{
+  "name": "quality-bakers-menu",
+  "private": true,
+  "version": "0.0.1",
+  "description": "A modern bakery menu management platform built with Next.js, Hono, Prisma and PostgreSQL.",
+  "packageManager": "pnpm@9.12.0",
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  },
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "format": "turbo run format",
+    "test": "turbo run test",
+    "clean": "turbo run clean"
+  },
+  "devDependencies": {
+    "turbo": "^2.0.0"
+  }
+}

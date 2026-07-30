@@ -1,0 +1,14 @@
+{
+  "name": "@qbm/types",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Shared TypeScript type definitions and enums for the Quality Bakers Menu. Zero dependencies — no runtime code.",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "build": "tsc --build",
+    "typecheck": "tsc --noEmit",
+    "clean": "git clean -xdf dist .turbo"
+  }
+}
