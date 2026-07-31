@@ -12,6 +12,8 @@
     "clean": "git clean -xdf dist .turbo"
   },
   "dependencies": {
-    "@qbm/types": "workspace:*"
+    "@qbm/config": "workspace:*",
+    "@qbm/types": "workspace:*",
+    "zod": "^3.23.8"
   }
 }
