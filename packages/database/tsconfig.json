@@ -1,0 +1,11 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@qbm/database/*": ["src/*"]
+    }
+  },
+  "include": ["src", "prisma/seed.ts"],
+  "exclude": ["node_modules"]
+}

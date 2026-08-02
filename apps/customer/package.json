@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@qbm/config": "workspace:*",
+    "@qbm/database": "workspace:^",
     "@qbm/types": "workspace:*",
     "@qbm/ui": "workspace:*",
     "@qbm/validators": "workspace:*",
