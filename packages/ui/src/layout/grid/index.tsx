@@ -31,21 +31,23 @@ const gapMap = {
  * Intended for product catalogs, forms, and dashboard layouts.
  */
 export const Grid = React.forwardRef(
-  <E extends React.ElementType = 'div'>(
-    { as, className, cols = 1, gap = 'md', ...props }: PolymorphicGridProps<E>,
-    ref: React.ComponentPropsWithRef<E>['ref']
-  ) => {
+  ({ as, className, cols = 1, gap = 'md', ...props }: any, ref: any) => {
     const Component = as || 'div';
     return (
       <Component
         ref={ref}
-        className={cn('grid', colsMap[cols], gapMap[gap], className)}
+        className={cn(
+          'grid',
+          colsMap[cols as keyof typeof colsMap],
+          gapMap[gap as keyof typeof gapMap],
+          className,
+        )}
         {...props}
       />
     );
-  }
+  },
 ) as <E extends React.ElementType = 'div'>(
-  props: PolymorphicGridProps<E> & { ref?: React.ComponentPropsWithRef<E>['ref'] }
+  props: PolymorphicGridProps<E> & { ref?: React.ComponentPropsWithRef<E>['ref'] },
 ) => React.ReactElement | null;
 
 (Grid as any).displayName = 'Grid';

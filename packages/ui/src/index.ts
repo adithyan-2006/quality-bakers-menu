@@ -1,7 +1,3 @@
-// Hooks
-export * from './hooks/use-media-query';
-export * from './hooks/use-mounted';
-
 // Lib
 export * from './lib/cn';
 

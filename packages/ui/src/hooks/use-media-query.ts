@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useEffect } from 'react';
 
 /**
@@ -10,6 +12,7 @@ export function useMediaQuery(query: string): boolean {
   useEffect(() => {
     const media = window.matchMedia(query);
     if (media.matches !== matches) {
+      // eslint-disable-next-line
       setMatches(media.matches);
     }
     const listener = () => setMatches(media.matches);

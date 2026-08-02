@@ -4,7 +4,8 @@
   "private": true,
   "description": "Shared React component library for the Quality Bakers Menu customer and admin applications.",
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./hooks": "./src/hooks/index.ts"
   },
   "scripts": {
     "build": "tsc --build",

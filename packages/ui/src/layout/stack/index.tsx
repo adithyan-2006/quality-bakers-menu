@@ -25,10 +25,7 @@ const spacingMap = {
  * Intended for quickly laying out elements vertically or horizontally with consistent spacing.
  */
 export const Stack = React.forwardRef(
-  <E extends React.ElementType = 'div'>(
-    { as, className, direction = 'col', spacing = 'md', wrap = false, ...props }: PolymorphicStackProps<E>,
-    ref: React.ComponentPropsWithRef<E>['ref']
-  ) => {
+  ({ as, className, direction = 'col', spacing = 'md', wrap = false, ...props }: any, ref: any) => {
     const Component = as || 'div';
     return (
       <Component
@@ -37,15 +34,15 @@ export const Stack = React.forwardRef(
           'flex',
           direction === 'col' ? 'flex-col' : 'flex-row items-center',
           wrap && 'flex-wrap',
-          spacingMap[spacing],
-          className
+          spacingMap[spacing as keyof typeof spacingMap],
+          className,
         )}
         {...props}
       />
     );
-  }
+  },
 ) as <E extends React.ElementType = 'div'>(
-  props: PolymorphicStackProps<E> & { ref?: React.ComponentPropsWithRef<E>['ref'] }
+  props: PolymorphicStackProps<E> & { ref?: React.ComponentPropsWithRef<E>['ref'] },
 ) => React.ReactElement | null;
 
 (Stack as any).displayName = 'Stack';

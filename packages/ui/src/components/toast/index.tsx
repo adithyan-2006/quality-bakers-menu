@@ -1,3 +1,5 @@
+'use client';
+
 import * as React from 'react';
 import { cn } from '../../lib/cn';
 
@@ -21,9 +23,10 @@ const Toast = React.forwardRef<HTMLDivElement, ToastProps>(
         className={cn(
           'pointer-events-auto flex w-full max-w-md flex-col gap-1 rounded-md border p-4 shadow-lg transition-all',
           variant === 'default' && 'bg-background text-foreground',
-          variant === 'destructive' && 'border-destructive bg-destructive text-destructive-foreground',
+          variant === 'destructive' &&
+            'border-destructive bg-destructive text-destructive-foreground',
           variant === 'success' && 'border-green-500 bg-green-500 text-white',
-          className
+          className,
         )}
         {...props}
       >
@@ -43,7 +46,7 @@ const Toast = React.forwardRef<HTMLDivElement, ToastProps>(
         </div>
       </div>
     );
-  }
+  },
 );
 Toast.displayName = 'Toast';
 

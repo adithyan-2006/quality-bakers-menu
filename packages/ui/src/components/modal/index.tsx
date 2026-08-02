@@ -1,8 +1,10 @@
+'use client';
+
 import * as React from 'react';
-import { cn } from '../../lib/cn';
+
 import { Dialog } from '../dialog';
 
-export interface ModalProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface ModalProps extends Omit<React.DialogHTMLAttributes<HTMLDialogElement>, 'open'> {
   isOpen: boolean;
   onClose: () => void;
   title?: string;
@@ -34,13 +36,11 @@ const ModalRoot = React.forwardRef<HTMLDialogElement, ModalProps>(
               {description && <Dialog.Description>{description}</Dialog.Description>}
             </Dialog.Header>
           )}
-          <Dialog.Content className="p-0">
-            {children}
-          </Dialog.Content>
+          <Dialog.Content className="p-0">{children}</Dialog.Content>
         </div>
       </Dialog>
     );
-  }
+  },
 );
 ModalRoot.displayName = 'Modal';
 
