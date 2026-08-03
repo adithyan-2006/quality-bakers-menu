@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { AdminProduct, ProductRepository } from '../repositories/product-repo';
+import { AdminProduct } from '../repositories/product-repo';
+import { duplicateProductAction, updateProductAction } from '../actions/product-actions';
 import { AdminCategory } from '../../categories/repositories/category-repo';
 import { Edit2, Eye, EyeOff, Search, Copy, LayoutTemplate } from 'lucide-react';
 import Link from 'next/link';
@@ -94,7 +95,7 @@ export function ProductList({ initialProducts, categories }: ProductListProps) {
 
   const handleDuplicate = async (id: string) => {
     try {
-      const newProduct = await ProductRepository.duplicateProduct(id);
+      const newProduct = await duplicateProductAction(id);
       setProducts((prev) => [newProduct, ...prev]);
     } catch (e) {
       console.error('Failed to duplicate product', e);
@@ -106,7 +107,7 @@ export function ProductList({ initialProducts, categories }: ProductListProps) {
       const product = products.find((p) => p.id === id);
       if (!product) return;
       const newVisibility = !product.isVisible;
-      await ProductRepository.updateProduct(id, { isVisible: newVisibility });
+      await updateProductAction(id, { isVisible: newVisibility });
       setProducts((prev) =>
         prev.map((p) => (p.id === id ? { ...p, isVisible: newVisibility } : p)),
       );

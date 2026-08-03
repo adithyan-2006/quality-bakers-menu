@@ -1,7 +1,5 @@
-import {
-  BusinessRepository,
-  DayHours,
-} from '../../../../features/business/repositories/business-repo';
+import { DayHours } from '../../../../features/business/repositories/business-repo';
+import { getBusinessAction } from '../../../../features/business/actions/business-actions';
 import Link from 'next/link';
 import {
   ArrowLeft,
@@ -26,7 +24,7 @@ const DAYS = [
 ] as const;
 
 export default async function BusinessPreviewPage() {
-  const business = await BusinessRepository.getBusiness();
+  const business = await getBusinessAction();
 
   const renderHours = (dayData: DayHours) => {
     if (dayData.isClosed) return <span className="text-stone-400">Closed</span>;

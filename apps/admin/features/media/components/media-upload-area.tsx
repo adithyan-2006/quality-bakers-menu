@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from 'react';
 import { UploadCloud, CheckCircle2 } from 'lucide-react';
-import { MediaRepository } from '../repositories/media-repo';
+import { uploadMediaAction } from '../actions/media-actions';
 import { useRouter } from 'next/navigation';
 
 export function MediaUploadArea() {
@@ -26,7 +26,9 @@ export function MediaUploadArea() {
       try {
         // Simulate network delay
         await new Promise((resolve) => setTimeout(resolve, 1500));
-        await MediaRepository.simulateUpload(file);
+        const formData = new FormData();
+        formData.append('file', file);
+        await uploadMediaAction(formData);
         router.push('/media');
         router.refresh();
       } catch (e) {

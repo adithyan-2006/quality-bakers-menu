@@ -91,7 +91,8 @@ export const PrismaMediaRepository = {
   simulateUpload: async (file: File): Promise<AdminMedia> => {
     try {
       const id = `media_${Date.now()}`;
-      const url = URL.createObjectURL(file); // Note: In a real app this is problematic for SSR/Server Components, but this is a mock.
+      const url =
+        'https://images.unsplash.com/photo-1495147466023-e6a463722526?w=1600&h=1200&fit=crop'; // Hardcoded mock url for SSR
 
       const created = await prisma.media.create({
         data: {

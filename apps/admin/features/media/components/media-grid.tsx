@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { AdminMedia, MediaRepository } from '../repositories/media-repo';
+import { AdminMedia } from '../repositories/media-repo';
+import { deleteMediaAction } from '../actions/media-actions';
 import { Search, Link as LinkIcon, Trash2, Eye, ShieldAlert } from 'lucide-react';
 import Link from 'next/link';
 import { cn } from '@qbm/ui';
@@ -64,7 +65,7 @@ export function MediaGrid({ initialMedia, onSelect, isPickerMode = false }: Medi
 
   const handleDelete = async (id: string) => {
     try {
-      await MediaRepository.deleteMedia(id);
+      await deleteMediaAction(id);
       setMediaItems((prev) => prev.filter((m) => m.id !== id));
     } catch (e: any) {
       alert(e.message);

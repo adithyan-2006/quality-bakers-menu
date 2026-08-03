@@ -4,11 +4,14 @@ import { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
 import {
-  UserRepository,
   AdminUser,
   AdminRole,
   UserStatus,
 } from '../../../../../features/users/repositories/user-repository';
+import {
+  getUserByIdAction,
+  updateUserAction,
+} from '../../../../../features/users/actions/user-actions';
 import { ArrowLeft, Loader2 } from 'lucide-react';
 
 export default function EditUserPage() {
@@ -24,7 +27,7 @@ export default function EditUserPage() {
   const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
-    UserRepository.getUserById(id).then((data) => {
+    getUserByIdAction(id).then((data) => {
       if (!data) {
         router.push('/users');
         return;
@@ -50,7 +53,7 @@ export default function EditUserPage() {
 
     setIsSaving(true);
     try {
-      await UserRepository.updateUser(id, { name, role, status });
+      await updateUserAction(id, { name, role, status });
       router.push('/users');
       router.refresh();
     } catch (err) {

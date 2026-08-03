@@ -1,14 +1,11 @@
-import { ProductRepository } from '../../../features/products/repositories/product-repo';
+import { getProductsAction } from '../../../features/products/actions/product-actions';
 import { getCategoriesAction } from '../../../features/categories/actions/category-actions';
 import { ProductList } from '../../../features/products/components/product-list';
 import Link from 'next/link';
 import { Plus } from 'lucide-react';
 
 export default async function ProductsPage() {
-  const [products, categories] = await Promise.all([
-    ProductRepository.getProducts(),
-    getCategoriesAction(),
-  ]);
+  const [products, categories] = await Promise.all([getProductsAction(), getCategoriesAction()]);
 
   return (
     <div className="space-y-6 max-w-6xl mx-auto">

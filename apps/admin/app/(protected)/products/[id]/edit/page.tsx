@@ -1,4 +1,4 @@
-import { ProductRepository } from '../../../../../features/products/repositories/product-repo';
+import { getProductAction } from '../../../../../features/products/actions/product-actions';
 import { getCategoriesAction } from '../../../../../features/categories/actions/category-actions';
 import { ProductForm } from '../../../../../features/products/components/product-form';
 import { notFound } from 'next/navigation';
@@ -10,10 +10,7 @@ interface EditProductPageProps {
 export default async function EditProductPage({ params }: EditProductPageProps) {
   const { id } = await params;
 
-  const [product, categories] = await Promise.all([
-    ProductRepository.getProduct(id),
-    getCategoriesAction(),
-  ]);
+  const [product, categories] = await Promise.all([getProductAction(id), getCategoriesAction()]);
 
   if (!product) {
     notFound();

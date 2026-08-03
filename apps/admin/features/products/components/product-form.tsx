@@ -4,11 +4,11 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import {
   AdminProduct,
-  ProductRepository,
   BadgeType,
   AvailabilityStatus,
   ProductStatus,
 } from '../repositories/product-repo';
+import { createProductAction, updateProductAction } from '../actions/product-actions';
 import { AdminCategory } from '../../categories/repositories/category-repo';
 import { ImagePlus, X, Image as ImageIcon } from 'lucide-react';
 import { ImagePickerModal } from '../../../components/modals/image-picker-modal';
@@ -85,9 +85,9 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
 
     try {
       if (isEditing && initialData) {
-        await ProductRepository.updateProduct(initialData.id, data);
+        await updateProductAction(initialData.id, data);
       } else {
-        await ProductRepository.createProduct(data);
+        await createProductAction(data);
       }
       router.push('/products');
       router.refresh();

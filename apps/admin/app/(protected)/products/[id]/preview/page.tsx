@@ -1,4 +1,4 @@
-import { ProductRepository } from '../../../../../features/products/repositories/product-repo';
+import { getProductAction } from '../../../../../features/products/actions/product-actions';
 import { getCategoryAction } from '../../../../../features/categories/actions/category-actions';
 import { notFound } from 'next/navigation';
 import { ProductCard } from 'customer/features/menu/product/product-card';
@@ -12,7 +12,7 @@ interface PreviewProductPageProps {
 
 export default async function PreviewProductPage({ params }: PreviewProductPageProps) {
   const { id } = await params;
-  const product = await ProductRepository.getProduct(id);
+  const product = await getProductAction(id);
 
   if (!product) {
     notFound();

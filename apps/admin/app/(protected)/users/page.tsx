@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { UserRepository, AdminUser } from '../../../features/users/repositories/user-repository';
+import { AdminUser } from '../../../features/users/repositories/user-repository';
+import { getUsersAction, softDeleteUserAction } from '../../../features/users/actions/user-actions';
 import { Plus, Search, Edit, User, UserX } from 'lucide-react';
 
 export default function UsersPage() {
@@ -11,7 +12,7 @@ export default function UsersPage() {
 
   const fetchUsers = async () => {
     setIsLoading(true);
-    const data = await UserRepository.getUsers();
+    const data = await getUsersAction();
     setUsers(data);
     setIsLoading(false);
   };
@@ -27,7 +28,7 @@ export default function UsersPage() {
       return;
     }
     if (confirm('Are you sure you want to deactivate this user?')) {
-      await UserRepository.softDeleteUser(id);
+      await softDeleteUserAction(id);
       fetchUsers();
     }
   };

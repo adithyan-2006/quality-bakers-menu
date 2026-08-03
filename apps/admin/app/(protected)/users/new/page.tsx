@@ -3,7 +3,8 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { UserRepository, AdminRole } from '../../../../features/users/repositories/user-repository';
+import { AdminRole } from '../../../../features/users/repositories/user-repository';
+import { createUserAction } from '../../../../features/users/actions/user-actions';
 import { ArrowLeft, Loader2 } from 'lucide-react';
 
 export default function NewUserPage() {
@@ -18,7 +19,7 @@ export default function NewUserPage() {
     e.preventDefault();
     setIsSaving(true);
     try {
-      await UserRepository.createUser({ name, email, role, status: 'Active' });
+      await createUserAction({ name, email, role, status: 'Active' });
       router.push('/users');
       router.refresh();
     } catch (err) {

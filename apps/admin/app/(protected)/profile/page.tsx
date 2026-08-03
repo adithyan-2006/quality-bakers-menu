@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useAuth } from '../../../components/providers/auth-provider';
-import { UserRepository } from '../../../features/users/repositories/user-repository';
+import { updateUserAction } from '../../../features/users/actions/user-actions';
 import { ImagePickerModal } from '../../../components/modals/image-picker-modal';
 import { CollapsibleSection } from '../../../components/ui/collapsible-section';
 import { User, Lock, Mail, Phone, Loader2 } from 'lucide-react';
@@ -25,7 +25,7 @@ export default function ProfilePage() {
     if (!user) return;
     setIsSaving(true);
     try {
-      const updatedUser = await UserRepository.updateUser(user.id, { name, phone, avatar });
+      const updatedUser = await updateUserAction(user.id, { name, phone, avatar });
       login(updatedUser); // Update context
       alert('Profile updated successfully');
     } catch (err) {

@@ -1,4 +1,4 @@
-import { MediaRepository } from '../../../../features/media/repositories/media-repo';
+import { getMediaByIdAction } from '../../../../features/media/actions/media-actions';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import {
@@ -18,7 +18,7 @@ interface MediaPreviewPageProps {
 
 export default async function MediaPreviewPage({ params }: MediaPreviewPageProps) {
   const { id } = await params;
-  const media = await MediaRepository.getMediaById(id);
+  const media = await getMediaByIdAction(id);
 
   if (!media) {
     notFound();

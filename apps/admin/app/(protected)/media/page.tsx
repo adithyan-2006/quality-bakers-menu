@@ -1,10 +1,10 @@
-import { MediaRepository } from '../../../features/media/repositories/media-repo';
+import { getMediaLibraryAction } from '../../../features/media/actions/media-actions';
 import { MediaGrid } from '../../../features/media/components/media-grid';
 import Link from 'next/link';
 import { Plus } from 'lucide-react';
 
 export default async function MediaLibraryPage() {
-  const media = await MediaRepository.getMedia();
+  const media = await getMediaLibraryAction();
 
   return (
     <div className="space-y-6 max-w-[1400px] mx-auto">

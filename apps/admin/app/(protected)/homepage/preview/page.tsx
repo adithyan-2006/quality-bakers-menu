@@ -1,11 +1,11 @@
-import { HomepageRepository } from '../../../../features/homepage/repositories/homepage-repo';
+import { getHomepageAction } from '../../../../features/homepage/actions/homepage-actions';
 import { getCategoriesAction } from '../../../../features/categories/actions/category-actions';
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 import { cn } from '@qbm/ui';
 
 export default async function HomepagePreviewPage() {
-  const homepage = await HomepageRepository.getHomepage();
+  const homepage = await getHomepageAction();
   const allCategories = await getCategoriesAction();
 
   const featuredCollections = homepage.featuredCollections

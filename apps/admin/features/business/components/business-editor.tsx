@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { AdminBusiness, BusinessRepository, BusinessStatus } from '../repositories/business-repo';
+import { AdminBusiness, BusinessStatus } from '../repositories/business-repo';
+import { getBusinessAction, updateBusinessAction } from '../actions/business-actions';
 import { AdminMedia } from '../../media/repositories/media-repo';
 import { CollapsibleSection } from '../../../components/ui/collapsible-section';
 import { ImagePickerModal } from '../../../components/modals/image-picker-modal';
@@ -71,7 +72,7 @@ export function BusinessEditor() {
   const [pickerTarget, setPickerTarget] = useState<'logo' | 'favicon' | 'coverImage' | null>(null);
 
   useEffect(() => {
-    BusinessRepository.getBusiness().then((res) => {
+    getBusinessAction().then((res) => {
       setData(res);
       setIsLoading(false);
     });
@@ -92,7 +93,7 @@ export function BusinessEditor() {
 
     setIsSaving(true);
     try {
-      await BusinessRepository.updateBusiness({ ...data, status });
+      await updateBusinessAction({ ...data, status });
       router.refresh();
       alert(`Business settings saved as ${status}`);
     } catch (error) {

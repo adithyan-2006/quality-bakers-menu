@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { AdminHomepage, HomepageRepository } from '../repositories/homepage-repo';
+import { AdminHomepage } from '../repositories/homepage-repo';
+import { getHomepageAction, updateHomepageAction } from '../actions/homepage-actions';
 import { AdminMedia } from '../../media/repositories/media-repo';
 import { CollapsibleSection } from '../../../components/ui/collapsible-section';
 import { ImagePickerModal } from '../../../components/modals/image-picker-modal';
@@ -69,7 +70,7 @@ export function HomepageEditor() {
   >(null);
 
   useEffect(() => {
-    HomepageRepository.getHomepage().then((res) => {
+    getHomepageAction().then((res) => {
       setData(res);
       setIsLoading(false);
     });
@@ -79,7 +80,7 @@ export function HomepageEditor() {
     if (!data) return;
     setIsSaving(true);
     try {
-      await HomepageRepository.updateHomepage({ ...data, status });
+      await updateHomepageAction({ ...data, status });
       router.refresh();
       alert(`Homepage saved as ${status}`);
     } catch (error) {
