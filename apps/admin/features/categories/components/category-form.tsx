@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { AdminCategory, CategoryRepository } from '../repositories/category-repo';
+import { AdminCategory } from '../repositories/category-repo';
+import { createCategoryAction, updateCategoryAction } from '../actions/category-actions';
 import { ImagePlus, X, Image as ImageIcon } from 'lucide-react';
 import { ImagePickerModal } from '../../../components/modals/image-picker-modal';
 import { AdminMedia } from '../../media/repositories/media-repo';
@@ -63,12 +64,11 @@ export function CategoryForm({ initialData }: CategoryFormProps) {
 
     try {
       if (isEditing && initialData) {
-        await CategoryRepository.updateCategory(initialData.id, data);
+        await updateCategoryAction(initialData.id, data);
       } else {
-        await CategoryRepository.createCategory(data);
+        await createCategoryAction(data);
       }
       router.push('/categories');
-      router.refresh();
     } catch (error) {
       console.error('Failed to save category', error);
       setIsSubmitting(false);

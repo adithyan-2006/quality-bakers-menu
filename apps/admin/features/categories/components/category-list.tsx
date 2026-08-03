@@ -16,7 +16,11 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
-import { AdminCategory, CategoryRepository } from '../repositories/category-repo';
+import { AdminCategory } from '../repositories/category-repo';
+import {
+  updateCategoryDisplayOrderAction,
+  updateCategoryAction,
+} from '../actions/category-actions';
 import { CategoryListItem } from './category-list-item';
 
 interface CategoryListProps {
@@ -54,8 +58,11 @@ export function CategoryList({ initialCategories }: CategoryListProps) {
         }));
 
         // Fire and forget repo update (mimicking API call)
-        CategoryRepository.updateDisplayOrder(
-          updatedArray.map((c) => ({ id: c.id, displayOrder: c.displayOrder })),
+        updateCategoryDisplayOrderAction(
+          updatedArray.map((c) => ({
+            id: c.id,
+            displayOrder: c.displayOrder,
+          })),
         ).catch(console.error);
 
         return updatedArray;
@@ -70,7 +77,7 @@ export function CategoryList({ initialCategories }: CategoryListProps) {
           const newVisibility = !item.isVisible;
 
           // Fire and forget repo update
-          CategoryRepository.updateCategory(id, { isVisible: newVisibility }).catch(console.error);
+          updateCategoryAction(id, { isVisible: newVisibility }).catch(console.error);
 
           return { ...item, isVisible: newVisibility };
         }

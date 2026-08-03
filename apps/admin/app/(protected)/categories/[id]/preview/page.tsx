@@ -1,4 +1,4 @@
-import { CategoryRepository } from '../../../../../features/categories/repositories/category-repo';
+import { getCategoryAction } from '../../../../../features/categories/actions/category-actions';
 import { notFound } from 'next/navigation';
 import { cn } from '@qbm/ui';
 import Link from 'next/link';
@@ -18,7 +18,7 @@ const LAYOUT_NAMES: Record<string, string> = {
 
 export default async function PreviewCategoryPage({ params }: PreviewCategoryPageProps) {
   const { id } = await params;
-  const category = await CategoryRepository.getCategory(id);
+  const category = await getCategoryAction(id);
 
   if (!category) {
     notFound();

@@ -1,8 +1,8 @@
 import { ProductForm } from '../../../../features/products/components/product-form';
-import { CategoryRepository } from '../../../../features/categories/repositories/category-repo';
+import { getCategoriesAction } from '../../../../features/categories/actions/category-actions';
 
 export default async function NewProductPage() {
-  const categories = await CategoryRepository.getCategories();
+  const categories = await getCategoriesAction();
 
   return (
     <div className="space-y-6 max-w-5xl mx-auto">

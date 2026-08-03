@@ -19,7 +19,8 @@ import {
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { GripVertical, X } from 'lucide-react';
-import { AdminCategory, CategoryRepository } from '../../categories/repositories/category-repo';
+import { AdminCategory } from '../../categories/repositories/category-repo';
+import { getCategoriesAction } from '../../categories/actions/category-actions';
 
 // --- Sortable Item Component ---
 function SortableItem({
@@ -97,7 +98,7 @@ export function SortableCategoryList({ items, onChange }: SortableCategoryListPr
   const [selectedToAdd, setSelectedToAdd] = useState<string>('');
 
   useEffect(() => {
-    CategoryRepository.getCategories().then((cats) => {
+    getCategoriesAction().then((cats) => {
       setCategories(cats);
     });
   }, []);

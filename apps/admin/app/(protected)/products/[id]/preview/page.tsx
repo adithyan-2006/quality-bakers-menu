@@ -1,5 +1,5 @@
 import { ProductRepository } from '../../../../../features/products/repositories/product-repo';
-import { CategoryRepository } from '../../../../../features/categories/repositories/category-repo';
+import { getCategoryAction } from '../../../../../features/categories/actions/category-actions';
 import { notFound } from 'next/navigation';
 import { ProductCard } from 'customer/features/menu/product/product-card';
 import Link from 'next/link';
@@ -18,7 +18,7 @@ export default async function PreviewProductPage({ params }: PreviewProductPageP
     notFound();
   }
 
-  const category = await CategoryRepository.getCategory(product.categoryId);
+  const category = await getCategoryAction(product.categoryId);
 
   // Map AdminProduct to Customer MenuProduct format
   const customerProduct = {

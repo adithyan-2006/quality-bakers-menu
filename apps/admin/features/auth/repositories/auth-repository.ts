@@ -1,4 +1,5 @@
-import { AdminRole, AdminUser, UserRepository } from '../../users/repositories/user-repository';
+import { AdminRole, AdminUser } from '../../users/repositories/user-repository';
+import { RepositoryFactory } from '../../../lib/repository-factory';
 
 export interface AuthSession {
   id: string;
@@ -17,7 +18,7 @@ export const AuthRepository = {
     _password: string,
   ): Promise<{ session: AuthSession; user: AdminUser }> => {
     // Mock validation
-    const user = await UserRepository.getUserByEmail(email);
+    const user = await RepositoryFactory.getUserRepository().getUserByEmail(email);
     if (!user) throw new Error('Invalid credentials');
     if (user.status !== 'Active') throw new Error('Account is disabled');
 
@@ -34,7 +35,9 @@ export const AuthRepository = {
     currentSession = session;
 
     // Update last login
-    await UserRepository.updateUser(user.id, { lastLogin: new Date().toISOString() });
+    await RepositoryFactory.getUserRepository().updateUser(user.id, {
+      lastLogin: new Date().toISOString(),
+    });
 
     return { session, user };
   },
@@ -52,7 +55,7 @@ export const AuthRepository = {
       return null;
     }
 
-    return await UserRepository.getUserById(currentSession.userId);
+    return await RepositoryFactory.getUserRepository().getUserById(currentSession.userId);
   },
 
   changePassword: async (userId: string, _newPassword: string): Promise<void> => {
@@ -62,7 +65,7 @@ export const AuthRepository = {
 
   requestPasswordReset: async (email: string): Promise<void> => {
     // Mock email send
-    const user = await UserRepository.getUserByEmail(email);
+    const user = await RepositoryFactory.getUserRepository().getUserByEmail(email);
     if (!user) throw new Error('If the email exists, a reset link will be sent.');
     console.log(`Password reset link sent to ${email}`);
   },

@@ -1,10 +1,10 @@
-import { CategoryRepository } from '../../../features/categories/repositories/category-repo';
+import { getCategoriesAction } from '../../../features/categories/actions/category-actions';
 import { CategoryList } from '../../../features/categories/components/category-list';
 import Link from 'next/link';
 import { Plus } from 'lucide-react';
 
 export default async function CategoriesPage() {
-  const categories = await CategoryRepository.getCategories();
+  const categories = await getCategoriesAction();
 
   return (
     <div className="space-y-6 max-w-5xl mx-auto">

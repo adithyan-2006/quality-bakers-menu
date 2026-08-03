@@ -1,12 +1,12 @@
 import { HomepageRepository } from '../../../../features/homepage/repositories/homepage-repo';
-import { CategoryRepository } from '../../../../features/categories/repositories/category-repo';
+import { getCategoriesAction } from '../../../../features/categories/actions/category-actions';
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 import { cn } from '@qbm/ui';
 
 export default async function HomepagePreviewPage() {
   const homepage = await HomepageRepository.getHomepage();
-  const allCategories = await CategoryRepository.getCategories();
+  const allCategories = await getCategoriesAction();
 
   const featuredCollections = homepage.featuredCollections
     .map((id) => allCategories.find((c) => c.id === id))

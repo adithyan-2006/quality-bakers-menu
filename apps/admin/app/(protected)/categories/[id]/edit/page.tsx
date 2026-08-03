@@ -1,4 +1,4 @@
-import { CategoryRepository } from '../../../../../features/categories/repositories/category-repo';
+import { getCategoryAction } from '../../../../../features/categories/actions/category-actions';
 import { CategoryForm } from '../../../../../features/categories/components/category-form';
 import { notFound } from 'next/navigation';
 
@@ -8,7 +8,7 @@ interface EditCategoryPageProps {
 
 export default async function EditCategoryPage({ params }: EditCategoryPageProps) {
   const { id } = await params;
-  const category = await CategoryRepository.getCategory(id);
+  const category = await getCategoryAction(id);
 
   if (!category) {
     notFound();

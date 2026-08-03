@@ -226,6 +226,7 @@ async function main() {
       aboutTitle: 'Our Craft',
       aboutDescription:
         'Every morning, before the sun rises, our master bakers begin the delicate process of crafting perfect pastries. We source only the finest local ingredients.',
+      aboutImageId: mediaCover.id,
       storyTitle: 'A Family Tradition',
       storyDescription:
         'Since 1985, our bakery has been the heart of the community. What started as a small kitchen has grown into a destination for lovers of fine baked goods.',

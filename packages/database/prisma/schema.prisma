@@ -218,6 +218,7 @@ model Media {
   categoryCovers Category[]  @relation("CategoryCover")
   productImages  Product[]   @relation("ProductImage")
   homepageImages Homepage[]  @relation("HomepageImage")
+  homepageAboutImages Homepage[] @relation("HomepageAboutImage")
   sectionImages  HomepageSection[] @relation("SectionImage")
   
   uploadedAt     DateTime    @default(now())
@@ -240,6 +241,8 @@ model Homepage {
   
   aboutTitle         String?
   aboutDescription   String?
+  aboutImageId       String?
+  aboutImage         Media?             @relation("HomepageAboutImage", fields: [aboutImageId], references: [id])
   
   storyTitle         String?
   storyDescription   String?
