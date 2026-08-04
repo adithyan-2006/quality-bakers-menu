@@ -21,7 +21,7 @@
     "cloudinary": "^2.10.0",
     "customer": "workspace:*",
     "lucide-react": "^0.379.0",
-    "next": "15.0.0",
+    "next": "15.0.5",
     "next-themes": "^0.3.0",
     "react": "19.0.0",
     "react-dom": "19.0.0"
