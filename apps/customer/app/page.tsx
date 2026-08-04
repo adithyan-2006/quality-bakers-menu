@@ -4,6 +4,7 @@ import { PopularPreview } from '../features/home/popular-preview';
 import { SignatureHighlight } from '../features/home/signature-highlight';
 import { BrowseCta } from '../features/home/browse-cta';
 import { CustomerRepository } from '../repositories/customer-repository';
+export const revalidate = 60;
 import { buttonVariants } from '@qbm/ui';
 import Link from 'next/link';
 
