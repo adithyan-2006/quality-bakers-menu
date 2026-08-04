@@ -27,8 +27,10 @@ export interface AdminBusiness {
 
   // Brand
   logo: string;
+  logoId: string | null;
   favicon: string;
   coverImage: string;
+  coverImageId: string | null;
 
   // Contact
   phone: string;
@@ -78,8 +80,10 @@ let mockBusiness: AdminBusiness = {
     'A family-owned bakery dedicated to crafting perfect pastries, fresh breads, and signature beverages daily.',
   businessStatus: 'Open',
   logo: '',
+  logoId: null,
   favicon: '',
   coverImage: 'https://images.unsplash.com/photo-1555507036-ab1e4006aaeb?w=1200&h=800&fit=crop',
+  coverImageId: null,
   phone: '+91 98765 43210',
   whatsapp: '+91 98765 43210',
   email: 'hello@qualitybakers.com',

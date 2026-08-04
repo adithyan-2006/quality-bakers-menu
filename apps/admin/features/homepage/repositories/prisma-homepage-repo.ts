@@ -5,20 +5,9 @@ import { AuditService } from '../../audit/services/audit-service';
 
 function mapPrismaHomepage(hp: any): AdminHomepage {
   const sections = hp.sections || [];
-  const seasonalBanner = sections.find((s: any) => s.type === 'BANNER') || {
-    enabled: false,
-    title: '',
-    description: '',
-    image: '',
-  };
-  const promotionBanner = sections.find((s: any) => s.type === 'PROMOTION') || {
-    enabled: false,
-    title: '',
-    description: '',
-    image: '',
-    buttonText: '',
-    backgroundColor: '',
-  };
+
+  const seasonalSec = sections.find((s: any) => s.type === 'BANNER');
+  const promoSec = sections.find((s: any) => s.type === 'PROMOTION');
   const featuredCollections =
     sections.filter((s: any) => s.type === 'COLLECTION').map((s: any) => s.id) || [];
 
@@ -28,6 +17,7 @@ function mapPrismaHomepage(hp: any): AdminHomepage {
       title: hp.heroTitle,
       subtitle: hp.heroSubtitle,
       image: hp.heroImage?.optimizedUrl || hp.heroImage?.originalUrl || '',
+      imageId: hp.heroImageId || undefined,
       ctaText: hp.heroCtaText || '',
       ctaLink: hp.heroCtaLink || '',
     },
@@ -37,28 +27,31 @@ function mapPrismaHomepage(hp: any): AdminHomepage {
       title: hp.aboutTitle || '',
       description: hp.aboutDescription || '',
       image: hp.aboutImage?.optimizedUrl || hp.aboutImage?.originalUrl || '',
+      imageId: hp.aboutImageId || undefined,
     },
     story: {
       title: hp.storyTitle || '',
       description: hp.storyDescription || '',
     },
     seasonalBanner: {
-      enabled: seasonalBanner.enabled,
-      title: seasonalBanner.title || '',
-      description: seasonalBanner.description || '',
-      image: seasonalBanner.image?.optimizedUrl || seasonalBanner.image?.originalUrl || '',
-      buttonText: seasonalBanner.buttonText || undefined,
-      buttonLink: seasonalBanner.buttonLink || undefined,
-      backgroundColor: seasonalBanner.backgroundColor || undefined,
+      enabled: seasonalSec?.enabled || false,
+      title: seasonalSec?.title || '',
+      description: seasonalSec?.description || '',
+      image: seasonalSec?.image?.optimizedUrl || seasonalSec?.image?.originalUrl || '',
+      imageId: seasonalSec?.imageId || undefined,
+      buttonText: seasonalSec?.buttonText || undefined,
+      buttonLink: seasonalSec?.buttonLink || undefined,
+      backgroundColor: seasonalSec?.backgroundColor || undefined,
     },
     promotionBanner: {
-      enabled: promotionBanner.enabled,
-      title: promotionBanner.title || '',
-      description: promotionBanner.description || '',
-      image: promotionBanner.image?.optimizedUrl || promotionBanner.image?.originalUrl || '',
-      buttonText: promotionBanner.buttonText || undefined,
-      buttonLink: promotionBanner.buttonLink || undefined,
-      backgroundColor: promotionBanner.backgroundColor || undefined,
+      enabled: promoSec?.enabled || false,
+      title: promoSec?.title || '',
+      description: promoSec?.description || '',
+      image: promoSec?.image?.optimizedUrl || promoSec?.image?.originalUrl || '',
+      imageId: promoSec?.imageId || undefined,
+      buttonText: promoSec?.buttonText || undefined,
+      buttonLink: promoSec?.buttonLink || undefined,
+      backgroundColor: promoSec?.backgroundColor || undefined,
     },
     status: hp.status === 'PUBLISHED' ? 'published' : 'draft',
     updatedAt: hp.updatedAt.toISOString(),
@@ -106,11 +99,13 @@ export const PrismaHomepageRepository = {
         updateData.heroSubtitle = data.hero.subtitle;
         updateData.heroCtaText = data.hero.ctaText;
         updateData.heroCtaLink = data.hero.ctaLink;
+        updateData.heroImageId = data.hero.imageId;
       }
 
       if (data.about) {
         updateData.aboutTitle = data.about.title;
         updateData.aboutDescription = data.about.description;
+        updateData.aboutImageId = data.about.imageId;
       }
 
       if (data.story) {
@@ -132,13 +127,11 @@ export const PrismaHomepageRepository = {
       }
 
       const updated = await prisma.$transaction(async (tx: any) => {
-        // Update basic homepage fields
         const hp = await tx.homepage.update({
           where: { id: currentHp.id },
           data: updateData,
         });
 
-        // Update sections (banners)
         if (data.seasonalBanner) {
           const banner = await tx.homepageSection.findFirst({
             where: { homepageId: hp.id, type: 'BANNER' },
@@ -151,6 +144,7 @@ export const PrismaHomepageRepository = {
               buttonText: data.seasonalBanner.buttonText,
               buttonLink: data.seasonalBanner.buttonLink,
               backgroundColor: data.seasonalBanner.backgroundColor,
+              imageId: data.seasonalBanner.imageId,
             };
             Object.keys(bannerData).forEach(
               (key) => bannerData[key] === undefined && delete bannerData[key],
@@ -175,6 +169,7 @@ export const PrismaHomepageRepository = {
               buttonText: data.promotionBanner.buttonText,
               buttonLink: data.promotionBanner.buttonLink,
               backgroundColor: data.promotionBanner.backgroundColor,
+              imageId: data.promotionBanner.imageId,
             };
             Object.keys(promoData).forEach(
               (key) => promoData[key] === undefined && delete promoData[key],

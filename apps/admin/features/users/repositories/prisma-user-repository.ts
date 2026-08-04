@@ -8,7 +8,8 @@ function mapPrismaUser(user: any): AdminUser {
     id: user.id,
     name: user.name || '',
     email: user.email,
-    avatar: user.image || '',
+    avatar: user.avatar?.optimizedUrl || user.image || '',
+    avatarId: user.avatarId || undefined,
     role: user.role === 'OWNER' ? 'Owner' : user.role === 'MANAGER' ? 'Manager' : 'Staff',
     status:
       user.status === 'ACTIVE' ? 'Active' : user.status === 'INACTIVE' ? 'Inactive' : 'Disabled',
@@ -25,6 +26,7 @@ export const PrismaUserRepository = {
     try {
       const users = await prisma.user.findMany({
         orderBy: { createdAt: 'desc' },
+        include: { avatar: true },
       });
       return users.map(mapPrismaUser);
     } catch (error: any) {
@@ -34,7 +36,7 @@ export const PrismaUserRepository = {
 
   getUserById: async (id: string): Promise<AdminUser | null> => {
     try {
-      const user = await prisma.user.findUnique({ where: { id } });
+      const user = await prisma.user.findUnique({ where: { id }, include: { avatar: true } });
       if (!user) return null;
       return mapPrismaUser(user);
     } catch (error: any) {
@@ -44,7 +46,7 @@ export const PrismaUserRepository = {
 
   getUserByEmail: async (email: string): Promise<AdminUser | null> => {
     try {
-      const user = await prisma.user.findUnique({ where: { email } });
+      const user = await prisma.user.findUnique({ where: { email }, include: { avatar: true } });
       if (!user) return null;
       return mapPrismaUser(user);
     } catch (error: any) {
@@ -59,6 +61,7 @@ export const PrismaUserRepository = {
           name: data.name || 'New User',
           email: data.email || `user-${Date.now()}@qualitybakers.com`,
           image: data.avatar || null,
+          avatarId: data.avatarId || null,
           role: data.role === 'Owner' ? 'OWNER' : data.role === 'Manager' ? 'MANAGER' : 'STAFF',
           status:
             data.status === 'Active'
@@ -70,6 +73,7 @@ export const PrismaUserRepository = {
                   : 'ACTIVE',
           phone: data.phone || null,
         },
+        include: { avatar: true },
       });
       const result = mapPrismaUser(created);
       await AuditService.logAction('system', 'CREATE', 'USER', result.id, null, result);
@@ -88,6 +92,7 @@ export const PrismaUserRepository = {
         name: data.name,
         email: data.email,
         image: data.avatar,
+        avatarId: data.avatarId,
         role:
           data.role === 'Owner'
             ? 'OWNER'
@@ -113,6 +118,7 @@ export const PrismaUserRepository = {
       const updated = await prisma.user.update({
         where: { id },
         data: updateData,
+        include: { avatar: true },
       });
       const result = mapPrismaUser(updated);
       await AuditService.logAction('system', 'UPDATE', 'USER', result.id, current, result);

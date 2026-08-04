@@ -3,22 +3,17 @@
 import * as React from 'react';
 import Link from 'next/link';
 import { SectionTitle } from '../../components/layout/section-title';
+import type { Prisma } from '@qbm/database';
 
-const CATEGORIES = [
-  'Lime',
-  'Mojito',
-  'Fresh Juice',
-  'Milk Shake',
-  'Biscuit Shake',
-  'Nuts Shake',
-  'Ice Cream Shake',
-  'Falooda',
-  'Avil Milk',
-  'Smoothies',
-  'Fruit Salad',
-];
+type CategoryWithMedia = Prisma.CategoryGetPayload<{
+  include: { coverImage: true };
+}>;
 
-export function FeaturedCategories() {
+interface FeaturedCategoriesProps {
+  categories: CategoryWithMedia[];
+}
+
+export function FeaturedCategories({ categories }: FeaturedCategoriesProps) {
   const containerRef = React.useRef<HTMLDivElement>(null);
   const trackRef = React.useRef<HTMLDivElement>(null);
   const headerRef = React.useRef<HTMLDivElement>(null);
@@ -208,6 +203,8 @@ export function FeaturedCategories() {
     };
   }, []);
 
+  if (!categories || categories.length === 0) return null;
+
   return (
     <section
       ref={containerRef}
@@ -232,33 +229,45 @@ export function FeaturedCategories() {
             ref={trackRef}
             className="flex items-center gap-6 md:gap-10 px-6 lg:px-8 w-max will-change-transform opacity-0"
           >
-            {CATEGORIES.map((category, idx) => (
-              <Link
-                key={category}
-                href={`/categories/${category.toLowerCase().replace(/\s+/g, '-')}`}
-                ref={(el) => {
-                  cardsRef.current[idx] = el;
-                }}
-                className="explore-card group relative block w-[280px] sm:w-[300px] md:w-[360px] aspect-[4/5] flex-shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-2xl"
-              >
-                {/* Scalable Container for Center Focus */}
-                <div className="focus-scale w-full h-full relative overflow-hidden rounded-2xl border border-border/40 will-change-transform">
-                  {/* Image Placeholder */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent z-20" />
-                  <div className="focus-image absolute inset-0 bg-muted/80 z-10 transition-transform duration-700 group-hover:scale-105 will-change-transform" />
+            {categories.map((category, idx) => {
+              const imageUrl = category.coverImage
+                ? category.coverImage.secureUrl || category.coverImage.originalUrl
+                : null;
 
-                  {/* Content (Bottom Anchored) */}
-                  <div className="relative z-30 h-full p-6 md:p-8 flex flex-col justify-end text-left">
-                    <h3 className="font-serif text-2xl md:text-3xl font-medium text-white drop-shadow-md tracking-wide mb-1">
-                      {category}
-                    </h3>
-                    <span className="text-xs text-white/70 font-light tracking-widest uppercase">
-                      {idx % 3 === 0 ? '8 Items' : idx % 2 === 0 ? '12 Items' : '15 Items'}
-                    </span>
+              return (
+                <Link
+                  key={category.id}
+                  href={`/categories/${category.slug}`}
+                  ref={(el) => {
+                    cardsRef.current[idx] = el;
+                  }}
+                  className="explore-card group relative block w-[280px] sm:w-[300px] md:w-[360px] aspect-[4/5] flex-shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-2xl"
+                >
+                  {/* Scalable Container for Center Focus */}
+                  <div className="focus-scale w-full h-full relative overflow-hidden rounded-2xl border border-border/40 will-change-transform">
+                    {/* Image Placeholder */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent z-20" />
+
+                    {imageUrl ? (
+                      <img
+                        src={imageUrl}
+                        alt={category.coverImage?.altText || category.name}
+                        className="focus-image absolute inset-0 w-full h-full object-cover z-10 transition-transform duration-700 group-hover:scale-105 will-change-transform"
+                      />
+                    ) : (
+                      <div className="focus-image absolute inset-0 bg-muted/80 z-10 transition-transform duration-700 group-hover:scale-105 will-change-transform" />
+                    )}
+
+                    {/* Content (Bottom Anchored) */}
+                    <div className="relative z-30 h-full p-6 md:p-8 flex flex-col justify-end text-left">
+                      <h3 className="font-serif text-2xl md:text-3xl font-medium text-white drop-shadow-md tracking-wide mb-1">
+                        {category.name}
+                      </h3>
+                    </div>
                   </div>
-                </div>
-              </Link>
-            ))}
+                </Link>
+              );
+            })}
           </div>
         </div>
       </div>

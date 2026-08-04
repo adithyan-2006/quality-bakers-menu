@@ -3,7 +3,8 @@ export interface AdminCategory {
   slug: string;
   name: string;
   description: string;
-  coverImage: string;
+  coverImage: string; // The URL for preview
+  coverImageId: string | null; // The Media foreign key
   theme: string;
   layoutType: string;
   animationPreset: string;
@@ -28,6 +29,7 @@ const mockCategories: AdminCategory[] = [
     description:
       'Thick, creamy, and blended to perfection. Our premium milkshakes are made with real ice cream and fresh ingredients.',
     coverImage: '/placeholder-shake.jpg',
+    coverImageId: null,
     theme: 'vibrant',
     layoutType: 'editorial-grid',
     animationPreset: 'fade-up',
@@ -46,6 +48,7 @@ const mockCategories: AdminCategory[] = [
     name: 'Smoothies',
     description: 'Fresh fruit smoothies blended fresh every day.',
     coverImage: '/placeholder-smoothie.jpg',
+    coverImageId: null,
     theme: 'fresh',
     layoutType: 'gallery-wall',
     animationPreset: 'reveal',
@@ -64,6 +67,7 @@ const mockCategories: AdminCategory[] = [
     name: 'Seasonal Specials',
     description: 'Limited time offerings crafted for the season.',
     coverImage: '/placeholder-seasonal.jpg',
+    coverImageId: null,
     theme: 'warm',
     layoutType: 'spotlight',
     animationPreset: 'fade-up',
@@ -94,6 +98,7 @@ export const CategoryRepository = {
       name: data.name || 'New Category',
       description: data.description || '',
       coverImage: data.coverImage || '',
+      coverImageId: data.coverImageId || null,
       theme: data.theme || 'classic',
       layoutType: data.layoutType || 'editorial-grid',
       animationPreset: data.animationPreset || 'fade-up',

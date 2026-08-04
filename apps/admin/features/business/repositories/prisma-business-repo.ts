@@ -27,8 +27,10 @@ export const PrismaBusinessRepository = {
             ? 'Holiday'
             : 'Temporarily Closed') as BusinessStatus,
       logo: biz.logo?.optimizedUrl || biz.logo?.originalUrl || '',
+      logoId: biz.logoId ?? null,
       favicon: biz.favicon || '',
       coverImage: biz.coverImage?.optimizedUrl || biz.coverImage?.originalUrl || '',
+      coverImageId: biz.coverImageId ?? null,
       phone: biz.phone,
       whatsapp: biz.whatsapp,
       email: biz.email,

@@ -20,7 +20,7 @@ export function MediaUploadArea() {
     setIsDragging(false);
   }, []);
 
-  const simulateUpload = useCallback(
+  const uploadMedia = useCallback(
     async (file: File) => {
       setIsUploading(true);
       try {
@@ -47,18 +47,18 @@ export function MediaUploadArea() {
       if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
         const file = e.dataTransfer.files[0];
         if (file) {
-          simulateUpload(file);
+          uploadMedia(file);
         }
       }
     },
-    [simulateUpload],
+    [uploadMedia],
   );
 
   const handleFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0];
       if (file) {
-        simulateUpload(file);
+        uploadMedia(file);
       }
     }
   };
@@ -76,8 +76,8 @@ export function MediaUploadArea() {
               Cloudinary Integration Ready for Sprint 4
             </h4>
             <p className="text-sm text-stone-500 mt-1">
-              The architecture is prepared. For Sprint 3.3, uploading a file here will simulate a
-              Cloudinary upload using mock repository data and redirect you to the Media Library.
+              The architecture is prepared. Uploading a file here will perform a Cloudinary upload
+              and redirect you to the Media Library.
             </p>
           </div>
         </div>
@@ -103,7 +103,7 @@ export function MediaUploadArea() {
           />
 
           <h3 className="text-lg font-medium text-stone-900 dark:text-stone-50 mb-2">
-            {isUploading ? 'Uploading to Mock Cloudinary...' : 'Click or drag image to upload'}
+            {isUploading ? 'Uploading to Cloudinary...' : 'Click or drag image to upload'}
           </h3>
 
           <p className="text-sm text-stone-500 max-w-sm">

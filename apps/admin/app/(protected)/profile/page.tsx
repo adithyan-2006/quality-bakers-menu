@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useAuth } from '../../../components/providers/auth-provider';
 import { updateUserAction } from '../../../features/users/actions/user-actions';
-import { ImagePickerModal } from '../../../components/modals/image-picker-modal';
+import { MediaPicker } from '../../../features/media/components/media-picker';
 import { CollapsibleSection } from '../../../components/ui/collapsible-section';
 import { User, Lock, Mail, Phone, Loader2 } from 'lucide-react';
 
@@ -12,20 +12,19 @@ export default function ProfilePage() {
 
   const [name, setName] = useState(user?.name || '');
   const [phone, setPhone] = useState(user?.phone || '');
-  const [avatar, setAvatar] = useState(user?.avatar || '');
+  const [avatarId, setAvatarId] = useState(user?.avatarId || '');
 
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
 
   const [isSaving, setIsSaving] = useState(false);
-  const [pickerOpen, setPickerOpen] = useState(false);
 
   const handleSaveProfile = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user) return;
     setIsSaving(true);
     try {
-      const updatedUser = await updateUserAction(user.id, { name, phone, avatar });
+      const updatedUser = await updateUserAction(user.id, { name, phone, avatarId });
       login(updatedUser); // Update context
       alert('Profile updated successfully');
     } catch (err) {
@@ -62,21 +61,30 @@ export default function ProfilePage() {
       <CollapsibleSection title="Personal Information" defaultOpen>
         <form onSubmit={handleSaveProfile} className="space-y-6">
           <div className="flex items-center gap-6 pb-6 border-b border-stone-100 dark:border-stone-800">
-            <div className="relative group">
-              <div className="w-24 h-24 rounded-full overflow-hidden bg-stone-100 dark:bg-stone-900 border border-stone-200 dark:border-stone-800 flex items-center justify-center">
-                {avatar ? (
-                  <img src={avatar} alt="Avatar" className="w-full h-full object-cover" />
-                ) : (
-                  <User className="w-10 h-10 text-stone-400" />
-                )}
-              </div>
-              <button
-                type="button"
-                onClick={() => setPickerOpen(true)}
-                className="absolute inset-0 bg-black/50 text-white text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity rounded-full flex items-center justify-center"
-              >
-                Change
-              </button>
+            <div className="flex-shrink-0">
+              <MediaPicker
+                value={avatarId}
+                onChange={(val) => setAvatarId(val as string)}
+                multiple={false}
+                trigger={
+                  <div className="relative group cursor-pointer">
+                    <div className="w-24 h-24 rounded-full overflow-hidden bg-stone-100 dark:bg-stone-900 border border-stone-200 dark:border-stone-800 flex items-center justify-center">
+                      {user.avatar ? (
+                        <img
+                          src={user.avatar}
+                          alt="Avatar"
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <User className="w-10 h-10 text-stone-400" />
+                      )}
+                    </div>
+                    <div className="absolute inset-0 bg-black/50 text-white text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity rounded-full flex items-center justify-center">
+                      Change
+                    </div>
+                  </div>
+                }
+              />
             </div>
             <div>
               <h3 className="font-medium">{user.name}</h3>
@@ -177,12 +185,6 @@ export default function ProfilePage() {
           </div>
         </form>
       </CollapsibleSection>
-
-      <ImagePickerModal
-        isOpen={pickerOpen}
-        onClose={() => setPickerOpen(false)}
-        onSelect={(media) => setAvatar(media.imageUrl)}
-      />
     </div>
   );
 }

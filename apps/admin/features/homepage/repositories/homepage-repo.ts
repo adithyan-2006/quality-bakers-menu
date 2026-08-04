@@ -4,6 +4,7 @@ export interface HomepageHero {
   title: string;
   subtitle: string;
   image: string;
+  imageId?: string;
   ctaText: string;
   ctaLink: string;
 }
@@ -12,6 +13,7 @@ export interface HomepageAbout {
   title: string;
   description: string;
   image: string;
+  imageId?: string;
 }
 
 export interface HomepageStory {
@@ -24,6 +26,7 @@ export interface HomepageBanner {
   title: string;
   description: string;
   image: string;
+  imageId?: string;
   buttonText?: string;
   buttonLink?: string;
   backgroundColor?: string;

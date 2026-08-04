@@ -15,6 +15,9 @@ export interface AdminMedia {
   type: MediaType;
   imageUrl: string;
   thumbnailUrl: string;
+  secureUrl?: string;
+  resourceType?: string;
+  version?: number;
   size: number; // in bytes
   width: number;
   height: number;
@@ -125,7 +128,7 @@ export const MediaRepository = {
     mockMedia.splice(index, 1);
   },
 
-  simulateUpload: async (file: File): Promise<AdminMedia> => {
+  uploadMedia: async (file: File, _folder?: string): Promise<AdminMedia> => {
     // This mocks the Cloudinary upload process for Sprint 3.3
     const newMedia: AdminMedia = {
       id: `media_${Date.now()}`,

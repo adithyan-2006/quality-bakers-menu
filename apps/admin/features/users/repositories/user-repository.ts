@@ -7,6 +7,7 @@ export interface AdminUser {
   email: string;
   role: AdminRole;
   avatar: string;
+  avatarId?: string;
   phone: string;
   status: UserStatus;
   createdAt: string;

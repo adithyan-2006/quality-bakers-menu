@@ -18,6 +18,7 @@
     "@qbm/ui": "workspace:*",
     "@qbm/validators": "workspace:*",
     "@tanstack/react-query": "^5.39.0",
+    "cloudinary": "^2.10.0",
     "customer": "workspace:*",
     "lucide-react": "^0.379.0",
     "next": "15.0.0",

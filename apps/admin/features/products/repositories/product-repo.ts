@@ -10,7 +10,10 @@ export interface AdminProduct {
   longDescription: string; // Future use
   price: number;
   categoryId: string;
-  image: string;
+  image: string; // The URL for preview
+  imageId?: string; // The Media foreign key
+  galleryIds?: string[]; // Media foreign keys for gallery
+  galleryImages?: string[]; // URLs for preview
   badge: BadgeType;
   isFeatured: boolean;
   isVisible: boolean; // Repository flag mapped to "Availability" visually

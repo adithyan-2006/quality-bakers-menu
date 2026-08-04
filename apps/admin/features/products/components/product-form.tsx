@@ -10,9 +10,7 @@ import {
 } from '../repositories/product-repo';
 import { createProductAction, updateProductAction } from '../actions/product-actions';
 import { AdminCategory } from '../../categories/repositories/category-repo';
-import { ImagePlus, X, Image as ImageIcon } from 'lucide-react';
-import { ImagePickerModal } from '../../../components/modals/image-picker-modal';
-import { AdminMedia } from '../../media/repositories/media-repo';
+import { MediaPicker } from '../../media/components/media-picker';
 
 interface ProductFormProps {
   initialData?: AdminProduct;
@@ -30,7 +28,8 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
   const [shortDescription, setShortDescription] = useState(initialData?.shortDescription || '');
   const [price, setPrice] = useState<number>(initialData?.price || 0);
   const [categoryId, setCategoryId] = useState(initialData?.categoryId || categories[0]?.id || '');
-  const [image, setImage] = useState(initialData?.image || '');
+  const [imageId, setImageId] = useState(initialData?.imageId || '');
+  const [galleryIds, setGalleryIds] = useState<string[]>(initialData?.galleryIds || []);
   const [badge, setBadge] = useState<BadgeType>(initialData?.badge || 'none');
   const [isFeatured, setIsFeatured] = useState(initialData?.isFeatured || false);
   const [isVisible, setIsVisible] = useState(initialData?.isVisible ?? true);
@@ -38,7 +37,6 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
     initialData?.availabilityStatus || 'available',
   );
   const [status, setStatus] = useState<ProductStatus>(initialData?.status || 'draft');
-  const [isPickerOpen, setIsPickerOpen] = useState(false);
 
   // Derived price display state (optional simple formatting for UX)
   const priceDisplay = price ? price.toString() : '';
@@ -75,7 +73,8 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
       shortDescription,
       price,
       categoryId,
-      image,
+      imageId,
+      galleryIds,
       badge,
       isFeatured,
       isVisible,
@@ -194,47 +193,29 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
       <div className="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 rounded-xl p-6 md:p-8 shadow-sm">
         <div className="flex items-center justify-between mb-6 border-b border-stone-200 dark:border-stone-800 pb-4">
           <h3 className="text-lg font-medium text-stone-900 dark:text-stone-50 flex items-center gap-2">
-            <ImageIcon className="w-5 h-5" /> Media
+            Hero Image
           </h3>
         </div>
 
-        {image ? (
-          <div className="relative group rounded-xl border border-stone-200 dark:border-stone-800 overflow-hidden">
-            {/* eslint-disable-next-line */}
-            <img src={image} alt="Product Media" className="w-full h-64 object-cover" />
-            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-4 backdrop-blur-[2px]">
-              <button
-                type="button"
-                onClick={() => setIsPickerOpen(true)}
-                className="px-4 py-2 bg-white text-stone-900 font-medium text-sm rounded-md shadow-sm hover:bg-stone-100 transition-colors"
-              >
-                Change Image
-              </button>
-              <button
-                type="button"
-                onClick={() => setImage('')}
-                className="p-2 bg-rose-600 text-white rounded-md shadow-sm hover:bg-rose-700 transition-colors"
-                title="Remove Image"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 gap-4">
-            <button
-              type="button"
-              onClick={() => setIsPickerOpen(true)}
-              className="h-48 border-2 border-dashed border-stone-300 dark:border-stone-700 rounded-xl flex flex-col items-center justify-center text-stone-500 bg-stone-50 dark:bg-stone-900/50 hover:bg-stone-100 dark:hover:bg-stone-800 hover:border-stone-400 dark:hover:border-stone-500 transition-all cursor-pointer"
-            >
-              <ImagePlus className="w-8 h-8 mb-3 text-stone-400" />
-              <span className="text-sm font-medium text-stone-700 dark:text-stone-300">
-                Choose Image from Library
-              </span>
-              <span className="text-xs text-stone-500 mt-1">Or upload a new one directly</span>
-            </button>
-          </div>
-        )}
+        <MediaPicker
+          value={imageId}
+          onChange={(val) => setImageId(val as string)}
+          multiple={false}
+        />
+      </div>
+
+      <div className="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 rounded-xl p-6 md:p-8 shadow-sm">
+        <div className="flex items-center justify-between mb-6 border-b border-stone-200 dark:border-stone-800 pb-4">
+          <h3 className="text-lg font-medium text-stone-900 dark:text-stone-50 flex items-center gap-2">
+            Gallery Images
+          </h3>
+        </div>
+
+        <MediaPicker
+          value={galleryIds}
+          onChange={(val) => setGalleryIds(val as string[])}
+          multiple={true}
+        />
       </div>
 
       <div className="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 rounded-xl p-6 md:p-8 shadow-sm">
@@ -361,11 +342,6 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
           {isSubmitting ? 'Saving...' : isEditing ? 'Save Changes' : 'Create Product'}
         </button>
       </div>
-      <ImagePickerModal
-        isOpen={isPickerOpen}
-        onClose={() => setIsPickerOpen(false)}
-        onSelect={(media: AdminMedia) => setImage(media.imageUrl)}
-      />
     </form>
   );
 }

@@ -1,21 +1,26 @@
-import { AuthRepository } from '../repositories/auth-repository';
+import {
+  loginAction,
+  logoutAction,
+  getCurrentUserAction,
+  requestPasswordResetAction,
+} from '../actions/auth-actions';
 import { AdminUser, AdminRole } from '../../users/repositories/user-repository';
 
 export const AuthService = {
   login: async (email: string, password: string) => {
-    return AuthRepository.login(email, password);
+    return loginAction(email, password);
   },
 
   logout: async () => {
-    return AuthRepository.logout();
+    return logoutAction();
   },
 
   getCurrentUser: async () => {
-    return AuthRepository.getCurrentUser();
+    return getCurrentUserAction();
   },
 
   requestPasswordReset: async (email: string) => {
-    return AuthRepository.requestPasswordReset(email);
+    return requestPasswordResetAction(email);
   },
 
   hasPermission: (user: AdminUser | null, requiredRoles: AdminRole[]) => {

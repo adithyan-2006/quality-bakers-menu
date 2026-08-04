@@ -13,6 +13,10 @@ function mapPrismaProduct(prod: any): AdminProduct {
     price: prod.price,
     categoryId: prod.categoryId,
     image: prod.image?.optimizedUrl || prod.image?.originalUrl || '',
+    imageId: prod.imageId || undefined,
+    galleryIds: prod.gallery?.map((g: any) => g.mediaId) || [],
+    galleryImages:
+      prod.gallery?.map((g: any) => g.media?.optimizedUrl || g.media?.originalUrl || '') || [],
     badge: (prod.badge === 'NONE'
       ? 'none'
       : prod.badge === 'SIGNATURE'
@@ -67,7 +71,10 @@ export const PrismaProductRepository = {
         skip,
         take: limit,
         orderBy: { displayOrder: 'asc' },
-        include: { image: true },
+        include: {
+          image: true,
+          gallery: { include: { media: true }, orderBy: { displayOrder: 'asc' } },
+        },
       });
       return products.map(mapPrismaProduct);
     } catch (error: any) {
@@ -79,7 +86,10 @@ export const PrismaProductRepository = {
     try {
       const product = await prisma.product.findUnique({
         where: { id },
-        include: { image: true },
+        include: {
+          image: true,
+          gallery: { include: { media: true }, orderBy: { displayOrder: 'asc' } },
+        },
       });
       if (!product) return null;
       return mapPrismaProduct(product);
@@ -103,6 +113,17 @@ export const PrismaProductRepository = {
           longDescription: data.longDescription || '',
           price: data.price || 0,
           categoryId: data.categoryId || '',
+          imageId: data.imageId || null,
+          ...(data.galleryIds?.length
+            ? {
+                gallery: {
+                  create: data.galleryIds.map((id, index) => ({
+                    mediaId: id,
+                    displayOrder: index,
+                  })),
+                },
+              }
+            : {}),
           badge:
             data.badge === 'signature'
               ? 'SIGNATURE'
@@ -131,7 +152,10 @@ export const PrismaProductRepository = {
                 : 'DRAFT',
           displayOrder: data.displayOrder ?? nextOrder,
         },
-        include: { image: true },
+        include: {
+          image: true,
+          gallery: { include: { media: true }, orderBy: { displayOrder: 'asc' } },
+        },
       });
       const result = mapPrismaProduct(created);
       await AuditService.logAction('system', 'CREATE', 'PRODUCT', result.id, null, result);
@@ -153,6 +177,7 @@ export const PrismaProductRepository = {
         longDescription: data.longDescription,
         price: data.price,
         categoryId: data.categoryId,
+        imageId: data.imageId,
         badge:
           data.badge === 'signature'
             ? 'SIGNATURE'
@@ -192,10 +217,21 @@ export const PrismaProductRepository = {
         (key) => updateData[key] === undefined && delete updateData[key],
       );
 
+      // Handle gallery updates
+      if (data.galleryIds !== undefined) {
+        updateData.gallery = {
+          deleteMany: {},
+          create: data.galleryIds.map((id, index) => ({ mediaId: id, displayOrder: index })),
+        };
+      }
+
       const updated = await prisma.product.update({
         where: { id },
         data: updateData,
-        include: { image: true },
+        include: {
+          image: true,
+          gallery: { include: { media: true }, orderBy: { displayOrder: 'asc' } },
+        },
       });
       const result = mapPrismaProduct(updated);
       await AuditService.logAction('system', 'UPDATE', 'PRODUCT', result.id, current, result);
@@ -207,7 +243,7 @@ export const PrismaProductRepository = {
 
   duplicateProduct: async (id: string): Promise<AdminProduct> => {
     try {
-      const source = await prisma.product.findUnique({ where: { id } });
+      const source = await prisma.product.findUnique({ where: { id }, include: { gallery: true } });
       if (!source) throw new NotFoundError(`Product ${id} not found`);
 
       const newName = `${source.name} (Copy)`;
@@ -234,8 +270,21 @@ export const PrismaProductRepository = {
             availabilityStatus: source.availabilityStatus,
             status: 'DRAFT', // duplicated is always draft
             displayOrder: nextOrder,
+            ...(source.gallery?.length
+              ? {
+                  gallery: {
+                    create: source.gallery.map((g) => ({
+                      mediaId: g.mediaId,
+                      displayOrder: g.displayOrder,
+                    })),
+                  },
+                }
+              : {}),
           },
-          include: { image: true },
+          include: {
+            image: true,
+            gallery: { include: { media: true }, orderBy: { displayOrder: 'asc' } },
+          },
         });
       });
 

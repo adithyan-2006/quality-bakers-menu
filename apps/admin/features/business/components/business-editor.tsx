@@ -4,72 +4,15 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { AdminBusiness, BusinessStatus } from '../repositories/business-repo';
 import { getBusinessAction, updateBusinessAction } from '../actions/business-actions';
-import { AdminMedia } from '../../media/repositories/media-repo';
 import { CollapsibleSection } from '../../../components/ui/collapsible-section';
-import { ImagePickerModal } from '../../../components/modals/image-picker-modal';
+import { MediaPicker } from '../../media/components/media-picker';
 import { BusinessHoursEditor } from './business-hours-editor';
-import { Image as ImageIcon, X } from 'lucide-react';
-
-const ImagePreview = ({
-  url,
-  target,
-  rounded = false,
-  onOpenPicker,
-  onClear,
-}: {
-  url: string;
-  target: 'logo' | 'favicon' | 'coverImage';
-  rounded?: boolean;
-  onOpenPicker: (target: 'logo' | 'favicon' | 'coverImage') => void;
-  onClear: () => void;
-}) => {
-  if (url) {
-    return (
-      <div
-        className={`relative group overflow-hidden border border-stone-200 dark:border-stone-800 w-full h-48 bg-stone-100 dark:bg-stone-900 ${rounded ? 'rounded-full aspect-square w-48 mx-auto' : 'rounded-lg'}`}
-      >
-        {/* eslint-disable-next-line */}
-        <img src={url} alt="Preview" className="w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-4">
-          <button
-            type="button"
-            onClick={() => onOpenPicker(target)}
-            className="px-3 py-1.5 bg-white text-stone-900 text-sm font-medium rounded shadow-sm"
-          >
-            Change
-          </button>
-          <button
-            type="button"
-            onClick={onClear}
-            className="p-1.5 bg-rose-600 text-white rounded shadow-sm"
-          >
-            <X className="w-4 h-4" />
-          </button>
-        </div>
-      </div>
-    );
-  }
-  return (
-    <button
-      type="button"
-      onClick={() => onOpenPicker(target)}
-      className={`w-full h-48 border-2 border-dashed border-stone-300 dark:border-stone-700 flex flex-col items-center justify-center text-stone-500 hover:bg-stone-50 dark:hover:bg-stone-900 transition-colors ${rounded ? 'rounded-full aspect-square w-48 mx-auto' : 'rounded-lg'}`}
-    >
-      <ImageIcon className="w-8 h-8 mb-2 opacity-50" />
-      <span className="text-sm font-medium">Choose {target}</span>
-    </button>
-  );
-};
 
 export function BusinessEditor() {
   const router = useRouter();
   const [data, setData] = useState<AdminBusiness | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
-
-  // Image Picker State
-  const [pickerOpen, setPickerOpen] = useState(false);
-  const [pickerTarget, setPickerTarget] = useState<'logo' | 'favicon' | 'coverImage' | null>(null);
 
   useEffect(() => {
     getBusinessAction().then((res) => {
@@ -102,16 +45,6 @@ export function BusinessEditor() {
     } finally {
       setIsSaving(false);
     }
-  };
-
-  const handleImageSelect = (media: AdminMedia) => {
-    if (!data || !pickerTarget) return;
-    setData({ ...data, [pickerTarget]: media.imageUrl });
-  };
-
-  const openPicker = (target: 'logo' | 'favicon' | 'coverImage') => {
-    setPickerTarget(target);
-    setPickerOpen(true);
   };
 
   if (isLoading || !data) {
@@ -199,24 +132,20 @@ export function BusinessEditor() {
       {/* 2. Brand Assets */}
       <CollapsibleSection title="Brand Assets">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="space-y-2 text-center">
-            <label className="text-sm font-medium">Logo</label>
-            <ImagePreview
-              url={data.logo}
-              target="logo"
-              rounded
-              onOpenPicker={openPicker}
-              onClear={() => handleImageSelect({ imageUrl: '' } as AdminMedia)}
+          <div className="space-y-2 text-center flex flex-col items-center">
+            <label className="text-sm font-medium w-full text-left">Logo</label>
+            <MediaPicker
+              value={data.logoId || ''}
+              onChange={(val) => setData({ ...data, logoId: val as string })}
+              multiple={false}
             />
           </div>
-          <div className="space-y-2 text-center">
-            <label className="text-sm font-medium">Favicon</label>
-            <ImagePreview
-              url={data.favicon}
-              target="favicon"
-              rounded
-              onOpenPicker={openPicker}
-              onClear={() => handleImageSelect({ imageUrl: '' } as AdminMedia)}
+          <div className="space-y-2 text-center flex flex-col items-center">
+            <label className="text-sm font-medium w-full text-left">Favicon</label>
+            <MediaPicker
+              value={data.favicon || ''}
+              onChange={(val, media: any) => setData({ ...data, favicon: media?.imageUrl || '' })}
+              multiple={false}
             />
           </div>
           <div className="md:col-span-2 space-y-2 pt-4 border-t border-stone-100 dark:border-stone-800">
@@ -224,11 +153,10 @@ export function BusinessEditor() {
             <p className="text-xs text-stone-500 mb-2">
               Used for generic social media previews when no other image is available.
             </p>
-            <ImagePreview
-              url={data.coverImage}
-              target="coverImage"
-              onOpenPicker={openPicker}
-              onClear={() => handleImageSelect({ imageUrl: '' } as AdminMedia)}
+            <MediaPicker
+              value={data.coverImageId || ''}
+              onChange={(val) => setData({ ...data, coverImageId: val as string })}
+              multiple={false}
             />
           </div>
         </div>
@@ -449,11 +377,6 @@ export function BusinessEditor() {
       </CollapsibleSection>
 
       {/* Image Picker Modal */}
-      <ImagePickerModal
-        isOpen={pickerOpen}
-        onClose={() => setPickerOpen(false)}
-        onSelect={handleImageSelect}
-      />
     </div>
   );
 }

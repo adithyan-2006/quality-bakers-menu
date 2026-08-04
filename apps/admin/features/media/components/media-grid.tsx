@@ -2,8 +2,8 @@
 
 import { useState, useMemo } from 'react';
 import { AdminMedia } from '../repositories/media-repo';
-import { deleteMediaAction } from '../actions/media-actions';
-import { Search, Link as LinkIcon, Trash2, Eye, ShieldAlert } from 'lucide-react';
+
+import { Search, Link as LinkIcon, Eye, ShieldAlert } from 'lucide-react';
 import Link from 'next/link';
 import { cn } from '@qbm/ui';
 
@@ -11,10 +11,16 @@ interface MediaGridProps {
   initialMedia: AdminMedia[];
   onSelect?: (media: AdminMedia) => void;
   isPickerMode?: boolean;
+  selectedIds?: Set<string>;
 }
 
-export function MediaGrid({ initialMedia, onSelect, isPickerMode = false }: MediaGridProps) {
-  const [mediaItems, setMediaItems] = useState(initialMedia);
+export function MediaGrid({
+  initialMedia,
+  onSelect,
+  isPickerMode = false,
+  selectedIds = new Set(),
+}: MediaGridProps) {
+  const [mediaItems] = useState(initialMedia);
   const [searchQuery, setSearchQuery] = useState('');
 
   // Filters
@@ -62,15 +68,6 @@ export function MediaGrid({ initialMedia, onSelect, isPickerMode = false }: Medi
 
     return result;
   }, [mediaItems, searchQuery, filterUsage, filterType, sortBy]);
-
-  const handleDelete = async (id: string) => {
-    try {
-      await deleteMediaAction(id);
-      setMediaItems((prev) => prev.filter((m) => m.id !== id));
-    } catch (e: any) {
-      alert(e.message);
-    }
-  };
 
   const formatBytes = (bytes: number) => {
     if (bytes === 0) return '0 Bytes';
@@ -140,6 +137,7 @@ export function MediaGrid({ initialMedia, onSelect, isPickerMode = false }: Medi
                 className={cn(
                   'relative aspect-square bg-stone-100 dark:bg-stone-950 overflow-hidden',
                   isPickerMode && 'cursor-pointer',
+                  selectedIds.has(media.id) && 'ring-4 ring-stone-500 ring-inset',
                 )}
                 onClick={() => {
                   if (isPickerMode && onSelect) onSelect(media);
@@ -171,9 +169,16 @@ export function MediaGrid({ initialMedia, onSelect, isPickerMode = false }: Medi
                 )}
 
                 {isPickerMode && (
-                  <div className="absolute inset-0 bg-stone-900/0 hover:bg-stone-900/10 transition-colors flex items-center justify-center">
+                  <div
+                    className={cn(
+                      'absolute inset-0 transition-colors flex items-center justify-center',
+                      selectedIds.has(media.id)
+                        ? 'bg-stone-500/20'
+                        : 'bg-stone-900/0 hover:bg-stone-900/10',
+                    )}
+                  >
                     <div className="opacity-0 group-hover:opacity-100 bg-white text-stone-900 px-4 py-2 rounded-lg font-medium text-sm shadow-lg transform translate-y-2 group-hover:translate-y-0 transition-all duration-200">
-                      Select Image
+                      {selectedIds.has(media.id) ? 'Deselect' : 'Select'}
                     </div>
                   </div>
                 )}
@@ -207,7 +212,7 @@ export function MediaGrid({ initialMedia, onSelect, isPickerMode = false }: Medi
                     </button>
                   </div>
 
-                  {media.isUsed ? (
+                  {media.isUsed && (
                     <Link
                       href={`/media/${media.id}`}
                       className="text-stone-400 hover:text-amber-600 transition-colors"
@@ -215,14 +220,6 @@ export function MediaGrid({ initialMedia, onSelect, isPickerMode = false }: Medi
                     >
                       <ShieldAlert className="w-4 h-4" />
                     </Link>
-                  ) : (
-                    <button
-                      onClick={() => handleDelete(media.id)}
-                      className="text-stone-400 hover:text-rose-600 transition-colors"
-                      title="Delete Image"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
                   )}
                 </div>
               )}

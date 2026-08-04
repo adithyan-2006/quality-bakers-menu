@@ -11,6 +11,7 @@ import {
   Box,
 } from 'lucide-react';
 import { cn } from '@qbm/ui';
+import { DeleteMediaButton } from '../../../../features/media/components/delete-media-button';
 
 interface MediaPreviewPageProps {
   params: Promise<{ id: string }>;
@@ -156,6 +157,13 @@ export default async function MediaPreviewPage({ params }: MediaPreviewPageProps
                   <p className="text-stone-500 text-xs">Waiting for Sprint 4 Integration</p>
                 </div>
               </div>
+            </div>
+
+            <hr className="border-stone-100 dark:border-stone-800" />
+
+            {/* Danger Zone */}
+            <div className="flex justify-end">
+              <DeleteMediaButton mediaId={media.id} />
             </div>
           </div>
         </div>

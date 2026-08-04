@@ -4,70 +4,15 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { AdminHomepage } from '../repositories/homepage-repo';
 import { getHomepageAction, updateHomepageAction } from '../actions/homepage-actions';
-import { AdminMedia } from '../../media/repositories/media-repo';
 import { CollapsibleSection } from '../../../components/ui/collapsible-section';
-import { ImagePickerModal } from '../../../components/modals/image-picker-modal';
+import { MediaPicker } from '../../media/components/media-picker';
 import { SortableCategoryList } from './sortable-category-list';
-import { Image as ImageIcon, X } from 'lucide-react';
-
-const ImagePreview = ({
-  url,
-  target,
-  onOpenPicker,
-  onClear,
-}: {
-  url: string;
-  target: 'hero' | 'about' | 'seasonal' | 'promotion';
-  onOpenPicker: (target: 'hero' | 'about' | 'seasonal' | 'promotion') => void;
-  onClear: () => void;
-}) => {
-  if (url) {
-    return (
-      <div className="relative group rounded-lg overflow-hidden border border-stone-200 dark:border-stone-800 w-full h-48 bg-stone-100 dark:bg-stone-900">
-        {/* eslint-disable-next-line */}
-        <img src={url} alt="Preview" className="w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-4">
-          <button
-            type="button"
-            onClick={() => onOpenPicker(target)}
-            className="px-3 py-1.5 bg-white text-stone-900 text-sm font-medium rounded shadow-sm"
-          >
-            Change
-          </button>
-          <button
-            type="button"
-            onClick={onClear}
-            className="p-1.5 bg-rose-600 text-white rounded shadow-sm"
-          >
-            <X className="w-4 h-4" />
-          </button>
-        </div>
-      </div>
-    );
-  }
-  return (
-    <button
-      type="button"
-      onClick={() => onOpenPicker(target)}
-      className="w-full h-48 rounded-lg border-2 border-dashed border-stone-300 dark:border-stone-700 flex flex-col items-center justify-center text-stone-500 hover:bg-stone-50 dark:hover:bg-stone-900 transition-colors"
-    >
-      <ImageIcon className="w-8 h-8 mb-2 opacity-50" />
-      <span className="text-sm font-medium">Choose Image</span>
-    </button>
-  );
-};
 
 export function HomepageEditor() {
   const router = useRouter();
   const [data, setData] = useState<AdminHomepage | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
-
-  // Image Picker State
-  const [pickerOpen, setPickerOpen] = useState(false);
-  const [pickerTarget, setPickerTarget] = useState<
-    'hero' | 'about' | 'seasonal' | 'promotion' | null
-  >(null);
 
   useEffect(() => {
     getHomepageAction().then((res) => {
@@ -89,25 +34,6 @@ export function HomepageEditor() {
     } finally {
       setIsSaving(false);
     }
-  };
-
-  const handleImageSelect = (media: AdminMedia) => {
-    if (!data || !pickerTarget) return;
-
-    if (pickerTarget === 'hero') {
-      setData({ ...data, hero: { ...data.hero, image: media.imageUrl } });
-    } else if (pickerTarget === 'about') {
-      setData({ ...data, about: { ...data.about, image: media.imageUrl } });
-    } else if (pickerTarget === 'seasonal') {
-      setData({ ...data, seasonalBanner: { ...data.seasonalBanner, image: media.imageUrl } });
-    } else if (pickerTarget === 'promotion') {
-      setData({ ...data, promotionBanner: { ...data.promotionBanner, image: media.imageUrl } });
-    }
-  };
-
-  const openPicker = (target: 'hero' | 'about' | 'seasonal' | 'promotion') => {
-    setPickerTarget(target);
-    setPickerOpen(true);
   };
 
   if (isLoading || !data) {
@@ -192,11 +118,12 @@ export function HomepageEditor() {
           </div>
           <div className="space-y-2 pt-2">
             <label className="text-sm font-medium">Background Image</label>
-            <ImagePreview
-              url={data.hero.image}
-              target="hero"
-              onOpenPicker={openPicker}
-              onClear={() => handleImageSelect({ imageUrl: '' } as AdminMedia)}
+            <MediaPicker
+              value={data.hero.imageId || ''}
+              onChange={(val) =>
+                setData({ ...data, hero: { ...data.hero, imageId: val as string } })
+              }
+              multiple={false}
             />
           </div>
         </div>
@@ -250,11 +177,12 @@ export function HomepageEditor() {
           </div>
           <div className="space-y-2 pt-2">
             <label className="text-sm font-medium">About Image</label>
-            <ImagePreview
-              url={data.about.image}
-              target="about"
-              onOpenPicker={openPicker}
-              onClear={() => handleImageSelect({ imageUrl: '' } as AdminMedia)}
+            <MediaPicker
+              value={data.about.imageId || ''}
+              onChange={(val) =>
+                setData({ ...data, about: { ...data.about, imageId: val as string } })
+              }
+              multiple={false}
             />
           </div>
         </div>
@@ -339,11 +267,15 @@ export function HomepageEditor() {
               </div>
               <div className="space-y-2 pt-2">
                 <label className="text-sm font-medium">Background Image</label>
-                <ImagePreview
-                  url={data.seasonalBanner.image}
-                  target="seasonal"
-                  onOpenPicker={openPicker}
-                  onClear={() => handleImageSelect({ imageUrl: '' } as AdminMedia)}
+                <MediaPicker
+                  value={data.seasonalBanner.imageId || ''}
+                  onChange={(val) =>
+                    setData({
+                      ...data,
+                      seasonalBanner: { ...data.seasonalBanner, imageId: val as string },
+                    })
+                  }
+                  multiple={false}
                 />
               </div>
             </div>
@@ -440,11 +372,6 @@ export function HomepageEditor() {
       </CollapsibleSection>
 
       {/* Image Picker Modal */}
-      <ImagePickerModal
-        isOpen={pickerOpen}
-        onClose={() => setPickerOpen(false)}
-        onSelect={handleImageSelect}
-      />
     </div>
   );
 }

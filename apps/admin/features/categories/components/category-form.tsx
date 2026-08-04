@@ -4,9 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { AdminCategory } from '../repositories/category-repo';
 import { createCategoryAction, updateCategoryAction } from '../actions/category-actions';
-import { ImagePlus, X, Image as ImageIcon } from 'lucide-react';
-import { ImagePickerModal } from '../../../components/modals/image-picker-modal';
-import { AdminMedia } from '../../media/repositories/media-repo';
+import { MediaPicker } from '../../media/components/media-picker';
 
 interface CategoryFormProps {
   initialData?: AdminCategory;
@@ -21,14 +19,13 @@ export function CategoryForm({ initialData }: CategoryFormProps) {
   const [name, setName] = useState(initialData?.name || '');
   const [slug, setSlug] = useState(initialData?.slug || '');
   const [description, setDescription] = useState(initialData?.description || '');
-  const [coverImage, setCoverImage] = useState(initialData?.coverImage || '');
+  const [coverImageId, setCoverImageId] = useState(initialData?.coverImageId || '');
   const [theme, setTheme] = useState(initialData?.theme || 'classic');
   const [layoutType, setLayoutType] = useState(initialData?.layoutType || 'editorial-grid');
   const [animationPreset, setAnimationPreset] = useState(initialData?.animationPreset || 'fade-up');
   const [isFeatured, setIsFeatured] = useState(initialData?.isFeatured || false);
   const [isVisible, setIsVisible] = useState(initialData?.isVisible ?? true);
   const [accentColor, setAccentColor] = useState(initialData?.accentColor || '');
-  const [isPickerOpen, setIsPickerOpen] = useState(false);
 
   // Handlers
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -53,7 +50,7 @@ export function CategoryForm({ initialData }: CategoryFormProps) {
       name,
       slug,
       description,
-      coverImage,
+      coverImageId,
       theme,
       layoutType,
       animationPreset,
@@ -141,47 +138,15 @@ export function CategoryForm({ initialData }: CategoryFormProps) {
       <div className="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 rounded-xl p-6 md:p-8 shadow-sm">
         <div className="flex items-center justify-between mb-6 border-b border-stone-200 dark:border-stone-800 pb-4">
           <h3 className="text-lg font-medium text-stone-900 dark:text-stone-50 flex items-center gap-2">
-            <ImageIcon className="w-5 h-5" /> Cover Image
+            Cover Image
           </h3>
         </div>
 
-        {coverImage ? (
-          <div className="relative group rounded-xl border border-stone-200 dark:border-stone-800 overflow-hidden">
-            {/* eslint-disable-next-line */}
-            <img src={coverImage} alt="Category Cover" className="w-full h-64 object-cover" />
-            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-4 backdrop-blur-[2px]">
-              <button
-                type="button"
-                onClick={() => setIsPickerOpen(true)}
-                className="px-4 py-2 bg-white text-stone-900 font-medium text-sm rounded-md shadow-sm hover:bg-stone-100 transition-colors"
-              >
-                Change Image
-              </button>
-              <button
-                type="button"
-                onClick={() => setCoverImage('')}
-                className="p-2 bg-rose-600 text-white rounded-md shadow-sm hover:bg-rose-700 transition-colors"
-                title="Remove Image"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 gap-4">
-            <button
-              type="button"
-              onClick={() => setIsPickerOpen(true)}
-              className="h-48 border-2 border-dashed border-stone-300 dark:border-stone-700 rounded-xl flex flex-col items-center justify-center text-stone-500 bg-stone-50 dark:bg-stone-900/50 hover:bg-stone-100 dark:hover:bg-stone-800 hover:border-stone-400 dark:hover:border-stone-500 transition-all cursor-pointer"
-            >
-              <ImagePlus className="w-8 h-8 mb-3 text-stone-400" />
-              <span className="text-sm font-medium text-stone-700 dark:text-stone-300">
-                Choose Image from Library
-              </span>
-              <span className="text-xs text-stone-500 mt-1">Or upload a new one directly</span>
-            </button>
-          </div>
-        )}
+        <MediaPicker
+          value={coverImageId}
+          onChange={(val) => setCoverImageId(val as string)}
+          multiple={false}
+        />
       </div>
 
       <div className="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 rounded-xl p-6 md:p-8 shadow-sm">
@@ -333,11 +298,6 @@ export function CategoryForm({ initialData }: CategoryFormProps) {
           {isSubmitting ? 'Saving...' : isEditing ? 'Save Changes' : 'Create Category'}
         </button>
       </div>
-      <ImagePickerModal
-        isOpen={isPickerOpen}
-        onClose={() => setIsPickerOpen(false)}
-        onSelect={(media: AdminMedia) => setCoverImage(media.imageUrl)}
-      />
     </form>
   );
 }

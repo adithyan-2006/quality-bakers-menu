@@ -18,7 +18,8 @@ export async function uploadMediaAction(formData: FormData) {
   if (!file) throw new Error('No file provided');
 
   const repo = RepositoryFactory.getMediaRepository();
-  const result = await repo.simulateUpload(file);
+  const folder = formData.get('folder') as string | undefined;
+  const result = await repo.uploadMedia(file, folder);
   revalidatePath('/media');
   revalidatePath('/', 'layout');
   return result;
