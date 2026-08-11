@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   transpilePackages: ['@qbm/ui', '@qbm/config', '@qbm/types', '@qbm/validators', 'customer'],
-  serverExternalPackages: ['cloudinary'],
+  serverExternalPackages: ['cloudinary', '@prisma/client', '@qbm/database'],
   reactStrictMode: true,
   experimental: {
     serverActions: {
