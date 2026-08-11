@@ -1,5 +1,9 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
+import type { NextConfig } from 'next';
+
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const { PrismaPlugin } = require('@prisma/nextjs-monorepo-workaround-plugin');
+
+const nextConfig: NextConfig = {
   transpilePackages: ['@qbm/ui', '@qbm/config', '@qbm/types', '@qbm/validators', 'customer'],
   serverExternalPackages: ['cloudinary', '@prisma/client', '@qbm/database'],
   reactStrictMode: true,
@@ -7,6 +11,12 @@ const nextConfig = {
     serverActions: {
       bodySizeLimit: '10mb',
     },
+  },
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      config.plugins = [...config.plugins, new PrismaPlugin()];
+    }
+    return config;
   },
 };
 
