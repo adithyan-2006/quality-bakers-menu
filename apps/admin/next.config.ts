@@ -4,7 +4,7 @@ import type { NextConfig } from 'next';
 const { PrismaPlugin } = require('@prisma/nextjs-monorepo-workaround-plugin');
 
 const nextConfig: NextConfig = {
-  transpilePackages: ['@qbm/ui', '@qbm/config', '@qbm/types', '@qbm/validators', 'customer'],
+  transpilePackages: ['@qbm/ui', '@qbm/config', '@qbm/types', '@qbm/validators'],
   serverExternalPackages: ['cloudinary', '@prisma/client', '@qbm/database'],
   reactStrictMode: true,
   experimental: {

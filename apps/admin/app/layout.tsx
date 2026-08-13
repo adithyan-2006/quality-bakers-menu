@@ -1,11 +1,16 @@
 import type { Metadata, Viewport } from 'next';
-import { Inter } from 'next/font/google';
+import localFont from 'next/font/local';
 import '../styles/globals.css';
 import { ThemeProvider } from '../providers/theme-provider';
 import { QueryProvider } from '../providers/query-provider';
 import { AuthProvider } from '../components/providers/auth-provider';
 
-const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
+const inter = localFont({
+  src: '../public/fonts/inter-variable.woff2',
+  variable: '--font-sans',
+  weight: '100 900',
+  display: 'swap',
+});
 
 export const viewport: Viewport = {
   themeColor: [
