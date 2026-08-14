@@ -237,7 +237,7 @@ export function FeaturedCategories({ categories }: FeaturedCategoriesProps) {
               return (
                 <Link
                   key={category.id}
-                  href={`/categories/${category.slug}`}
+                  href={`/categories#${category.slug}`}
                   ref={(el) => {
                     cardsRef.current[idx] = el;
                   }}

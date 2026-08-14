@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Link from 'next/link';
 import { cn } from '@qbm/ui';
 import type { MenuProduct, ThemeClasses } from '../types';
 import { ProductImage } from './product-image';
@@ -48,8 +47,7 @@ export function ProductCard({
   if (presentationStyle === 'overlay') {
     return (
       <article className="h-full">
-        <Link
-          href={`/products/${product.slug}`}
+        <div
           className={cn(
             'group relative flex items-end overflow-hidden w-full h-full rounded-2xl',
             emphasis === 'hero'
@@ -117,7 +115,7 @@ export function ProductCard({
               </div>
             )}
           </div>
-        </Link>
+        </div>
       </article>
     );
   }
@@ -126,8 +124,7 @@ export function ProductCard({
   if (presentationStyle === 'side-by-side') {
     return (
       <article>
-        <Link
-          href={`/products/${product.slug}`}
+        <div
           className={cn(
             'group grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 items-center overflow-hidden rounded-2xl',
             themeClasses.card,
@@ -177,7 +174,7 @@ export function ProductCard({
               </div>
             )}
           </div>
-        </Link>
+        </div>
       </article>
     );
   }
@@ -185,8 +182,7 @@ export function ProductCard({
   // ─── STANDARD STYLE ───────────────────────────────────────────────────────
   return (
     <article className="h-full">
-      <Link
-        href={`/products/${product.slug}`}
+      <div
         className={cn(
           'group flex flex-col h-full overflow-hidden rounded-2xl',
           themeClasses.card,
@@ -228,7 +224,7 @@ export function ProductCard({
             </div>
           )}
         </div>
-      </Link>
+      </div>
     </article>
   );
 }
