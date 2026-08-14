@@ -17,7 +17,7 @@ export function SignatureHighlight({ title, description, image }: SignatureHighl
   const imageUrl = image ? image.secureUrl || image.originalUrl : null;
 
   return (
-    <PageSection className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto py-12 md:py-24">
+    <PageSection id="about" className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto py-12 md:py-24">
       <div className="grid md:grid-cols-2 gap-8 md:gap-16 items-center">
         <div className="order-2 md:order-1 flex flex-col justify-center">
           <ScrollReveal animation="fade-up">

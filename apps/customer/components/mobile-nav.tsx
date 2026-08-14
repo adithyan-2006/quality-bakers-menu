@@ -56,7 +56,7 @@ export function MobileNav() {
             <Link href="/search" onClick={close} className="hover:text-primary transition-colors">
               Search
             </Link>
-            <Link href="/about" onClick={close} className="hover:text-primary transition-colors">
+            <Link href="/#about" onClick={close} className="hover:text-primary transition-colors">
               About Us
             </Link>
           </nav>

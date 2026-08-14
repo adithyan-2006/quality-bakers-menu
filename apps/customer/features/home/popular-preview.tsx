@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Link from 'next/link';
 import { PageSection } from '../../components/layout/page-section';
 import { SectionTitle } from '../../components/layout/section-title';
 import { ScrollReveal } from '../../components/scroll-reveal';
@@ -29,10 +28,7 @@ export function PopularPreview({ products }: PopularPreviewProps) {
 
           return (
             <ScrollReveal key={item.id} delayMs={idx * 150} animation="fade-up">
-              <Link
-                href={`/products/${item.slug}`}
-                className="group flex flex-col h-full bg-background rounded-xl p-4 md:p-5 border border-border/50 shadow-sm hover:shadow-md transition-all duration-300"
-              >
+              <div className="group flex flex-col h-full bg-background rounded-xl p-4 md:p-5 border border-border/50 shadow-sm hover:shadow-md transition-all duration-300">
                 <div className="relative aspect-square rounded-lg bg-muted mb-5 overflow-hidden">
                   {imageUrl ? (
                     <img
@@ -55,7 +51,7 @@ export function PopularPreview({ products }: PopularPreviewProps) {
                     {item.shortDescription}
                   </p>
                 </div>
-              </Link>
+              </div>
             </ScrollReveal>
           );
         })}
