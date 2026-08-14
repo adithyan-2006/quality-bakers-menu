@@ -49,7 +49,7 @@ export function CategorySection({ config, products }: CategorySectionProps) {
       id={config.slug}
       aria-labelledby={`category-${config.slug}`}
       className={cn(
-        'relative',
+        'relative scroll-mt-24',
         pacing === 'hero'
           ? 'py-24 md:py-32 lg:py-40'
           : pacing === 'compact'
