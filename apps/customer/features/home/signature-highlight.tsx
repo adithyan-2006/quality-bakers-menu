@@ -17,7 +17,7 @@ export function SignatureHighlight({ title, description }: SignatureHighlightPro
   return (
     <PageSection
       id="about"
-      className="px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto py-16 md:py-32 text-center border-t border-border/20"
+      className="px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto py-16 md:py-32 text-center"
     >
       <div className="flex flex-col items-center justify-center">
         <ScrollReveal animation="fade-up">
