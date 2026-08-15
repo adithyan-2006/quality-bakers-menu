@@ -6,6 +6,8 @@ export const metadata: Metadata = {
   description: 'Browse our complete menu of artisanal beverages and bakery items.',
 };
 
+export const revalidate = 60;
+
 export default function CategoriesPage() {
   return <MenuEngine />;
 }

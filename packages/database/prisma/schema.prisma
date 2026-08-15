@@ -147,7 +147,8 @@ model Category {
   accentColor String?
 
   products   Product[]
-  featuredIn Homepage[] @relation("HomepageCategories")
+  homepageFeaturedIn HomepageFeaturedCategory[]
+  homepageSections HomepageSection[]
 
   status      PublishStatus @default(DRAFT)
   createdAt   DateTime      @default(now())
@@ -255,7 +256,7 @@ model Homepage {
   storyTitle       String?
   storyDescription String?
 
-  featuredCategories Category[] @relation("HomepageCategories")
+  featuredCategories HomepageFeaturedCategory[]
 
   sections HomepageSection[]
 
@@ -263,6 +264,18 @@ model Homepage {
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
   publishedAt DateTime?
+}
+
+model HomepageFeaturedCategory {
+  id           String   @id @default(cuid())
+  homepageId   String
+  categoryId   String
+  displayOrder Int      @default(0)
+
+  homepage Homepage @relation(fields: [homepageId], references: [id], onDelete: Cascade)
+  category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@unique([homepageId, categoryId])
 }
 
 model HomepageSection {
@@ -277,6 +290,9 @@ model HomepageSection {
 
   imageId String?
   image   Media?  @relation("SectionImage", fields: [imageId], references: [id])
+
+  categoryId String?
+  category   Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
 
   buttonText      String?
   buttonLink      String?

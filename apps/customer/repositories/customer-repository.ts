@@ -21,17 +21,36 @@ export class CustomerRepository {
    */
   static async getHomepage() {
     try {
-      return await prisma.homepage.findFirst({
+      const hp = await prisma.homepage.findFirst({
         include: {
           heroImage: true,
           aboutImage: true,
           featuredCategories: {
+            orderBy: { displayOrder: 'asc' },
             include: {
-              coverImage: true,
+              category: {
+                include: { coverImage: true },
+              },
             },
           },
         },
       });
+
+      if (!hp) return null;
+
+      // Extract the nested categories from the explicit junction table
+      const mappedCategories = hp.featuredCategories.map((fc) => fc.category);
+
+      // Create a mapped object that overrides the featuredCategories type
+      // while preserving all other Prisma Homepage fields for EditorialIntro.
+      const result: Omit<typeof hp, 'featuredCategories'> & {
+        featuredCategories: typeof mappedCategories;
+      } = {
+        ...hp,
+        featuredCategories: mappedCategories,
+      };
+
+      return result;
     } catch (error) {
       console.error('[CustomerRepository] Failed to fetch homepage:', error);
       return null;

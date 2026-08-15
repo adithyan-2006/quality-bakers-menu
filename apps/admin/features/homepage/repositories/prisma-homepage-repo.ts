@@ -8,8 +8,12 @@ function mapPrismaHomepage(hp: any): AdminHomepage {
 
   const seasonalSec = sections.find((s: any) => s.type === 'BANNER');
   const promoSec = sections.find((s: any) => s.type === 'PROMOTION');
+
+  // Featured Collections are stored as COLLECTION-type sections with a categoryId
   const featuredCollections =
-    sections.filter((s: any) => s.type === 'COLLECTION').map((s: any) => s.id) || [];
+    sections
+      .filter((s: any) => s.type === 'COLLECTION' && s.categoryId)
+      .map((s: any) => s.categoryId) || [];
 
   return {
     id: hp.id,
@@ -22,7 +26,8 @@ function mapPrismaHomepage(hp: any): AdminHomepage {
       ctaLink: hp.heroCtaLink || '',
     },
     featuredCollections,
-    featuredCategories: hp.featuredCategories?.map((c: any) => c.id) || [],
+    // Featured Categories now use the junction table, we mapped it to return categoryId
+    featuredCategories: hp.featuredCategories?.map((fc: any) => fc.categoryId) || [],
     about: {
       title: hp.aboutTitle || '',
       description: hp.aboutDescription || '',
@@ -66,7 +71,10 @@ export const PrismaHomepageRepository = {
         include: {
           heroImage: true,
           aboutImage: true,
-          featuredCategories: true,
+          featuredCategories: {
+            orderBy: { displayOrder: 'asc' },
+            select: { categoryId: true },
+          },
           sections: {
             include: { image: true },
             orderBy: { displayOrder: 'asc' },
@@ -99,13 +107,14 @@ export const PrismaHomepageRepository = {
         updateData.heroSubtitle = data.hero.subtitle;
         updateData.heroCtaText = data.hero.ctaText;
         updateData.heroCtaLink = data.hero.ctaLink;
-        updateData.heroImageId = data.hero.imageId;
+        // Fix hero image removal bug: convert empty string to null
+        updateData.heroImageId = data.hero.imageId === '' ? null : data.hero.imageId;
       }
 
       if (data.about) {
         updateData.aboutTitle = data.about.title;
         updateData.aboutDescription = data.about.description;
-        updateData.aboutImageId = data.about.imageId;
+        updateData.aboutImageId = data.about.imageId === '' ? null : data.about.imageId;
       }
 
       if (data.story) {
@@ -120,17 +129,44 @@ export const PrismaHomepageRepository = {
         }
       }
 
-      if (data.featuredCategories) {
-        updateData.featuredCategories = {
-          set: data.featuredCategories.map((id) => ({ id })),
-        };
-      }
-
       const updated = await prisma.$transaction(async (tx: any) => {
         const hp = await tx.homepage.update({
           where: { id: currentHp.id },
           data: updateData,
         });
+
+        // 1. Reconcile Featured Categories
+        if (data.featuredCategories) {
+          await tx.homepageFeaturedCategory.deleteMany({
+            where: { homepageId: currentHp.id },
+          });
+          if (data.featuredCategories.length > 0) {
+            await tx.homepageFeaturedCategory.createMany({
+              data: data.featuredCategories.map((categoryId, index) => ({
+                homepageId: currentHp.id,
+                categoryId,
+                displayOrder: index,
+              })),
+            });
+          }
+        }
+
+        // 2. Reconcile Featured Collections
+        if (data.featuredCollections) {
+          await tx.homepageSection.deleteMany({
+            where: { homepageId: currentHp.id, type: 'COLLECTION' },
+          });
+          if (data.featuredCollections.length > 0) {
+            await tx.homepageSection.createMany({
+              data: data.featuredCollections.map((categoryId, index) => ({
+                homepageId: currentHp.id,
+                type: 'COLLECTION',
+                categoryId,
+                displayOrder: 10 + index, // Default ordering beyond banners
+              })),
+            });
+          }
+        }
 
         if (data.seasonalBanner) {
           const banner = await tx.homepageSection.findFirst({
@@ -144,7 +180,7 @@ export const PrismaHomepageRepository = {
               buttonText: data.seasonalBanner.buttonText,
               buttonLink: data.seasonalBanner.buttonLink,
               backgroundColor: data.seasonalBanner.backgroundColor,
-              imageId: data.seasonalBanner.imageId,
+              imageId: data.seasonalBanner.imageId === '' ? null : data.seasonalBanner.imageId,
             };
             Object.keys(bannerData).forEach(
               (key) => bannerData[key] === undefined && delete bannerData[key],
@@ -169,7 +205,7 @@ export const PrismaHomepageRepository = {
               buttonText: data.promotionBanner.buttonText,
               buttonLink: data.promotionBanner.buttonLink,
               backgroundColor: data.promotionBanner.backgroundColor,
-              imageId: data.promotionBanner.imageId,
+              imageId: data.promotionBanner.imageId === '' ? null : data.promotionBanner.imageId,
             };
             Object.keys(promoData).forEach(
               (key) => promoData[key] === undefined && delete promoData[key],
@@ -187,7 +223,10 @@ export const PrismaHomepageRepository = {
           include: {
             heroImage: true,
             aboutImage: true,
-            featuredCategories: true,
+            featuredCategories: {
+              orderBy: { displayOrder: 'asc' },
+              select: { categoryId: true },
+            },
             sections: {
               include: { image: true },
               orderBy: { displayOrder: 'asc' },
