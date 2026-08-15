@@ -13,24 +13,26 @@ import { CategorySection } from './sections/category-section';
  *   3. For each category:
  *      a. ProductRepository.getProductsForCategory(slug)
  *      b. CategorySection [Server] → Theme + Animation + Layout engines
- *
- * Admin migration:
- *   When API ships, update CategoryRepository._source() and
- *   ProductRepository.getProductsForCategory() only.
- *   This file requires zero changes.
  */
-export function MenuEngine() {
-  const categories = CategoryRepository.getVisible();
+export async function MenuEngine() {
+  const categories = await CategoryRepository.getVisible();
   const navItems = categories.map(({ id, name, slug }) => ({ id, name, slug }));
+
+  // Fetch all products in parallel
+  const categoryProducts = await Promise.all(
+    categories.map(async (config) => {
+      const products = await ProductRepository.getProductsForCategory(config.slug);
+      return { config, products };
+    }),
+  );
 
   return (
     <div className="flex flex-col w-full">
       <CategoryNav categories={navItems} />
       <div className="flex flex-col">
-        {categories.map((config) => {
-          const products = ProductRepository.getProductsForCategory(config.slug);
-          return <CategorySection key={config.id} config={config} products={products} />;
-        })}
+        {categoryProducts.map(({ config, products }) => (
+          <CategorySection key={config.id} config={config} products={products} />
+        ))}
       </div>
     </div>
   );

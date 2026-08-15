@@ -19,6 +19,7 @@ export async function POST(request: NextRequest) {
     }
 
     revalidatePath('/');
+    revalidatePath('/categories');
 
     return NextResponse.json({ revalidated: true, timestamp: new Date().toISOString() });
   } catch (error) {
