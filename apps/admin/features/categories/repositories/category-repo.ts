@@ -141,4 +141,10 @@ export const CategoryRepository = {
       }
     });
   },
+
+  deleteCategory: async (id: string): Promise<void> => {
+    const index = mockCategories.findIndex((c) => c.id === id);
+    if (index === -1) throw new Error('Category not found');
+    mockCategories.splice(index, 1);
+  },
 };

@@ -311,4 +311,16 @@ export const PrismaProductRepository = {
       throw new RepositoryError('Failed to update product display order', error);
     }
   },
+  deleteProduct: async (id: string): Promise<void> => {
+    try {
+      const current = await PrismaProductRepository.getProduct(id);
+      if (!current) throw new NotFoundError(`Product ${id} not found`);
+
+      await prisma.product.delete({ where: { id } });
+      await AuditService.logAction('system', 'DELETE', 'PRODUCT', id, current, null);
+    } catch (error: any) {
+      if (error instanceof NotFoundError) throw error;
+      throw new RepositoryError('Failed to delete product', error);
+    }
+  },
 };

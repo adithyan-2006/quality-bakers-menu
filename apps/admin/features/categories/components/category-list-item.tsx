@@ -3,13 +3,14 @@
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { AdminCategory } from '../repositories/category-repo';
-import { GripVertical, Edit2, Eye, EyeOff, LayoutTemplate } from 'lucide-react';
+import { GripVertical, Edit2, Eye, EyeOff, LayoutTemplate, Trash2 } from 'lucide-react';
 import Link from 'next/link';
 import { cn } from '@qbm/ui';
 
 interface CategoryListItemProps {
   category: AdminCategory;
   onToggleVisibility: (id: string) => void;
+  onDelete?: () => void;
 }
 
 const LAYOUT_NAMES: Record<string, string> = {
@@ -20,7 +21,11 @@ const LAYOUT_NAMES: Record<string, string> = {
   alternating: 'Alternating Layout',
 };
 
-export function CategoryListItem({ category, onToggleVisibility }: CategoryListItemProps) {
+export function CategoryListItem({
+  category,
+  onToggleVisibility,
+  onDelete,
+}: CategoryListItemProps) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: category.id,
   });
@@ -153,6 +158,17 @@ export function CategoryListItem({ category, onToggleVisibility }: CategoryListI
         >
           <Edit2 className="w-4 h-4" />
         </Link>
+
+        {onDelete && (
+          <button
+            onClick={onDelete}
+            className="p-2 text-rose-500 hover:text-rose-600 transition-colors focus:outline-none focus:ring-2 focus:ring-rose-400 rounded-md bg-rose-50 dark:bg-rose-500/10 hover:bg-rose-100 dark:hover:bg-rose-500/20"
+            aria-label={`Delete ${category.name}`}
+            title="Delete Category"
+          >
+            <Trash2 className="w-4 h-4" />
+          </button>
+        )}
       </div>
     </div>
   );

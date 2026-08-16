@@ -20,8 +20,10 @@ import { AdminCategory } from '../repositories/category-repo';
 import {
   updateCategoryDisplayOrderAction,
   updateCategoryAction,
+  deleteCategoryAction,
 } from '../actions/category-actions';
 import { CategoryListItem } from './category-list-item';
+import { Dialog, Button } from '@qbm/ui';
 
 interface CategoryListProps {
   initialCategories: AdminCategory[];
@@ -29,6 +31,9 @@ interface CategoryListProps {
 
 export function CategoryList({ initialCategories }: CategoryListProps) {
   const [categories, setCategories] = useState(initialCategories);
+  const [categoryToDelete, setCategoryToDelete] = useState<AdminCategory | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState('');
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -45,45 +50,55 @@ export function CategoryList({ initialCategories }: CategoryListProps) {
     const { active, over } = event;
 
     if (over && active.id !== over.id) {
-      setCategories((items) => {
-        const oldIndex = items.findIndex((item) => item.id === active.id);
-        const newIndex = items.findIndex((item) => item.id === over.id);
+      const oldIndex = categories.findIndex((item) => item.id === active.id);
+      const newIndex = categories.findIndex((item) => item.id === over.id);
 
-        const newArray = arrayMove(items, oldIndex, newIndex);
+      const newArray = arrayMove(categories, oldIndex, newIndex);
 
-        // Optimistically update displayOrder
-        const updatedArray = newArray.map((item, index) => ({
-          ...item,
-          displayOrder: index,
-        }));
+      // Optimistically update displayOrder
+      const updatedArray = newArray.map((item, index) => ({
+        ...item,
+        displayOrder: index,
+      }));
 
-        // Fire and forget repo update (mimicking API call)
-        updateCategoryDisplayOrderAction(
-          updatedArray.map((c) => ({
-            id: c.id,
-            displayOrder: c.displayOrder,
-          })),
-        ).catch(console.error);
+      setCategories(updatedArray);
 
-        return updatedArray;
-      });
+      // Fire and forget repo update outside of state updater
+      updateCategoryDisplayOrderAction(
+        updatedArray.map((c) => ({
+          id: c.id,
+          displayOrder: c.displayOrder,
+        })),
+      ).catch(console.error);
     }
   };
 
   const handleToggleVisibility = async (id: string) => {
+    const category = categories.find((c) => c.id === id);
+    if (!category) return;
+
+    const newVisibility = !category.isVisible;
+
     setCategories((items) =>
-      items.map((item) => {
-        if (item.id === id) {
-          const newVisibility = !item.isVisible;
-
-          // Fire and forget repo update
-          updateCategoryAction(id, { isVisible: newVisibility }).catch(console.error);
-
-          return { ...item, isVisible: newVisibility };
-        }
-        return item;
-      }),
+      items.map((item) => (item.id === id ? { ...item, isVisible: newVisibility } : item)),
     );
+
+    // Fire and forget repo update outside of state updater
+    updateCategoryAction(id, { isVisible: newVisibility }).catch(console.error);
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!categoryToDelete) return;
+    setIsDeleting(true);
+    setDeleteError('');
+    const result = await deleteCategoryAction(categoryToDelete.id);
+    if (result.success) {
+      setCategories(categories.filter((c) => c.id !== categoryToDelete.id));
+      setCategoryToDelete(null);
+    } else {
+      setDeleteError(result.error || 'Failed to delete category');
+    }
+    setIsDeleting(false);
   };
 
   if (categories.length === 0) {
@@ -97,18 +112,46 @@ export function CategoryList({ initialCategories }: CategoryListProps) {
   }
 
   return (
-    <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-      <SortableContext items={categories.map((c) => c.id)} strategy={verticalListSortingStrategy}>
-        <div className="space-y-3">
-          {categories.map((category) => (
-            <CategoryListItem
-              key={category.id}
-              category={category}
-              onToggleVisibility={handleToggleVisibility}
-            />
-          ))}
-        </div>
-      </SortableContext>
-    </DndContext>
+    <>
+      <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+        <SortableContext items={categories.map((c) => c.id)} strategy={verticalListSortingStrategy}>
+          <div className="space-y-3">
+            {categories.map((category) => (
+              <CategoryListItem
+                key={category.id}
+                category={category}
+                onToggleVisibility={handleToggleVisibility}
+                onDelete={() => setCategoryToDelete(category)}
+              />
+            ))}
+          </div>
+        </SortableContext>
+      </DndContext>
+
+      <Dialog open={!!categoryToDelete} onClose={() => setCategoryToDelete(null)}>
+        <Dialog.Content>
+          <Dialog.Header>
+            <Dialog.Title>Delete category?</Dialog.Title>
+            <Dialog.Description>
+              You are about to permanently delete '{categoryToDelete?.name}'. This action cannot be
+              undone.
+            </Dialog.Description>
+          </Dialog.Header>
+          {deleteError && <div className="text-sm text-red-500 mt-2">{deleteError}</div>}
+          <Dialog.Footer className="mt-4">
+            <Button
+              variant="outline"
+              onClick={() => setCategoryToDelete(null)}
+              disabled={isDeleting}
+            >
+              Cancel
+            </Button>
+            <Button variant="destructive" onClick={handleDeleteConfirm} disabled={isDeleting}>
+              {isDeleting ? 'Deleting...' : 'Delete permanently'}
+            </Button>
+          </Dialog.Footer>
+        </Dialog.Content>
+      </Dialog>
+    </>
   );
 }

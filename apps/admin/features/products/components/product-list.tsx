@@ -2,11 +2,15 @@
 
 import { useState, useMemo } from 'react';
 import { AdminProduct } from '../repositories/product-repo';
-import { duplicateProductAction, updateProductAction } from '../actions/product-actions';
+import {
+  duplicateProductAction,
+  updateProductAction,
+  deleteProductAction,
+} from '../actions/product-actions';
 import { AdminCategory } from '../../categories/repositories/category-repo';
-import { Edit2, Eye, EyeOff, Search, Copy, LayoutTemplate } from 'lucide-react';
+import { Edit2, Eye, EyeOff, Search, Copy, LayoutTemplate, Trash2 } from 'lucide-react';
 import Link from 'next/link';
-import { cn } from '@qbm/ui';
+import { cn, Dialog, Button } from '@qbm/ui';
 
 interface ProductListProps {
   initialProducts: AdminProduct[];
@@ -16,6 +20,10 @@ interface ProductListProps {
 export function ProductList({ initialProducts, categories }: ProductListProps) {
   const [products, setProducts] = useState(initialProducts);
   const [searchQuery, setSearchQuery] = useState('');
+
+  const [productToDelete, setProductToDelete] = useState<AdminProduct | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState('');
 
   // Filters
   const [filterCategory, setFilterCategory] = useState<string>('all');
@@ -114,6 +122,20 @@ export function ProductList({ initialProducts, categories }: ProductListProps) {
     } catch (e) {
       console.error('Failed to toggle visibility', e);
     }
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!productToDelete) return;
+    setIsDeleting(true);
+    setDeleteError('');
+    const result = await deleteProductAction(productToDelete.id);
+    if (result.success) {
+      setProducts(products.filter((p) => p.id !== productToDelete.id));
+      setProductToDelete(null);
+    } else {
+      setDeleteError(result.error || 'Failed to delete product');
+    }
+    setIsDeleting(false);
   };
 
   const formatPrice = (price: number) => {
@@ -314,6 +336,13 @@ export function ProductList({ initialProducts, categories }: ProductListProps) {
                         >
                           <Edit2 className="w-4 h-4" />
                         </Link>
+                        <button
+                          onClick={() => setProductToDelete(product)}
+                          className="p-2 text-rose-500 hover:text-rose-600 bg-rose-50 dark:bg-rose-500/10 hover:bg-rose-100 dark:hover:bg-rose-500/20 rounded-md transition-colors"
+                          title="Delete Product"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
                       </div>
                     </td>
                   </tr>
@@ -413,12 +442,43 @@ export function ProductList({ initialProducts, categories }: ProductListProps) {
                   >
                     <Edit2 className="w-4 h-4" />
                   </Link>
+                  <button
+                    onClick={() => setProductToDelete(product)}
+                    className="flex-1 p-2 flex justify-center items-center text-rose-500 hover:text-rose-600 bg-rose-50 hover:bg-rose-100 dark:bg-rose-500/10 dark:hover:bg-rose-500/20 rounded-md transition-colors"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
                 </div>
               </div>
             ))}
           </div>
         </div>
       )}
+
+      <Dialog open={!!productToDelete} onClose={() => setProductToDelete(null)}>
+        <Dialog.Content>
+          <Dialog.Header>
+            <Dialog.Title>Delete product?</Dialog.Title>
+            <Dialog.Description>
+              You are about to permanently delete '{productToDelete?.name}'. This action cannot be
+              undone.
+            </Dialog.Description>
+          </Dialog.Header>
+          {deleteError && <div className="text-sm text-red-500 mt-2">{deleteError}</div>}
+          <Dialog.Footer className="mt-4">
+            <Button
+              variant="outline"
+              onClick={() => setProductToDelete(null)}
+              disabled={isDeleting}
+            >
+              Cancel
+            </Button>
+            <Button variant="destructive" onClick={handleDeleteConfirm} disabled={isDeleting}>
+              {isDeleting ? 'Deleting...' : 'Delete permanently'}
+            </Button>
+          </Dialog.Footer>
+        </Dialog.Content>
+      </Dialog>
     </div>
   );
 }

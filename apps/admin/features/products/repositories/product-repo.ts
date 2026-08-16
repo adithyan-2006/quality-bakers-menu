@@ -161,4 +161,10 @@ export const ProductRepository = {
       }
     });
   },
+
+  deleteProduct: async (id: string): Promise<void> => {
+    const index = mockProducts.findIndex((p) => p.id === id);
+    if (index === -1) throw new Error('Product not found');
+    mockProducts.splice(index, 1);
+  },
 };

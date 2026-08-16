@@ -151,6 +151,30 @@ export const PrismaCategoryRepository = {
     }
   },
 
+  deleteCategory: async (id: string): Promise<void> => {
+    try {
+      const current = await prisma.category.findUnique({
+        where: { id },
+        include: { _count: { select: { products: true } } },
+      });
+      if (!current) throw new NotFoundError(`Category ${id} not found`);
+
+      if (current._count.products > 0) {
+        throw new Error(
+          'This category contains products. Remove or move those products before deleting the category.',
+        );
+      }
+
+      await prisma.category.delete({ where: { id } });
+      await AuditService.logAction('system', 'DELETE', 'CATEGORY', id, current, null);
+    } catch (error: any) {
+      if (error instanceof NotFoundError || error.message.includes('contains products')) {
+        throw error;
+      }
+      throw new RepositoryError('Failed to delete category', error);
+    }
+  },
+
   updateDisplayOrder: async (items: { id: string; displayOrder: number }[]): Promise<void> => {
     try {
       await prisma.$transaction(

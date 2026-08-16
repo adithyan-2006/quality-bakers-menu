@@ -2,6 +2,7 @@
 
 import { revalidatePath } from 'next/cache';
 import { RepositoryFactory } from '../../../lib/repository-factory';
+import { revalidateCustomerApp } from '../../../lib/revalidate-customer';
 
 export async function getCategoriesAction() {
   return await RepositoryFactory.getCategoryRepository().getCategories();
@@ -27,4 +28,18 @@ export async function updateCategoryDisplayOrderAction(items: any[]) {
   const result = await RepositoryFactory.getCategoryRepository().updateDisplayOrder(items);
   revalidatePath('/categories');
   return result;
+}
+
+export async function deleteCategoryAction(id: string) {
+  try {
+    await RepositoryFactory.getCategoryRepository().deleteCategory(id);
+    revalidatePath('/categories');
+
+    // Cross-app revalidation
+    await revalidateCustomerApp();
+
+    return { success: true };
+  } catch (error: any) {
+    return { success: false, error: error.message };
+  }
 }
