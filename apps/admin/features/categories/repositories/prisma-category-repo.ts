@@ -18,7 +18,7 @@ function mapPrismaCategory(cat: any): AdminCategory {
     isFeatured: cat.isFeatured,
     isVisible: cat.isVisible,
     accentColor: cat.accentColor || '',
-    status: cat.status === 'PUBLISHED' ? 'published' : 'draft',
+    status: cat.status === 'PUBLISHED' ? 'published' : cat.status === 'HIDDEN' ? 'hidden' : 'draft',
     productCount: cat._count?.products || 0,
     createdAt: cat.createdAt?.toISOString() || new Date().toISOString(),
     updatedAt: cat.updatedAt?.toISOString() || new Date().toISOString(),
@@ -76,7 +76,7 @@ export const PrismaCategoryRepository = {
           name: data.name || 'New Category',
           slug: data.slug || `new-category-${Date.now()}`,
           description: data.description || '',
-          coverImageId: data.coverImageId || null,
+          coverImageId: data.coverImageId === '' ? null : data.coverImageId || null,
           theme: data.theme || 'classic',
           layoutType: data.layoutType || 'editorial-grid',
           animationPreset: data.animationPreset || 'fade-up',
@@ -84,7 +84,12 @@ export const PrismaCategoryRepository = {
           isFeatured: data.isFeatured || false,
           isVisible: data.isVisible !== false,
           accentColor: data.accentColor === undefined ? null : data.accentColor,
-          status: data.status === 'published' ? 'PUBLISHED' : 'DRAFT',
+          status:
+            data.status === 'published'
+              ? 'PUBLISHED'
+              : data.status === 'hidden'
+                ? 'HIDDEN'
+                : 'DRAFT',
         },
         include: {
           coverImage: true,
@@ -108,7 +113,7 @@ export const PrismaCategoryRepository = {
         name: data.name,
         slug: data.slug,
         description: data.description,
-        coverImageId: data.coverImageId,
+        coverImageId: data.coverImageId === '' ? null : data.coverImageId,
         theme: data.theme,
         layoutType: data.layoutType,
         animationPreset: data.animationPreset,
@@ -117,7 +122,13 @@ export const PrismaCategoryRepository = {
         isVisible: data.isVisible,
         accentColor: data.accentColor,
         status:
-          data.status === 'published' ? 'PUBLISHED' : data.status === 'draft' ? 'DRAFT' : undefined,
+          data.status === 'published'
+            ? 'PUBLISHED'
+            : data.status === 'hidden'
+              ? 'HIDDEN'
+              : data.status === 'draft'
+                ? 'DRAFT'
+                : undefined,
       };
 
       Object.keys(updateData).forEach(

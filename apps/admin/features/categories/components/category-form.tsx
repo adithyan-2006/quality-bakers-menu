@@ -25,6 +25,9 @@ export function CategoryForm({ initialData }: CategoryFormProps) {
   const [animationPreset, setAnimationPreset] = useState(initialData?.animationPreset || 'fade-up');
   const [isFeatured, setIsFeatured] = useState(initialData?.isFeatured || false);
   const [isVisible, setIsVisible] = useState(initialData?.isVisible ?? true);
+  const [status, setStatus] = useState<'draft' | 'published' | 'hidden'>(
+    initialData?.status || 'draft',
+  );
   const [accentColor, setAccentColor] = useState(initialData?.accentColor || '');
 
   // Handlers
@@ -56,6 +59,7 @@ export function CategoryForm({ initialData }: CategoryFormProps) {
       animationPreset,
       isFeatured,
       isVisible,
+      status,
       accentColor,
     };
 
@@ -241,7 +245,28 @@ export function CategoryForm({ initialData }: CategoryFormProps) {
           Visibility & Placement
         </h3>
 
-        <div className="space-y-4">
+        <div className="grid grid-cols-1 gap-6 mb-6">
+          <div className="space-y-2 max-w-md">
+            <label
+              htmlFor="status"
+              className="block text-sm font-medium text-stone-700 dark:text-stone-300"
+            >
+              Publishing Status
+            </label>
+            <select
+              id="status"
+              value={status}
+              onChange={(e) => setStatus(e.target.value as 'draft' | 'published' | 'hidden')}
+              className="w-full rounded-md border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-950 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-stone-500 dark:focus:ring-stone-400 transition-colors"
+            >
+              <option value="published">Published</option>
+              <option value="draft">Draft</option>
+              <option value="hidden">Hidden</option>
+            </select>
+          </div>
+        </div>
+
+        <div className="space-y-4 pt-6 border-t border-stone-100 dark:border-stone-800">
           <label className="flex items-start gap-3 p-4 border border-stone-200 dark:border-stone-800 rounded-lg cursor-pointer hover:bg-stone-50 dark:hover:bg-stone-800/50 transition-colors">
             <div className="flex items-center h-5">
               <input

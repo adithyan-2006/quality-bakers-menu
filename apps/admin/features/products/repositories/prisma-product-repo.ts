@@ -176,8 +176,8 @@ export const PrismaProductRepository = {
         shortDescription: data.shortDescription,
         longDescription: data.longDescription,
         price: data.price,
-        categoryId: data.categoryId,
-        imageId: data.imageId,
+        categoryId: data.categoryId === '' ? undefined : data.categoryId,
+        imageId: data.imageId === '' ? null : data.imageId,
         badge:
           data.badge === 'signature'
             ? 'SIGNATURE'
