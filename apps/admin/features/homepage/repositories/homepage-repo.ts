@@ -12,8 +12,6 @@ export interface HomepageHero {
 export interface HomepageAbout {
   title: string;
   description: string;
-  image: string;
-  imageId?: string;
 }
 
 export interface HomepageStory {
@@ -60,7 +58,6 @@ let mockHomepage: AdminHomepage = {
     title: 'Our Craft',
     description:
       'Every morning, before the sun rises, our master bakers begin the delicate process of crafting perfect pastries. We source only the finest local ingredients.',
-    image: 'https://images.unsplash.com/photo-1555507036-ab1e4006aaeb?w=1200&h=800&fit=crop',
   },
   story: {
     title: 'A Family Tradition',

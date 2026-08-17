@@ -25,8 +25,6 @@ function mapPrismaHomepage(hp: any): AdminHomepage {
     about: {
       title: hp.aboutTitle || '',
       description: hp.aboutDescription || '',
-      image: hp.aboutImage?.optimizedUrl || hp.aboutImage?.originalUrl || '',
-      imageId: hp.aboutImageId || undefined,
     },
     story: {
       title: hp.storyTitle || '',
@@ -111,7 +109,6 @@ export const PrismaHomepageRepository = {
         if (data.about) {
           updateData.aboutTitle = data.about.title;
           updateData.aboutDescription = data.about.description;
-          updateData.aboutImageId = data.about.imageId === '' ? null : data.about.imageId;
         }
 
         if (data.story) {

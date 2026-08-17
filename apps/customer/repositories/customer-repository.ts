@@ -24,7 +24,6 @@ export class CustomerRepository {
       const hp = await prisma.homepage.findFirst({
         include: {
           heroImage: true,
-          aboutImage: true,
           featuredCategories: {
             orderBy: { displayOrder: 'asc' },
             include: {

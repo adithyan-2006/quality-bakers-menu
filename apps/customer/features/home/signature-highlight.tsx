@@ -3,12 +3,10 @@ import Link from 'next/link';
 import { PageSection } from '../../components/layout/page-section';
 import { ScrollReveal } from '../../components/scroll-reveal';
 import { buttonVariants, cn } from '@qbm/ui';
-import type { Prisma } from '@qbm/database';
 
 interface SignatureHighlightProps {
   title?: string | null;
   description?: string | null;
-  image?: Prisma.MediaGetPayload<Record<string, unknown>> | null;
 }
 
 export function SignatureHighlight({ title, description }: SignatureHighlightProps) {

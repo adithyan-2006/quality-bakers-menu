@@ -126,24 +126,13 @@ export default async function HomepagePreviewPage() {
         {/* About Section */}
         {homepage.about && (
           <section className="py-24 px-4 max-w-7xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-              <div className="rounded-2xl overflow-hidden shadow-xl aspect-square md:aspect-[4/5] bg-stone-100 relative">
-                {homepage.about.image && (
-                  <img
-                    src={homepage.about.image}
-                    alt={homepage.about.title}
-                    className="w-full h-full object-cover"
-                  />
-                )}
-              </div>
-              <div className="space-y-6">
-                <h2 className="text-3xl md:text-5xl font-bold text-stone-900 dark:text-stone-50 tracking-tight">
-                  {homepage.about.title}
-                </h2>
-                <p className="text-lg text-stone-600 dark:text-stone-400 leading-relaxed whitespace-pre-wrap">
-                  {homepage.about.description}
-                </p>
-              </div>
+            <div className="max-w-3xl mx-auto space-y-6 text-center">
+              <h2 className="text-3xl md:text-5xl font-bold text-stone-900 dark:text-stone-50 tracking-tight">
+                {homepage.about.title}
+              </h2>
+              <p className="text-lg text-stone-600 dark:text-stone-400 leading-relaxed whitespace-pre-wrap">
+                {homepage.about.description}
+              </p>
             </div>
           </section>
         )}

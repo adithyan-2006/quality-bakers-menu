@@ -164,16 +164,6 @@ export function HomepageEditor() {
               className="w-full rounded-md border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-950 px-3 py-2 text-sm resize-none"
             />
           </div>
-          <div className="space-y-2 pt-2">
-            <label className="text-sm font-medium">About Image</label>
-            <MediaPicker
-              value={data.about.imageId || ''}
-              onChange={(val) =>
-                setData({ ...data, about: { ...data.about, imageId: val as string } })
-              }
-              multiple={false}
-            />
-          </div>
         </div>
       </CollapsibleSection>
 

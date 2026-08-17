@@ -6,7 +6,7 @@ import { ScrollReveal } from '../../components/scroll-reveal';
 import type { Prisma } from '@qbm/database';
 
 type HomepageWithRelations = Prisma.HomepageGetPayload<{
-  include: { heroImage: true; aboutImage: true };
+  include: { heroImage: true };
 }>;
 
 interface EditorialIntroProps {
