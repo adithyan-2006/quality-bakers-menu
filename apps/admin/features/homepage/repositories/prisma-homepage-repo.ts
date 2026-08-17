@@ -9,12 +9,6 @@ function mapPrismaHomepage(hp: any): AdminHomepage {
   const seasonalSec = sections.find((s: any) => s.type === 'BANNER');
   const promoSec = sections.find((s: any) => s.type === 'PROMOTION');
 
-  // Featured Collections are stored as COLLECTION-type sections with a categoryId
-  const featuredCollections =
-    sections
-      .filter((s: any) => s.type === 'COLLECTION' && s.categoryId)
-      .map((s: any) => s.categoryId) || [];
-
   return {
     id: hp.id,
     hero: {
@@ -25,7 +19,7 @@ function mapPrismaHomepage(hp: any): AdminHomepage {
       ctaText: hp.heroCtaText || '',
       ctaLink: hp.heroCtaLink || '',
     },
-    featuredCollections,
+
     // Featured Categories now use the junction table, we mapped it to return categoryId
     featuredCategories: hp.featuredCategories?.map((fc: any) => fc.categoryId) || [],
     about: {
@@ -146,23 +140,6 @@ export const PrismaHomepageRepository = {
                 homepageId: currentHp.id,
                 categoryId,
                 displayOrder: index,
-              })),
-            });
-          }
-        }
-
-        // 2. Reconcile Featured Collections
-        if (data.featuredCollections) {
-          await tx.homepageSection.deleteMany({
-            where: { homepageId: currentHp.id, type: 'COLLECTION' },
-          });
-          if (data.featuredCollections.length > 0) {
-            await tx.homepageSection.createMany({
-              data: data.featuredCollections.map((categoryId, index) => ({
-                homepageId: currentHp.id,
-                type: 'COLLECTION',
-                categoryId,
-                displayOrder: 10 + index, // Default ordering beyond banners
               })),
             });
           }

@@ -300,6 +300,11 @@ export function ProductList({ initialProducts, categories }: ProductListProps) {
                         >
                           {product.availabilityStatus.replace('-', ' ')}
                         </span>
+                        {product.isFeatured && (
+                          <span className="inline-flex w-fit items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-800 border border-amber-200">
+                            ★ Featured
+                          </span>
+                        )}
                       </div>
                     </td>
                     <td className="px-6 py-4 text-right">
@@ -411,6 +416,11 @@ export function ProductList({ initialProducts, categories }: ProductListProps) {
                   >
                     {product.availabilityStatus.replace('-', ' ')}
                   </span>
+                  {product.isFeatured && (
+                    <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-800 border border-amber-200">
+                      ★ Featured
+                    </span>
+                  )}
                 </div>
 
                 <div className="flex items-center gap-2 pt-2 border-t border-stone-100 dark:border-stone-800">

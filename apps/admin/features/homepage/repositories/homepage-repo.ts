@@ -35,7 +35,6 @@ export interface HomepageBanner {
 export interface AdminHomepage {
   id: string;
   hero: HomepageHero;
-  featuredCollections: string[]; // Category IDs
   featuredCategories: string[]; // Category IDs
   about: HomepageAbout;
   story: HomepageStory;
@@ -56,7 +55,6 @@ let mockHomepage: AdminHomepage = {
     ctaText: 'Explore Menu',
     ctaLink: '/menu',
   },
-  featuredCollections: ['cat_1', 'cat_2'], // Mock IDs
   featuredCategories: ['cat_3', 'cat_4', 'cat_5'], // Mock IDs
   about: {
     title: 'Our Craft',

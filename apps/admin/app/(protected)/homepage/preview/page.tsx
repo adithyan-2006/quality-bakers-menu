@@ -8,11 +8,6 @@ export default async function HomepagePreviewPage() {
   const homepage = await getHomepageAction();
   const allCategories = await getCategoriesAction();
 
-  const featuredCollections = homepage.featuredCollections
-    .map((id) => allCategories.find((c) => c.id === id))
-    .filter(
-      Boolean,
-    ) as import('../../../../features/categories/repositories/category-repo').AdminCategory[];
   const featuredCategories = homepage.featuredCategories
     .map((id) => allCategories.find((c) => c.id === id))
     .filter(
@@ -98,37 +93,6 @@ export default async function HomepagePreviewPage() {
             )}
           </div>
         </div>
-
-        {/* Featured Collections */}
-        {featuredCollections.length > 0 && (
-          <section className="py-24 px-4 max-w-7xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold text-center mb-16 text-stone-900 dark:text-stone-50">
-              Featured Collections
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
-              {featuredCollections.map(
-                (
-                  cat: import('../../../../features/categories/repositories/category-repo').AdminCategory,
-                ) => (
-                  <div
-                    key={cat.id}
-                    className="group cursor-pointer relative overflow-hidden rounded-2xl aspect-[4/3] bg-stone-100"
-                  >
-                    <img
-                      src={cat.coverImage}
-                      alt={cat.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-8 md:p-12">
-                      <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">{cat.name}</h3>
-                      <p className="text-stone-200 line-clamp-2 max-w-md">{cat.description}</p>
-                    </div>
-                  </div>
-                ),
-              )}
-            </div>
-          </section>
-        )}
 
         {/* Featured Categories (Grid) */}
         {featuredCategories.length > 0 && (

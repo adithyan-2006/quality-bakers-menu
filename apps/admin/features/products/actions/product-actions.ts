@@ -26,6 +26,10 @@ export async function updateProductAction(
 ): Promise<AdminProduct> {
   const result = await RepositoryFactory.getProductRepository().updateProduct(id, data);
   revalidatePath('/products');
+
+  // Cross-app revalidation
+  await revalidateCustomerApp();
+
   return result;
 }
 

@@ -129,17 +129,6 @@ export function HomepageEditor() {
         </div>
       </CollapsibleSection>
 
-      {/* Featured Collections */}
-      <CollapsibleSection title="Featured Collections">
-        <p className="text-sm text-stone-500 mb-4">
-          Select and order categories that will appear as large visual collections.
-        </p>
-        <SortableCategoryList
-          items={data.featuredCollections}
-          onChange={(items) => setData({ ...data, featuredCollections: items })}
-        />
-      </CollapsibleSection>
-
       {/* Featured Categories */}
       <CollapsibleSection title="Featured Categories">
         <p className="text-sm text-stone-500 mb-4">

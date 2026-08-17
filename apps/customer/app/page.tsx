@@ -36,6 +36,7 @@ export default async function HomePage() {
         businessName={business?.name || 'Quality Bakers'}
         logoUrl={business?.logo?.secureUrl || business?.logo?.originalUrl}
       />
+      {/* Explore Collections UI */}
       <FeaturedCategories categories={homepage.featuredCategories} />
       <PopularPreview products={popularProducts} />
       <SignatureHighlight

@@ -21,6 +21,10 @@ export async function createCategoryAction(data: any) {
 export async function updateCategoryAction(id: string, data: any) {
   const result = await RepositoryFactory.getCategoryRepository().updateCategory(id, data);
   revalidatePath('/categories');
+
+  // Cross-app revalidation
+  await revalidateCustomerApp();
+
   return result;
 }
 

@@ -43,7 +43,7 @@ export class CustomerRepository {
 
       // Create a mapped object that overrides the featuredCategories type
       // while preserving all other Prisma Homepage fields for EditorialIntro.
-      const result: Omit<typeof hp, 'featuredCategories'> & {
+      const result: Omit<typeof hp, 'featuredCategories' | 'sections'> & {
         featuredCategories: typeof mappedCategories;
       } = {
         ...hp,
@@ -75,24 +75,6 @@ export class CustomerRepository {
         orderBy: { updatedAt: 'desc' },
         include: { image: true, category: true },
       });
-
-      // 2. If we have fewer than 4, fill the remaining slots
-      if (featuredProducts.length < 4) {
-        const remainingLimit = 4 - featuredProducts.length;
-        const featuredIds = featuredProducts.map((p) => p.id);
-
-        const newestProducts = await prisma.product.findMany({
-          where: {
-            status: 'PUBLISHED',
-            id: { notIn: featuredIds },
-          },
-          take: remainingLimit,
-          orderBy: { createdAt: 'desc' },
-          include: { image: true, category: true },
-        });
-
-        return [...featuredProducts, ...newestProducts];
-      }
 
       return featuredProducts;
     } catch (error) {
