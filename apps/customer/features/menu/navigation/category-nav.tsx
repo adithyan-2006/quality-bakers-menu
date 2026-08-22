@@ -138,14 +138,43 @@ export function CategoryNav({ categories }: CategoryNavProps) {
     return () => window.removeEventListener('resize', handleResize);
   }, [activeSlug]);
 
-  const scrollToCategory = (slug: string) => {
+  const scrollToCategory = React.useCallback((slug: string) => {
     const section = document.getElementById(slug);
     if (section) {
       const offset = 80; // Account for header height
       const top = section.getBoundingClientRect().top + window.scrollY - offset;
       window.scrollTo({ top, behavior: 'smooth' });
     }
-  };
+  }, []);
+
+  // Handle cross-page hash navigation (Next.js App Router bug mitigation)
+  React.useEffect(() => {
+    const hash = window.location.hash;
+    if (!hash) return; // Do nothing if there's no hash
+
+    const slug = hash.replace('#', '');
+    let attempts = 0;
+    const maxAttempts = 30; // Bound retries to ~500ms
+
+    const tryScroll = () => {
+      const section = document.getElementById(slug);
+      if (section) {
+        isClickInitiated.current = true;
+        setActiveSlug(slug);
+
+        // Give the browser one final frame to compute layout
+        requestAnimationFrame(() => {
+          scrollToCategory(slug);
+        });
+      } else if (attempts < maxAttempts) {
+        attempts++;
+        requestAnimationFrame(tryScroll);
+      }
+    };
+
+    // Wait for the first paint before starting to check
+    requestAnimationFrame(tryScroll);
+  }, [scrollToCategory]);
 
   return (
     <nav

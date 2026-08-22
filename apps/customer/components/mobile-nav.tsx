@@ -48,7 +48,10 @@ export function MobileNav() {
             </Link>
             <Link
               href="/categories"
-              onClick={close}
+              onClick={() => {
+                close();
+                window.scrollTo({ top: 0, behavior: 'instant' });
+              }}
               className="hover:text-primary transition-colors"
             >
               Menu
