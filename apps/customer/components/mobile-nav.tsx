@@ -23,7 +23,7 @@ export function MobileNav() {
 
       <dialog
         ref={dialogRef}
-        onClick={(e) => {
+        onClick={() => {
           if (e.target === dialogRef.current) close();
         }}
         className="backdrop:bg-black/60 m-0 h-full max-h-none w-[85vw] max-w-sm bg-background p-0 text-foreground shadow-2xl open:animate-in open:slide-in-from-left-4 closed:animate-out closed:slide-out-to-left-4"
@@ -48,7 +48,10 @@ export function MobileNav() {
             </Link>
             <Link
               href="/categories"
-              onClick={close}
+              onClick={() => {
+                close();
+                window.scrollTo({ top: 0, behavior: 'instant' });
+              }}
               className="hover:text-primary transition-colors"
             >
               Menu

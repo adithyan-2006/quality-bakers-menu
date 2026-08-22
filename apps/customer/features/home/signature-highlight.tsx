@@ -1,9 +1,9 @@
 import * as React from 'react';
-import Link from 'next/link';
 import { PageSection } from '../../components/layout/page-section';
 import { ScrollReveal } from '../../components/scroll-reveal';
 import { buttonVariants, cn } from '@qbm/ui';
 import type { Prisma } from '@qbm/database';
+import { TopScrollLink } from '../../components/top-scroll-link';
 
 interface SignatureHighlightProps {
   title?: string | null;
@@ -39,7 +39,7 @@ export function SignatureHighlight({ title, description }: SignatureHighlightPro
         </ScrollReveal>
 
         <ScrollReveal animation="fade-up" delayMs={450}>
-          <Link
+          <TopScrollLink
             href="/categories"
             className={cn(
               buttonVariants({ variant: 'outline', size: 'lg' }),
@@ -47,7 +47,7 @@ export function SignatureHighlight({ title, description }: SignatureHighlightPro
             )}
           >
             Explore Menu
-          </Link>
+          </TopScrollLink>
         </ScrollReveal>
       </div>
     </PageSection>

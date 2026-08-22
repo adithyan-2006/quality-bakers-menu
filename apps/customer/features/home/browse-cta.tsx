@@ -1,8 +1,8 @@
 import * as React from 'react';
-import Link from 'next/link';
 import { PageSection } from '../../components/layout/page-section';
 import { ScrollReveal } from '../../components/scroll-reveal';
 import { buttonVariants, cn } from '@qbm/ui';
+import { TopScrollLink } from '../../components/top-scroll-link';
 
 export function BrowseCta() {
   return (
@@ -21,7 +21,7 @@ export function BrowseCta() {
       </ScrollReveal>
 
       <ScrollReveal animation="scale-up" delayMs={300}>
-        <Link
+        <TopScrollLink
           href="/categories"
           className={cn(
             buttonVariants({ variant: 'primary', size: 'lg' }),
@@ -29,7 +29,7 @@ export function BrowseCta() {
           )}
         >
           View Complete Menu
-        </Link>
+        </TopScrollLink>
       </ScrollReveal>
     </PageSection>
   );

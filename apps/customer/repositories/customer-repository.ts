@@ -26,6 +26,12 @@ export class CustomerRepository {
           heroImage: true,
           aboutImage: true,
           featuredCategories: {
+            where: {
+              category: {
+                status: 'PUBLISHED',
+                isVisible: true,
+              },
+            },
             orderBy: { displayOrder: 'asc' },
             include: {
               category: {
