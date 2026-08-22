@@ -23,7 +23,7 @@ export function MobileNav() {
 
       <dialog
         ref={dialogRef}
-        onClick={() => {
+        onClick={(e) => {
           if (e.target === dialogRef.current) close();
         }}
         className="backdrop:bg-black/60 m-0 h-full max-h-none w-[85vw] max-w-sm bg-background p-0 text-foreground shadow-2xl open:animate-in open:slide-in-from-left-4 closed:animate-out closed:slide-out-to-left-4"
