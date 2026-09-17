@@ -32,6 +32,8 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
   const [galleryIds, setGalleryIds] = useState<string[]>(initialData?.galleryIds || []);
   const [badge, setBadge] = useState<BadgeType>(initialData?.badge || 'none');
   const [isFeatured, setIsFeatured] = useState(initialData?.isFeatured || false);
+  const [isSignature, setIsSignature] = useState(initialData?.isSignature || false);
+  const [signatureOrder, setSignatureOrder] = useState<number>(initialData?.signatureOrder || 1);
   const [isVisible, setIsVisible] = useState(initialData?.isVisible ?? true);
   const [availabilityStatus, setAvailabilityStatus] = useState<AvailabilityStatus>(
     initialData?.availabilityStatus || 'available',
@@ -77,6 +79,8 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
       galleryIds,
       badge,
       isFeatured,
+      isSignature,
+      signatureOrder: isSignature ? signatureOrder : null,
       isVisible,
       availabilityStatus,
       status,
@@ -323,6 +327,44 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
               </span>
             </div>
           </label>
+
+          <div className="flex flex-col gap-4 p-4 border border-stone-200 dark:border-stone-800 rounded-lg">
+            <label className="flex items-start gap-3 cursor-pointer">
+              <div className="flex items-center h-5">
+                <input
+                  type="checkbox"
+                  checked={isSignature}
+                  onChange={(e) => setIsSignature(e.target.checked)}
+                  className="w-4 h-4 rounded border-stone-300 text-stone-900 focus:ring-stone-900"
+                />
+              </div>
+              <div className="flex flex-col">
+                <span className="text-sm font-medium text-stone-900 dark:text-stone-50">
+                  Is Signature Product
+                </span>
+                <span className="text-sm text-stone-500">
+                  Feature this product in the homepage Signature Showcase.
+                </span>
+              </div>
+            </label>
+
+            {isSignature && (
+              <div className="ml-7 pt-2 border-t border-stone-100 dark:border-stone-800">
+                <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-2">
+                  Signature Display Order
+                </label>
+                <input
+                  type="number"
+                  min="1"
+                  step="1"
+                  required
+                  value={signatureOrder}
+                  onChange={(e) => setSignatureOrder(parseInt(e.target.value) || 1)}
+                  className="w-32 rounded-md border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-950 px-3 py-2 text-sm placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-stone-500"
+                />
+              </div>
+            )}
+          </div>
         </div>
       </div>
 

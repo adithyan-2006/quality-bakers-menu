@@ -5,7 +5,7 @@ import { cn } from '@qbm/ui';
 
 interface ScrollRevealProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
-  animation?: 'fade-up' | 'fade-in' | 'scale-up';
+  animation?: 'fade-up' | 'fade-in' | 'scale-up' | 'card' | 'heading' | 'description';
   delayMs?: number;
 }
 
@@ -14,56 +14,64 @@ export function ScrollReveal({
   className,
   animation = 'fade-up',
   delayMs = 0,
+  style,
   ...props
 }: ScrollRevealProps) {
   const ref = React.useRef<HTMLDivElement>(null);
-  const [isVisible, setIsVisible] = React.useState(false);
+
+  // Synchronously check prefers-reduced-motion to avoid flash of hidden content
+  const prefersReduced =
+    typeof window !== 'undefined'
+      ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      : false;
+
+  const [isVisible, setIsVisible] = React.useState(prefersReduced);
 
   React.useEffect(() => {
-    // Respect user's motion preferences
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      // eslint-disable-next-line
-      setIsVisible(true);
-      return;
-    }
+    if (isVisible) return;
 
     const currentRef = ref.current;
+    if (!currentRef) return;
+
     const observer = new IntersectionObserver(
       (entries) => {
         const entry = entries[0];
         if (entry?.isIntersecting) {
           setIsVisible(true);
-          if (currentRef) observer.unobserve(currentRef);
+          observer.unobserve(currentRef);
         }
       },
-      { threshold: 0.15, rootMargin: '50px' },
+      { threshold: 0.1, rootMargin: '60px 0px' },
     );
 
-    if (currentRef) {
-      observer.observe(currentRef);
-    }
+    observer.observe(currentRef);
 
     return () => {
-      if (currentRef) observer.unobserve(currentRef);
+      observer.unobserve(currentRef);
     };
-  }, []);
+  }, [isVisible]);
 
-  const animationClasses = {
-    'fade-up':
-      'animate-in fade-in slide-in-from-bottom-12 duration-1000 ease-out fill-mode-forwards',
-    'fade-in': 'animate-in fade-in duration-1000 ease-out fill-mode-forwards',
-    'scale-up': 'animate-in fade-in zoom-in-[0.98] duration-1000 ease-out fill-mode-forwards',
-  };
+  const animationClass =
+    animation === 'card'
+      ? 'reveal-card'
+      : animation === 'heading'
+        ? 'reveal-heading'
+        : animation === 'description'
+          ? 'reveal-description'
+          : animation === 'fade-in'
+            ? 'reveal-fade-in'
+            : animation === 'scale-up'
+              ? 'reveal-scale-up'
+              : 'reveal-fade-up';
 
   return (
     <div
       ref={ref}
-      className={cn(
-        'will-change-transform motion-reduce:will-change-auto',
-        !isVisible ? 'opacity-0' : animationClasses[animation],
-        className,
-      )}
-      style={{ animationDelay: isVisible ? `${delayMs}ms` : '0ms' }}
+      className={cn(animationClass, isVisible && 'is-revealed', className)}
+      style={{
+        transitionDelay: isVisible && delayMs > 0 && !prefersReduced ? `${delayMs}ms` : undefined,
+        ...style,
+      }}
       {...props}
     >
       {children}

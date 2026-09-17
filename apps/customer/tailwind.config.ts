@@ -48,11 +48,31 @@ const config: Config = {
         border: 'var(--border)',
         input: 'var(--input)',
         ring: 'var(--ring)',
+        brand: {
+          dark: '#080808',
+          cream: '#F4EBDD',
+          'warm-cream': '#F3E7D3',
+          'deep-cream': '#E8D8BE',
+          red: '#B92B1F',
+          'deep-brick': '#8F211B',
+          'brick-red': '#B52A20',
+          'warm-red': '#C93627',
+          'dark-red': '#741A16',
+        },
       },
       borderRadius: {
         lg: 'var(--radius-lg)',
         md: 'var(--radius-md)',
         sm: 'var(--radius-sm)',
+      },
+      keyframes: {
+        marquee: {
+          '0%': { transform: 'translateX(-50%)' },
+          '100%': { transform: 'translateX(0%)' },
+        },
+      },
+      animation: {
+        marquee: 'marquee 45s linear infinite',
       },
     },
   },

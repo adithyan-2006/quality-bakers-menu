@@ -1,19 +1,43 @@
+'use client';
+
+import * as React from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+
+import { scrollToSection } from './scroll-to-section';
 
 export function Navigation() {
+  const pathname = usePathname();
+
+  const handleScroll = (id: string) => (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (pathname === '/') {
+      e.preventDefault();
+      scrollToSection(id);
+    }
+  };
+
   return (
-    <nav className="flex items-center space-x-6 text-sm font-medium">
+    <nav className="flex items-center space-x-8 text-sm font-medium uppercase tracking-wider">
       <Link
-        href="/categories"
-        className="transition-colors hover:text-foreground/80 text-foreground/60"
+        href="/#home"
+        onClick={handleScroll('home')}
+        className="transition-colors text-[#FDFADB]/70 hover:text-[#FDFADB]"
       >
-        Menu
+        Home
       </Link>
       <Link
-        href="/search"
-        className="transition-colors hover:text-foreground/80 text-foreground/60"
+        href="/#signature"
+        onClick={handleScroll('signature')}
+        className="transition-colors text-[#FDFADB]/70 hover:text-[#FDFADB]"
       >
-        Search
+        Signature
+      </Link>
+      <Link
+        href="/#about"
+        onClick={handleScroll('about')}
+        className="transition-colors text-[#FDFADB]/70 hover:text-[#FDFADB]"
+      >
+        About
       </Link>
     </nav>
   );

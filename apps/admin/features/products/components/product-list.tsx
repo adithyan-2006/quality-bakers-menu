@@ -29,7 +29,7 @@ export function ProductList({ initialProducts, categories }: ProductListProps) {
   const [filterCategory, setFilterCategory] = useState<string>('all');
   const [filterStatus, setFilterStatus] = useState<string>('all');
   const [filterAvailability, setFilterAvailability] = useState<string>('all');
-  const [filterFeatured] = useState<string>('all');
+  const [filterHighlight, setFilterHighlight] = useState<string>('all');
 
   // Sort
   const [sortBy, setSortBy] = useState<'newest' | 'oldest' | 'price' | 'alphabetical'>('newest');
@@ -68,9 +68,12 @@ export function ProductList({ initialProducts, categories }: ProductListProps) {
     if (filterAvailability !== 'all') {
       result = result.filter((p) => p.availabilityStatus === filterAvailability);
     }
-    if (filterFeatured !== 'all') {
-      const isFeatured = filterFeatured === 'featured';
-      result = result.filter((p) => p.isFeatured === isFeatured);
+    if (filterHighlight !== 'all') {
+      if (filterHighlight === 'featured') {
+        result = result.filter((p) => p.isFeatured);
+      } else if (filterHighlight === 'signature') {
+        result = result.filter((p) => p.isSignature);
+      }
     }
 
     // Sort
@@ -96,7 +99,7 @@ export function ProductList({ initialProducts, categories }: ProductListProps) {
     filterCategory,
     filterStatus,
     filterAvailability,
-    filterFeatured,
+    filterHighlight,
     sortBy,
     categoryMap,
   ]);
@@ -191,6 +194,15 @@ export function ProductList({ initialProducts, categories }: ProductListProps) {
             <option value="available">Available</option>
             <option value="out-of-stock">Out of Stock</option>
             <option value="seasonal">Seasonal</option>
+          </select>
+          <select
+            className="px-3 py-2 text-sm rounded-lg border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-stone-950 text-stone-700 dark:text-stone-300 focus:outline-none focus:ring-2 focus:ring-stone-500"
+            value={filterHighlight}
+            onChange={(e) => setFilterHighlight(e.target.value)}
+          >
+            <option value="all">All Highlights</option>
+            <option value="featured">Featured</option>
+            <option value="signature">Signature</option>
           </select>
           <select
             className="px-3 py-2 text-sm rounded-lg border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-stone-950 text-stone-700 dark:text-stone-300 focus:outline-none focus:ring-2 focus:ring-stone-500"
@@ -303,6 +315,11 @@ export function ProductList({ initialProducts, categories }: ProductListProps) {
                         {product.isFeatured && (
                           <span className="inline-flex w-fit items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-800 border border-amber-200">
                             ★ Featured
+                          </span>
+                        )}
+                        {product.isSignature && (
+                          <span className="inline-flex w-fit items-center px-2 py-0.5 rounded text-xs font-medium bg-rose-100 text-rose-800 border border-rose-200">
+                            ✦ Signature
                           </span>
                         )}
                       </div>
@@ -419,6 +436,11 @@ export function ProductList({ initialProducts, categories }: ProductListProps) {
                   {product.isFeatured && (
                     <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-800 border border-amber-200">
                       ★ Featured
+                    </span>
+                  )}
+                  {product.isSignature && (
+                    <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-rose-100 text-rose-800 border border-rose-200">
+                      ✦ Signature
                     </span>
                   )}
                 </div>

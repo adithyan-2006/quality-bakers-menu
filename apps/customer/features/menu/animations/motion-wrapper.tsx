@@ -6,86 +6,98 @@ import type { AnimationConfig } from '../types';
 
 interface MotionWrapperProps {
   children: React.ReactNode;
-  config: AnimationConfig;
-  /** Stagger index — only relevant if config.isStaggered is true */
+  config?: AnimationConfig;
+  /** Stagger index — used to calculate non-accumulating row stagger */
   index?: number;
   className?: string;
+  variant?: 'card' | 'heading' | 'description';
+  delayMs?: number;
 }
 
 /**
  * Motion Wrapper — Client Component
  *
- * The ONLY client component responsible for Level 1 CSS animations.
- * Uses IntersectionObserver to trigger hardware-accelerated CSS classes.
+ * Provides high-performance, GPU-accelerated reveal animations:
+ * - 'card': Premium vertical rise + subtle scale reveal with non-accumulating stagger
+ * - 'heading': Editorial vertical rise when entering viewport
+ * - 'description': Editorial vertical rise with controlled delay after heading
  *
- * Receives AnimationConfig (resolved by AnimationEngine on the server).
- * Has no knowledge of categories, layouts, or themes.
- *
- * Respects prefers-reduced-motion: if enabled, renders children
- * immediately without animation.
- *
- * Level 2 (immersive scroll effects) are NOT implemented here.
- * They will live in isolated, dynamically imported section components
- * (next/dynamic) that never affect this component or the main bundle.
+ * Uses IntersectionObserver to trigger hardware-accelerated CSS transitions.
+ * Disconnects observer once revealed to guarantee no repeated animation bugs.
+ * Respects prefers-reduced-motion synchronously.
  */
-export function MotionWrapper({ children, config, index = 0, className }: MotionWrapperProps) {
+export function MotionWrapper({
+  children,
+  config: _config,
+  index = 0,
+  className,
+  variant = 'card',
+  delayMs,
+}: MotionWrapperProps) {
   const ref = React.useRef<HTMLDivElement>(null);
 
-  // FIX 4: Read prefers-reduced-motion synchronously before first render.
-  // Previously this was read inside useEffect, which fires after the first
-  // paint — causing reduced-motion users to see a brief invisible frame.
-  // We initialize state from the media query directly so the first render
-  // is already correct. The typeof guard makes this SSR-safe.
+  // Synchronously check prefers-reduced-motion to avoid flash of hidden content
   const prefersReduced =
     typeof window !== 'undefined'
       ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
       : false;
 
-  // isVisible starts true for reduced-motion users (no animation needed)
-  // and false for normal users (will be set true by IntersectionObserver)
-  const [isVisible, setIsVisible] = React.useState(prefersReduced || config.enterClass === '');
+  const [isVisible, setIsVisible] = React.useState(prefersReduced);
 
   React.useEffect(() => {
-    // Already visible — skip observer entirely
     if (isVisible) return;
 
     const el = ref.current;
+    if (!el) return;
+
     const observer = new IntersectionObserver(
       (entries) => {
         const entry = entries[0];
         if (entry?.isIntersecting) {
           setIsVisible(true);
-          if (el) observer.unobserve(el);
+          observer.unobserve(el);
         }
       },
-      { threshold: 0.1, rootMargin: '80px 0px' },
+      { threshold: 0.1, rootMargin: '60px 0px' },
     );
 
-    if (el) observer.observe(el);
-    return () => {
-      if (el) observer.unobserve(el);
-    };
-    // isVisible intentionally excluded from deps — we only want to run once on mount
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    observer.observe(el);
 
-  const delayMs = config.isStaggered && !prefersReduced ? index * config.staggerDelayMs : 0;
+    return () => {
+      observer.unobserve(el);
+    };
+  }, [isVisible]);
+
+  // Determine animation style class
+  const animationClass =
+    variant === 'heading'
+      ? 'reveal-heading'
+      : variant === 'description'
+        ? 'reveal-description'
+        : 'reveal-card';
+
+  // Calculate stagger delay:
+  // For cards: (index % 4) * 70ms (0ms, 70ms, 140ms, 210ms) - never accumulates indefinitely.
+  // For explicit delayMs: use delayMs.
+  // For heading: 0ms.
+  // For description: default 120ms (~100-150ms after heading).
+  const resolvedDelay =
+    delayMs !== undefined
+      ? delayMs
+      : variant === 'description'
+        ? 120
+        : variant === 'heading'
+          ? 0
+          : (index % 4) * 70;
 
   return (
     <div
       ref={ref}
-      className={cn(
-        'will-change-transform motion-reduce:will-change-auto',
-        // Hidden before visible (only for users with animations enabled)
-        !isVisible ? 'opacity-0' : '',
-        // Apply enter animation once visible (skipped for reduced-motion users)
-        isVisible && !prefersReduced && config.enterClass ? config.enterClass : '',
-        // Ensure opacity is fully restored when visible
-        isVisible ? 'opacity-100' : '',
-        className,
-      )}
+      className={cn(animationClass, isVisible && 'is-revealed', className)}
       style={
-        delayMs > 0 ? { animationDelay: `${delayMs}ms`, animationFillMode: 'forwards' } : undefined
+        resolvedDelay > 0 && !prefersReduced
+          ? { transitionDelay: isVisible ? `${resolvedDelay}ms` : '0ms' }
+          : undefined
       }
     >
       {children}

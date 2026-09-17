@@ -4,67 +4,69 @@
 
 @layer base {
   :root {
-    --background: #ffffff;
-    --foreground: #09090b;
+    /* Premium Bakery Theme - Dark Mode Default */
+    --background: #080808;
+    --foreground: #f4ebdd;
 
-    --primary: #f97316;
-    --primary-foreground: #fafafa;
+    --primary: #b92b1f;
+    --primary-foreground: #f4ebdd;
 
-    --secondary: #f4f4f5;
-    --secondary-foreground: #18181b;
+    --secondary: #e8d8be;
+    --secondary-foreground: #080808;
 
-    --destructive: #ef4444;
-    --destructive-foreground: #fafafa;
+    --destructive: #8f211b;
+    --destructive-foreground: #f4ebdd;
 
-    --muted: #f4f4f5;
-    --muted-foreground: #71717a;
+    --muted: #1a1a1a;
+    --muted-foreground: #b8aea3;
 
-    --accent: #f4f4f5;
-    --accent-foreground: #18181b;
+    --accent: #b52a20;
+    --accent-foreground: #f4ebdd;
 
-    --card: #ffffff;
-    --card-foreground: #09090b;
+    --card: #f3e7d3;
+    --card-foreground: #080808;
 
-    --popover: #ffffff;
-    --popover-foreground: #09090b;
+    --popover: #080808;
+    --popover-foreground: #f4ebdd;
 
-    --border: #e4e4e7;
-    --input: #e4e4e7;
-    --ring: #f97316;
+    --border: #2a2a2a;
+    --input: #2a2a2a;
+    --ring: #b52a20;
 
-    --radius-lg: 0.5rem;
-    --radius-md: 0.375rem;
-    --radius-sm: 0.125rem;
+    --radius-lg: 0.75rem;
+    --radius-md: 0.5rem;
+    --radius-sm: 0.25rem;
   }
 
+  /* We force the dark editorial theme everywhere for customer site */
   .dark {
-    --background: #09090b;
-    --foreground: #fafafa;
+    --background: #080808;
+    --foreground: #f4ebdd;
 
-    --primary: #f97316;
-    --primary-foreground: #fafafa;
+    --primary: #b92b1f;
+    --primary-foreground: #f4ebdd;
 
-    --secondary: #27272a;
-    --secondary-foreground: #fafafa;
+    --secondary: #e8d8be;
+    --secondary-foreground: #080808;
 
-    --destructive: #7f1d1d;
-    --destructive-foreground: #fafafa;
+    --destructive: #8f211b;
+    --destructive-foreground: #f4ebdd;
 
-    --muted: #27272a;
-    --muted-foreground: #a1a1aa;
+    --muted: #1a1a1a;
+    --muted-foreground: #b8aea3;
 
-    --accent: #27272a;
-    --accent-foreground: #fafafa;
+    --accent: #b52a20;
+    --accent-foreground: #f4ebdd;
 
-    --card: #09090b;
-    --card-foreground: #fafafa;
+    --card: #f3e7d3;
+    --card-foreground: #080808;
 
-    --popover: #09090b;
-    --popover-foreground: #fafafa;
+    --popover: #080808;
+    --popover-foreground: #f4ebdd;
 
-    --border: #27272a;
-    --input: #27272a;
-    --ring: #f97316;
+    --border: #2a2a2a;
+    --input: #2a2a2a;
+    --ring: #b52a20;
   }
 }
 
@@ -85,5 +87,358 @@
   }
   .scrollbar-none::-webkit-scrollbar {
     display: none; /* Chrome/Safari */
+  }
+
+  @keyframes marquee-ltr {
+    0% {
+      transform: translateX(-50%);
+    }
+    100% {
+      transform: translateX(0%);
+    }
+  }
+
+  .animate-marquee {
+    animation: marquee-ltr 45s linear infinite;
+  }
+
+  /* ─── Premium Editorial Reveal Animations ───────────────────────────────── */
+
+  /* Card reveal: subtle vertical rise + scale-up */
+  .reveal-card {
+    opacity: 0;
+    transform: translateY(35px) scale(0.97);
+    transition:
+      opacity 700ms cubic-bezier(0.16, 1, 0.3, 1),
+      transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+  }
+
+  .reveal-card.is-revealed {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  /* Category Heading reveal: editorial vertical rise */
+  .reveal-heading {
+    opacity: 0;
+    transform: translateY(20px);
+    transition:
+      opacity 600ms cubic-bezier(0.16, 1, 0.3, 1),
+      transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+  }
+
+  .reveal-heading.is-revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Category Description reveal: follows heading with slight delay */
+  .reveal-description {
+    opacity: 0;
+    transform: translateY(20px);
+    transition:
+      opacity 600ms cubic-bezier(0.16, 1, 0.3, 1),
+      transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+  }
+
+  .reveal-description.is-revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Fade-up reveal */
+  .reveal-fade-up {
+    opacity: 0;
+    transform: translateY(24px);
+    transition:
+      opacity 700ms cubic-bezier(0.16, 1, 0.3, 1),
+      transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+  }
+
+  .reveal-fade-up.is-revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Fade-in reveal */
+  .reveal-fade-in {
+    opacity: 0;
+    transition: opacity 700ms cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity;
+  }
+
+  .reveal-fade-in.is-revealed {
+    opacity: 1;
+  }
+
+  /* Scale-up reveal */
+  .reveal-scale-up {
+    opacity: 0;
+    transform: scale(0.97);
+    transition:
+      opacity 700ms cubic-bezier(0.16, 1, 0.3, 1),
+      transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+  }
+
+  .reveal-scale-up.is-revealed {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  /* Respect prefers-reduced-motion: disable all transitions and keep fully visible */
+  @media (prefers-reduced-motion: reduce) {
+    .reveal-card,
+    .reveal-heading,
+    .reveal-description,
+    .reveal-fade-up,
+    .reveal-fade-in,
+    .reveal-scale-up {
+      opacity: 1 !important;
+      transform: none !important;
+      transition: none !important;
+      will-change: auto !important;
+    }
+  }
+
+  @media (scripting: none) {
+    .reveal-card,
+    .reveal-heading,
+    .reveal-description,
+    .reveal-fade-up,
+    .reveal-fade-in,
+    .reveal-scale-up {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
+
+  /* ─── Like Button Micro-Interactions ────────────────────────────────────── */
+  @keyframes like-heart-pop {
+    0% {
+      transform: scale(1);
+    }
+    18% {
+      transform: scale(0.82);
+    }
+    48% {
+      transform: scale(1.22);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  @keyframes like-heart-unpop {
+    0% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: scale(0.85);
+      opacity: 0.5;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  @keyframes float-heart-1 {
+    0% {
+      opacity: 1;
+      transform: translate(0, 0) scale(0.6);
+    }
+    25% {
+      opacity: 1;
+      transform: translate(-5px, -12px) scale(1);
+    }
+    65% {
+      opacity: 0.7;
+      transform: translate(-12px, -28px) scale(0.85);
+    }
+    100% {
+      opacity: 0;
+      transform: translate(-18px, -42px) scale(0.4);
+    }
+  }
+
+  @keyframes float-heart-2 {
+    0% {
+      opacity: 1;
+      transform: translate(0, 0) scale(0.6);
+    }
+    25% {
+      opacity: 1;
+      transform: translate(-1px, -16px) scale(1.05);
+    }
+    65% {
+      opacity: 0.75;
+      transform: translate(-2px, -34px) scale(0.9);
+    }
+    100% {
+      opacity: 0;
+      transform: translate(-3px, -50px) scale(0.45);
+    }
+  }
+
+  @keyframes float-heart-3 {
+    0% {
+      opacity: 1;
+      transform: translate(0, 0) scale(0.6);
+    }
+    25% {
+      opacity: 1;
+      transform: translate(5px, -14px) scale(1);
+    }
+    65% {
+      opacity: 0.7;
+      transform: translate(12px, -30px) scale(0.85);
+    }
+    100% {
+      opacity: 0;
+      transform: translate(18px, -44px) scale(0.4);
+    }
+  }
+
+  @keyframes float-heart-4 {
+    0% {
+      opacity: 1;
+      transform: translate(0, 0) scale(0.55);
+    }
+    30% {
+      opacity: 1;
+      transform: translate(2px, -18px) scale(1.02);
+    }
+    65% {
+      opacity: 0.7;
+      transform: translate(6px, -38px) scale(0.85);
+    }
+    100% {
+      opacity: 0;
+      transform: translate(10px, -54px) scale(0.35);
+    }
+  }
+
+  @keyframes heart-break-left {
+    0% {
+      opacity: 1;
+      transform: scale(1) translate(0, 0) rotate(0deg);
+    }
+    12% {
+      /* 1. Briefly compress */
+      opacity: 1;
+      transform: scale(0.92, 0.84) translate(0, 1px) rotate(0deg);
+    }
+    30% {
+      /* 2. Crack emerges: move slightly left & down, rotate counter-clockwise */
+      opacity: 1;
+      transform: scale(0.96) translate(-2.5px, 2px) rotate(-6deg);
+    }
+    65% {
+      /* 3. Natural 💔 separation */
+      opacity: 0.85;
+      transform: scale(0.92) translate(-6px, 7px) rotate(-16deg);
+    }
+    100% {
+      /* 4. Fade out */
+      opacity: 0;
+      transform: scale(0.8) translate(-11px, 14px) rotate(-24deg);
+    }
+  }
+
+  @keyframes heart-break-right {
+    0% {
+      opacity: 1;
+      transform: scale(1) translate(0, 0) rotate(0deg);
+    }
+    12% {
+      /* 1. Briefly compress */
+      opacity: 1;
+      transform: scale(0.92, 0.84) translate(0, 1px) rotate(0deg);
+    }
+    30% {
+      /* 2. Crack emerges: move slightly right & down, rotate clockwise */
+      opacity: 1;
+      transform: scale(0.96) translate(2.5px, 2px) rotate(6deg);
+    }
+    65% {
+      /* 3. Natural 💔 separation */
+      opacity: 0.85;
+      transform: scale(0.92) translate(6px, 7px) rotate(16deg);
+    }
+    100% {
+      /* 4. Fade out */
+      opacity: 0;
+      transform: scale(0.8) translate(11px, 14px) rotate(24deg);
+    }
+  }
+
+  @keyframes heart-fade-in {
+    0% {
+      opacity: 0;
+      transform: scale(0.85);
+    }
+    60% {
+      opacity: 0;
+      transform: scale(0.85);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  .animate-like-pop {
+    animation: like-heart-pop 380ms cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  }
+
+  .animate-like-unpop {
+    animation: like-heart-unpop 350ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .animate-float-heart-1 {
+    animation: float-heart-1 650ms cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  }
+  .animate-float-heart-2 {
+    animation: float-heart-2 750ms cubic-bezier(0.25, 0.46, 0.45, 0.94) 50ms forwards;
+  }
+  .animate-float-heart-3 {
+    animation: float-heart-3 680ms cubic-bezier(0.25, 0.46, 0.45, 0.94) 30ms forwards;
+  }
+  .animate-float-heart-4 {
+    animation: float-heart-4 800ms cubic-bezier(0.25, 0.46, 0.45, 0.94) 90ms forwards;
+  }
+
+  .animate-heart-break-left {
+    animation: heart-break-left 520ms cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  }
+
+  .animate-heart-break-right {
+    animation: heart-break-right 520ms cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  }
+
+  .animate-heart-fade-in {
+    animation: heart-fade-in 520ms ease-out forwards;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-like-pop,
+    .animate-like-unpop,
+    .animate-float-heart-1,
+    .animate-float-heart-2,
+    .animate-float-heart-3,
+    .animate-float-heart-4,
+    .animate-heart-break-left,
+    .animate-heart-break-right,
+    .animate-heart-fade-in {
+      animation: none !important;
+      transform: none !important;
+      opacity: 1 !important;
+    }
   }
 }

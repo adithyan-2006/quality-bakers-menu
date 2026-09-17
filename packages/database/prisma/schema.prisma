@@ -178,6 +178,14 @@ model Product {
   availabilityStatus AvailabilityStatus @default(AVAILABLE)
   displayOrder       Int                @default(0)
 
+  // Product Likes
+  likes        ProductLike[]
+  likeCountRel ProductLikeCount?
+
+  // Signature Collection
+  isSignature    Boolean @default(false)
+  signatureOrder Int?
+
   // Online Ordering Prep
   isAvailable     Boolean @default(true)
   preparationTime Int     @default(15) // minutes
@@ -395,4 +403,27 @@ model ProductGalleryImage {
   createdAt    DateTime @default(now())
 
   @@unique([productId, mediaId])
+}
+
+// -----------------------------------------------------------------------------
+// PRODUCT LIKES
+// -----------------------------------------------------------------------------
+
+model ProductLike {
+  id              String   @id @default(cuid())
+  productId       String
+  product         Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  anonymousUserId String
+  createdAt       DateTime @default(now())
+
+  @@unique([productId, anonymousUserId])
+  @@index([productId])
+  @@index([anonymousUserId])
+}
+
+model ProductLikeCount {
+  productId String   @id
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  count     Int      @default(0)
+  updatedAt DateTime @updatedAt
 }

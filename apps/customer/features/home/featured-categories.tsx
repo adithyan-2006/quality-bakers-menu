@@ -15,164 +15,242 @@ interface FeaturedCategoriesProps {
 
 export function FeaturedCategories({ categories }: FeaturedCategoriesProps) {
   const containerRef = React.useRef<HTMLDivElement>(null);
+  const stickyRef = React.useRef<HTMLDivElement>(null);
   const trackRef = React.useRef<HTMLDivElement>(null);
   const headerRef = React.useRef<HTMLDivElement>(null);
   const cardsRef = React.useRef<(HTMLAnchorElement | null)[]>([]);
 
-  // Animation state for lerping
+  // Lerp state
   const scrollTarget = React.useRef(0);
   const currentScroll = React.useRef(0);
   const rafId = React.useRef<number | null>(null);
 
-  // Stops for pacing
+  // The architectural requirement:
+  // scroll event -> store state -> RAF -> compute -> ONE write
+  const scrollState = React.useRef({
+    containerTop: 0,
+    containerBottom: 0,
+    stickyBottom: 0,
+    scrolled: 0,
+    windowHeight: typeof window !== 'undefined' ? window.innerHeight : 0,
+  });
+
+  // Card stops (viewport-centred translation amounts).
+  // stopsRef[0] is always 0 (natural first-card position at left edge).
+  // stopsRef[last] is the last card centering translation = maxDistance.
   const stopsRef = React.useRef<number[]>([]);
 
+  // Geometry refs — derived exclusively from stopsRef and real rendered
+  // sticky dimensions. No independent trackScrollWidth formula.
+  //
+  //   maxDistanceRef = stopsRef[last]  (total horizontal travel, px)
+  //   stickyTopRef   = CSS `top` value of the sticky element (px)
+  //
+  // Progress formula:
+  //   rawProgress = (scrolled + stickyTopPx) / maxDistance
+  //
+  // Proof that this aligns lock / release with progress 0 / 1:
+  //
+  //   For position:sticky; top:T the browser:
+  //     locks    when containerTop = T   → scrolled = -T
+  //     releases when containerTop = T + stickyHeight - sectionHeight
+  //
+  //   sectionHeight = stickyHeight + maxDistance
+  //   Release scrolled = maxDistance - T
+  //
+  //   Lock:    rawProgress = (-T + T) / maxDistance = 0              ✓
+  //   Release: rawProgress = (maxDistance - T + T) / maxDistance = 1 ✓
+  //
+  // Without +stickyTopPx:
+  //   release rawProgress = (maxDistance - T) / maxDistance ≠ 1
+  //   → T pixels of dead zone / premature release (T = 68px in this layout).
+  // startStopRef = stopsRef[0]: horizontal position at rawProgress = 0.
+  // endStopRef   = stopsRef[last]: horizontal position at rawProgress = 1.
+  // horizontalRange = endStop - startStop: physical sticky travel equals this.
+  //
+  // Using [startStop, endStop] instead of [0, endStop] is what eliminates the
+  // upward boundary step: at rawProgress = 0, rawTarget = startStop = stopsRef[0].
+  // The closest magnetic stop is stopsRef[0] with delta = 0, so pacedTarget =
+  // startStop exactly. The boundary snap fires at the same value the pacing
+  // was already targeting — zero jump in either direction.
+  const maxDistanceRef = React.useRef(0);
+  const stickyTopRef = React.useRef(0);
+
+  // ------------------------------------------------------------------
+  // syncContainerHeight — MUST be called after buildStops().
+  // Derives maxDistance from stopsRef[last] and reads the real CSS top
+  // so the progress formula and section height are exactly coupled with
+  // the browser sticky geometry.
+  // ------------------------------------------------------------------
+  const syncContainerHeight = React.useCallback(() => {
+    if (!containerRef.current || !stickyRef.current) return;
+
+    const stops = stopsRef.current;
+    const maxDistance = stops.length > 0 ? (stops[stops.length - 1] ?? 0) : 0;
+    maxDistanceRef.current = maxDistance;
+
+    // Read the actual CSS `top` value. Fall back to 68 (header height) — never 0.
+    const stickyTopRaw = parseInt(getComputedStyle(stickyRef.current).top, 10);
+    const stickyTop = isNaN(stickyTopRaw) || stickyTopRaw === 0 ? 68 : stickyTopRaw;
+    stickyTopRef.current = stickyTop;
+
+    // Physical sticky travel proof:
+    //   sectionHeight = stickyHeight + maxDistance
+    //   sticky travel = sectionHeight - stickyHeight = maxDistance ✓
+    const stickyHeight = stickyRef.current.offsetHeight;
+    containerRef.current.style.minHeight = `${maxDistance + stickyHeight}px`;
+  }, []);
+
+  // ------------------------------------------------------------------
+  // buildStops: viewport-centred card stop positions.
+  //
+  // Computes the horizontal translation required to center each card.
+  // Only cards whose center is to the RIGHT of the viewport center when
+  // the track is at transform:none (requiredScroll >= 0) produce a stop.
+  //
+  // Cards to the LEFT of center need negative translation (already visible
+  // at X=0) — they have no stop and the pacing does not touch them.
+  //
+  // Saves and restores the live transform so renderLoop is not
+  // interrupted by a visible frame jump during resize.
+  //
+  // Must run before syncContainerHeight().
+  // ------------------------------------------------------------------
+  const buildStops = React.useCallback(() => {
+    if (!trackRef.current) return;
+
+    const savedTransform = trackRef.current.style.transform;
+    trackRef.current.style.transform = 'none';
+
+    const viewportCenter = window.innerWidth / 2;
+    // Do NOT insert a synthetic 0 here. Adding 0 as a magnetic stop creates a
+    // discontinuity: the closestStop selection flips from 0 → stopsRef[0] at the
+    // midpoint, causing a sudden 100-140px jump in pacedTarget — the stepping at
+    // both boundaries reported by the user.
+    const stops: number[] = [];
+    cardsRef.current.forEach((card) => {
+      if (!card) return;
+      const rect = card.getBoundingClientRect();
+      const cardCenter = rect.left + rect.width / 2;
+      const requiredScroll = cardCenter - viewportCenter;
+      if (requiredScroll >= 0) stops.push(requiredScroll);
+    });
+
+    stopsRef.current = stops;
+    trackRef.current.style.transform = savedTransform;
+  }, []);
+
   React.useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      return;
-    }
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
     const onScroll = () => {
-      if (!containerRef.current || !trackRef.current) return;
-      const { top, height } = containerRef.current.getBoundingClientRect();
+      if (!containerRef.current || !stickyRef.current || !headerRef.current) return;
+      const cRect = containerRef.current.getBoundingClientRect();
+      const sRect = stickyRef.current.getBoundingClientRect();
       const windowHeight = window.innerHeight;
+      const scrolled = -cRect.top;
 
-      const scrollableDistance = height - windowHeight;
-      const scrolled = -top;
+      scrollState.current = {
+        containerTop: cRect.top,
+        containerBottom: cRect.bottom,
+        stickyBottom: sRect.bottom,
+        scrolled,
+        windowHeight,
+      };
+    };
 
-      let progress = 0;
-      if (scrolled > 0 && scrollableDistance > 0) {
-        progress = Math.min(Math.max(scrolled / scrollableDistance, 0), 1);
-      } else if (scrolled > scrollableDistance) {
-        progress = 1;
-      }
-
-      // Calculate max track distance based on content width vs viewport
-      const trackScrollWidth = trackRef.current.scrollWidth;
-      const maxDistance = Math.max(
-        0,
-        trackScrollWidth - window.innerWidth + window.innerWidth * 0.2,
-      );
-
-      const rawTarget = progress * maxDistance;
-      let pacedTarget = rawTarget;
-
-      // Build stop points on first scroll
-      if (stopsRef.current.length === 0 && trackRef.current) {
-        const currentTransform = trackRef.current.style.transform;
-        trackRef.current.style.transform = 'none';
-
-        const viewportCenter = window.innerWidth / 2;
-        const stops: number[] = [];
-        cardsRef.current.forEach((card) => {
-          if (!card) return;
-          const rect = card.getBoundingClientRect();
-          const cardCenter = rect.left + rect.width / 2;
-          const requiredScroll = cardCenter - viewportCenter;
-          if (requiredScroll >= 0) stops.push(requiredScroll);
-        });
-
-        trackRef.current.style.transform = currentTransform;
-        stopsRef.current = stops;
-      }
-
-      // Apply pacing distortion (magnetic plateaus)
-      if (stopsRef.current.length > 0) {
-        let closestStop = stopsRef.current[0] ?? 0;
-        let minDiff = Math.abs(rawTarget - closestStop);
-
-        for (let i = 1; i < stopsRef.current.length; i++) {
-          const currentStop = stopsRef.current[i] ?? 0;
-          const diff = Math.abs(rawTarget - currentStop);
-          if (diff < minDiff) {
-            minDiff = diff;
-            closestStop = currentStop;
-          }
-        }
-
-        const delta = rawTarget - closestStop;
-        const radius = window.innerWidth < 768 ? 160 : 200;
-
-        if (Math.abs(delta) < radius) {
-          const normalized = delta / radius;
-          // Cubic easing for a very calm "arrive -> pause -> continue" feeling
-          const distorted = Math.pow(normalized, 3) * radius;
-          pacedTarget = closestStop + distorted;
-        }
-      }
-
-      scrollTarget.current = pacedTarget;
-
-      // Handle Entry Animation (Opacity and TranslateY on header and track)
-      if (headerRef.current && trackRef.current) {
-        // Entry progress from -200px (before sticky) to 0 (sticky starts)
-        const entryProgress = Math.min(
-          Math.max((scrolled + windowHeight / 2) / (windowHeight / 2), 0),
-          1,
-        );
-
-        if (scrolled < 0) {
-          // Fade in and slide up
-          headerRef.current.style.opacity = `${entryProgress}`;
-          headerRef.current.style.transform = `translate3d(0, ${(1 - entryProgress) * 40}px, 0)`;
-          trackRef.current.style.opacity = `${entryProgress}`;
-          trackRef.current.style.transform = `translate3d(0, ${(1 - entryProgress) * 60}px, 0)`;
-        } else {
-          headerRef.current.style.opacity = `1`;
-          headerRef.current.style.transform = `translate3d(0, 0, 0)`;
-          trackRef.current.style.opacity = `1`;
-        }
-      }
+    const onResize = () => {
+      buildStops();
+      syncContainerHeight();
+      onScroll();
     };
 
     const renderLoop = () => {
-      // Ultra-smooth heavy lerp
-      currentScroll.current += (scrollTarget.current - currentScroll.current) * 0.05;
-
-      if (Math.abs(scrollTarget.current - currentScroll.current) < 0.1) {
-        currentScroll.current = scrollTarget.current;
+      if (!containerRef.current || !stickyRef.current || !trackRef.current || !headerRef.current) {
+        rafId.current = requestAnimationFrame(renderLoop);
+        return;
       }
 
-      // Horizontal track translation
-      if (trackRef.current && containerRef.current) {
-        const { top } = containerRef.current.getBoundingClientRect();
-        // Only apply horizontal transform if we are in the sticky zone or past it
-        if (top <= 0) {
-          trackRef.current.style.transform = `translate3d(-${currentScroll.current}px, 0, 0)`;
-        }
+      const { containerTop, containerBottom, stickyBottom, scrolled, windowHeight } =
+        scrollState.current;
+      const stickyTopPx = stickyTopRef.current;
+      const maxDistance = maxDistanceRef.current;
+
+      // 1. Entry Animation (Vertical Parallax & Opacity)
+      const entryWindow = window.innerWidth < 768 ? windowHeight : windowHeight / 2;
+      const entryProgress = Math.min(Math.max((scrolled + entryWindow) / entryWindow, 0), 1);
+      let entryY = 0;
+      if (scrolled < 0) {
+        headerRef.current.style.opacity = `${entryProgress}`;
+        headerRef.current.style.transform = `translate3d(0, ${(1 - entryProgress) * 40}px, 0)`;
+        trackRef.current.style.opacity = `${entryProgress}`;
+        entryY = (1 - entryProgress) * 60;
+      } else {
+        headerRef.current.style.opacity = `1`;
+        headerRef.current.style.transform = `translate3d(0, 0, 0)`;
+        trackRef.current.style.opacity = `1`;
+        entryY = 0;
       }
 
-      // Center Focus Experience: scale cards based on proximity to viewport center
+      // 2. Horizontal Controller
+      // Strictly separate physical bounds from visual easing.
+      const hasReachedLock = containerTop <= stickyTopPx;
+      const hasReleased = containerBottom <= stickyBottom + 1;
+
+      if (!hasReachedLock) {
+        // BEFORE LOCK: Strictly exact start position. No pre-scroll.
+        scrollTarget.current = 0;
+        currentScroll.current = 0;
+      } else if (hasReleased) {
+        // AFTER RELEASE: Strictly exact end position. No post-scroll.
+        scrollTarget.current = maxDistance;
+        currentScroll.current = maxDistance;
+      } else {
+        // ACTIVE STICKY INTERVAL
+        // Continuous, free horizontal movement. No magnetic snapping.
+        const rawProgress = maxDistance > 0 ? (stickyTopPx - containerTop) / maxDistance : 0;
+        // Ensure progress is tightly clamped between 0 and 1 before mapping
+        const clampedProgress = Math.min(Math.max(rawProgress, 0), 1);
+        const exactTarget = clampedProgress * maxDistance;
+
+        scrollTarget.current = exactTarget;
+
+        // Very light responsive inertia (0.35) to visually blend discrete mouse-wheel steps.
+        // It provides a continuous, fluid feel without the noticeable lag of a slow 0.05 lerp.
+        // This ensures the horizontal position feels tightly synchronized with the page.
+        currentScroll.current += (exactTarget - currentScroll.current) * 0.35;
+
+        // Clamp the rendered position so it can never mathematically overshoot.
+        currentScroll.current = Math.min(Math.max(currentScroll.current, 0), maxDistance);
+      }
+
+      // ONE authoritative transform write per frame.
+      trackRef.current.style.transform = `translate3d(-${currentScroll.current}px, ${entryY}px, 0)`;
+
+      // Center focus: scale cards by distance from viewport centre.
       const viewportCenterX = window.innerWidth / 2;
+      const isDesktop = window.innerWidth >= 768; // md breakpoint
 
       cardsRef.current.forEach((card) => {
         if (!card) return;
         const rect = card.getBoundingClientRect();
         const cardCenterX = rect.left + rect.width / 2;
-
-        // Distance from center
         const distance = Math.abs(viewportCenterX - cardCenterX);
-
-        // Normalize distance (0 is at center, 1 is at edge of screen)
-        // We use a tighter radius for visual falloff so the center card really pops
         const visualRadius =
           window.innerWidth < 768 ? window.innerWidth * 0.6 : window.innerWidth * 0.4;
         const normalizedDistance = Math.min(distance / visualRadius, 1);
-
-        // Intensity curve (1 at center, 0 at edge)
         const intensity = 1 - normalizedDistance;
 
-        // Scale from 1.00 to 1.05
         const scale = 1 + 0.05 * intensity;
-        // Opacity from 0.4 to 1.0
-        const opacity = 0.4 + 0.6 * intensity;
-        // Brightness from 0.7 to 1.1
-        const brightness = 0.7 + 0.4 * intensity;
-        // Dynamic heavy shadow for the centered card
+        // Remove black overlay on non-centered cards ONLY on desktop.
+        // Mobile retains the dark dimming.
+        const opacity = isDesktop ? 1 : 0.4 + 0.6 * intensity;
+        const baseBrightness = isDesktop ? 1 : 0.7;
+        const brightnessBoost = isDesktop ? 0.1 : 0.4;
+        const brightness = baseBrightness + brightnessBoost * intensity;
         const shadowOpacity = 0.4 * intensity;
         const shadowY = 30 * intensity;
         const shadowBlur = 60 * intensity;
-
         const imageWrapper = card.querySelector('.focus-scale') as HTMLElement;
         const imageBg = card.querySelector('.focus-image') as HTMLElement;
 
@@ -189,29 +267,38 @@ export function FeaturedCategories({ categories }: FeaturedCategoriesProps) {
       rafId.current = requestAnimationFrame(renderLoop);
     };
 
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll, { passive: true });
+    // Geometry setup after first paint so CSS (including 100vh and sticky top)
+    // has settled. onScroll is defined above so it can be called here to
+    // re-snap currentScroll with the real geometry before the first user scroll.
+    const initId = requestAnimationFrame(() => {
+      buildStops();
+      syncContainerHeight();
+      onScroll();
+    });
 
-    // Initial calls
-    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onResize, { passive: true });
+
+    onScroll(); // initial call with empty geometry (snaps to 0, safe fallback)
     rafId.current = requestAnimationFrame(renderLoop);
 
     return () => {
+      cancelAnimationFrame(initId);
       window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('resize', onScroll);
+      window.removeEventListener('resize', onResize);
       if (rafId.current) cancelAnimationFrame(rafId.current);
     };
-  }, []);
+  }, [syncContainerHeight, buildStops]);
 
   if (!categories || categories.length === 0) return null;
 
   return (
-    <section
-      ref={containerRef}
-      className="relative w-full bg-background"
-      style={{ minHeight: '220vh' }}
-    >
-      <div className="sticky top-0 w-full h-screen overflow-hidden flex flex-col justify-center pt-8 pb-20 md:pt-12 md:pb-24">
+    <section ref={containerRef} className="relative w-full bg-background">
+      {/* Sticky panel — top:68px keeps content below the fixed 68px header */}
+      <div
+        ref={stickyRef}
+        className="sticky top-[68px] w-full h-[calc(100vh-68px)] overflow-hidden flex flex-col justify-center pt-4 pb-16 md:pt-8 md:pb-20"
+      >
         {/* Section Header */}
         <div
           ref={headerRef}

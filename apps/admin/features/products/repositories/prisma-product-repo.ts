@@ -29,6 +29,8 @@ function mapPrismaProduct(prod: any): AdminProduct {
               ? 'seasonal'
               : 'chefs-choice') as any,
     isFeatured: prod.isFeatured,
+    isSignature: prod.isSignature,
+    signatureOrder: prod.signatureOrder,
     isVisible: prod.isVisible,
     availabilityStatus:
       prod.availabilityStatus === 'AVAILABLE'
@@ -137,6 +139,8 @@ export const PrismaProductRepository = {
                       ? 'CHEFS_CHOICE'
                       : 'NONE',
           isFeatured: data.isFeatured || false,
+          isSignature: data.isSignature || false,
+          signatureOrder: data.signatureOrder || null,
           isVisible: data.isVisible !== false,
           availabilityStatus:
             data.availabilityStatus === 'out-of-stock'
@@ -193,6 +197,8 @@ export const PrismaProductRepository = {
                       ? 'NONE'
                       : undefined,
         isFeatured: data.isFeatured,
+        isSignature: data.isSignature,
+        signatureOrder: data.signatureOrder,
         isVisible: data.isVisible,
         availabilityStatus:
           data.availabilityStatus === 'out-of-stock'
@@ -266,6 +272,8 @@ export const PrismaProductRepository = {
             imageId: source.imageId,
             badge: source.badge,
             isFeatured: source.isFeatured,
+            isSignature: source.isSignature,
+            signatureOrder: source.signatureOrder,
             isVisible: source.isVisible,
             availabilityStatus: source.availabilityStatus,
             status: 'DRAFT', // duplicated is always draft
