@@ -20,6 +20,8 @@ export interface AdminProduct {
   availabilityStatus: AvailabilityStatus; // Semantic mapping for bakery
   status: ProductStatus;
   displayOrder: number;
+  isSignature: boolean;
+  signatureOrder: number | null;
   createdAt: string;
   updatedAt: string;
   publishedAt?: string;
@@ -43,6 +45,8 @@ const mockProducts: AdminProduct[] = [
     availabilityStatus: 'available',
     status: 'published',
     displayOrder: 0,
+    isSignature: true,
+    signatureOrder: 1,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
     publishedAt: new Date().toISOString(),
@@ -62,6 +66,8 @@ const mockProducts: AdminProduct[] = [
     availabilityStatus: 'available',
     status: 'published',
     displayOrder: 1,
+    isSignature: false,
+    signatureOrder: null,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
     publishedAt: new Date().toISOString(),
@@ -81,6 +87,8 @@ const mockProducts: AdminProduct[] = [
     availabilityStatus: 'seasonal',
     status: 'draft',
     displayOrder: 2,
+    isSignature: false,
+    signatureOrder: null,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   },
@@ -111,6 +119,8 @@ export const ProductRepository = {
       availabilityStatus: data.availabilityStatus || 'available',
       status: data.status || 'draft',
       displayOrder: mockProducts.length,
+      isSignature: data.isSignature ?? false,
+      signatureOrder: data.signatureOrder ?? null,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };

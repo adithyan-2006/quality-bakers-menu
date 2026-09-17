@@ -7,7 +7,7 @@ export function MenuViewport({
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) {
   return (
-    <main className={cn('flex-1 pt-6 pb-24 md:pt-10 md:pb-32', className)} {...props}>
+    <main className={cn('flex-1', className)} {...props}>
       {children}
     </main>
   );

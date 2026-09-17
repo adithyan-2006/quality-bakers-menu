@@ -28,32 +28,13 @@ export function GalleryWall({ products, themeClasses, animationConfig }: LayoutC
               isHero ? 'md:col-span-full' : '',
             )}
           >
-            {/* Mobile Card */}
-            <div
-              className={cn(
-                'block md:hidden h-full w-full',
-                !isHero && '[&_a]:!grid-cols-[40%_1fr] [&_a]:!gap-4 [&_a]:!p-3 [&_a]:!items-center',
-              )}
-            >
+            <div className="h-full w-full">
               <ProductCard
                 product={product}
                 themeClasses={themeClasses}
-                // Hero stays overlay, everything else becomes cafe list (side-by-side)
-                presentationStyle={isHero ? 'overlay' : 'side-by-side'}
+                presentationStyle={isHero ? 'gallery-featured' : 'gallery-standard'}
                 emphasis={isHero ? 'featured' : 'normal'}
-                aspectRatio={isHero ? '4/3' : 'square'}
-                priority={idx < 4}
-              />
-            </div>
-
-            {/* Desktop Card */}
-            <div className="hidden md:block h-full w-full">
-              <ProductCard
-                product={product}
-                themeClasses={themeClasses}
-                presentationStyle={isHero ? 'overlay' : 'standard'}
-                emphasis={isHero ? 'featured' : 'normal'}
-                aspectRatio={isHero ? 'wide' : 'square'}
+                aspectRatio={isHero ? 'wide' : '4/3'}
                 priority={idx < 4}
               />
             </div>

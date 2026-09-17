@@ -20,63 +20,61 @@ import type { DisplayStyle, ThemeClasses } from '../types';
  * Enforces visual uniformity across all categories.
  */
 const SHARED_TOKENS = {
-  heading: 'font-serif text-stone-900 dark:text-stone-50 tracking-tight',
-  subheading:
-    'font-sans text-stone-600 dark:text-stone-400 font-medium uppercase tracking-widest text-sm',
-  description: 'text-stone-600 dark:text-stone-400 font-light leading-relaxed',
-  card: 'bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 rounded-2xl shadow-sm',
-  cardHover:
-    'hover:shadow-lg hover:-translate-y-1 hover:border-stone-300 dark:hover:border-stone-700 transition-all duration-300',
+  heading: 'font-serif text-[#FDFADB] tracking-tight',
+  subheading: 'font-sans text-brand-cream/60 font-bold uppercase tracking-[0.15em] text-xs',
+  description: 'font-sans text-[#FDFADB] font-light leading-relaxed',
+  card: 'bg-[#FDFADB] border-2 border-brand-cream/80 rounded-2xl shadow-sm',
+  cardHover: 'hover:shadow-xl hover:-translate-y-1 transition-all duration-500',
   badge:
-    'bg-transparent border border-stone-900/20 dark:border-stone-50/20 text-stone-900 dark:text-stone-50 uppercase tracking-[0.2em] font-semibold text-[11px]',
-  divider: 'border-stone-200 dark:border-stone-800',
-  price: 'text-amber-600 dark:text-amber-500', // Premium warm gold
+    'bg-brand-cream/80 border border-brand-dark/10 text-brand-dark uppercase tracking-widest font-bold text-[10px] px-3 py-1 rounded-full backdrop-blur-md',
+  divider: 'border-black/10',
+  price: 'font-sans text-brand-dark font-medium',
 };
 
 const THEME_REGISTRY: Record<DisplayStyle, ThemeClasses> = {
   luxury: {
-    section: 'bg-stone-50 dark:bg-stone-950',
-    accent: 'text-amber-700 dark:text-amber-400',
+    section: 'bg-[#BC1D1A]',
+    accent: 'text-brand-cream',
     ...SHARED_TOKENS,
   },
   fresh: {
-    section: 'bg-emerald-50/50 dark:bg-emerald-950/20',
-    accent: 'text-emerald-600 dark:text-emerald-400',
+    section: 'bg-[#BC1D1A]',
+    accent: 'text-brand-cream',
     ...SHARED_TOKENS,
   },
   minimal: {
-    section: 'bg-background',
-    accent: 'text-foreground',
+    section: 'bg-[#BC1D1A]',
+    accent: 'text-brand-cream',
     ...SHARED_TOKENS,
   },
   cafe: {
-    section: 'bg-amber-50/30 dark:bg-amber-950/10',
-    accent: 'text-amber-700 dark:text-amber-400',
+    section: 'bg-[#BC1D1A]',
+    accent: 'text-brand-cream',
     ...SHARED_TOKENS,
   },
   classic: {
-    section: 'bg-neutral-50 dark:bg-neutral-950',
-    accent: 'text-neutral-700 dark:text-neutral-300',
+    section: 'bg-[#BC1D1A]',
+    accent: 'text-brand-cream',
     ...SHARED_TOKENS,
   },
   healthy: {
-    section: 'bg-lime-50/40 dark:bg-lime-950/10',
-    accent: 'text-lime-600 dark:text-lime-400',
+    section: 'bg-[#BC1D1A]',
+    accent: 'text-brand-cream',
     ...SHARED_TOKENS,
   },
   warm: {
-    section: 'bg-orange-50/30 dark:bg-orange-950/10',
-    accent: 'text-orange-600 dark:text-orange-400',
+    section: 'bg-[#BC1D1A]',
+    accent: 'text-brand-cream',
     ...SHARED_TOKENS,
   },
   modern: {
-    section: 'bg-background',
-    accent: 'text-primary',
+    section: 'bg-[#BC1D1A]',
+    accent: 'text-brand-cream',
     ...SHARED_TOKENS,
   },
   dark: {
-    section: 'bg-neutral-900 dark:bg-neutral-950',
-    accent: 'text-neutral-200',
+    section: 'bg-[#BC1D1A]',
+    accent: 'text-brand-cream',
     ...SHARED_TOKENS,
   },
 };

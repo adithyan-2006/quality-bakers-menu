@@ -179,11 +179,11 @@ export function CategoryNav({ categories }: CategoryNavProps) {
   return (
     <nav
       aria-label="Browse menu categories"
-      className="sticky top-[68px] z-40 bg-background/90 backdrop-blur-md border-b border-border/50 shadow-sm overflow-hidden"
+      className="sticky top-[64px] md:top-[80px] z-40 bg-background/90 backdrop-blur-md overflow-hidden"
     >
       <div
         ref={scrollContainerRef}
-        className="relative flex items-center overflow-x-auto scrollbar-none px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto py-3 md:py-4 snap-x snap-mandatory"
+        className="relative flex items-center overflow-x-auto scrollbar-none px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto py-2 md:py-3 snap-x snap-mandatory"
         role="list"
       >
         {/* Sliding Pill Indicator */}

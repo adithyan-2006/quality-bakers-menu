@@ -14,7 +14,7 @@ export function SectionTitle({
   return (
     <Component
       className={cn(
-        'text-2xl md:text-3xl font-serif font-medium tracking-tight text-foreground mb-6 md:mb-10',
+        'text-4xl md:text-5xl lg:text-6xl font-serif font-bold tracking-tight text-brand-cream mb-6 md:mb-10',
         className,
       )}
       {...props}

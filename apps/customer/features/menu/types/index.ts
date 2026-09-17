@@ -96,10 +96,11 @@ export interface MenuProduct {
   name: string;
   slug: string;
   description: string;
-  image?: string;
-  badge?: string;
-  price?: string;
+  image?: string | undefined;
+  badge?: string | undefined;
+  price?: string | undefined;
   categorySlug: string;
+  likeCount?: number | undefined;
 }
 
 // ─── Category Configuration ───────────────────────────────────────────────────

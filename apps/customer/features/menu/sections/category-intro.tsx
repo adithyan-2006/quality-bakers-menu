@@ -19,15 +19,15 @@ interface CategoryIntroProps {
 export function CategoryIntro({ config, themeClasses, animationConfig }: CategoryIntroProps) {
   return (
     <div className="mb-16 md:mb-24">
-      <MotionWrapper config={animationConfig} index={0}>
+      <MotionWrapper config={animationConfig} index={0} variant="heading">
         <div className="flex items-center gap-4 mb-4 md:mb-6">
           {/* Decorative accent line */}
-          <div className={cn('h-px flex-1 max-w-[80px]', themeClasses.divider, 'border-t')} />
+          <div className="h-px flex-1 max-w-[80px] border-brand-cream/20 border-t" />
           <span className={themeClasses.subheading}>{config.isFeatured ? 'Featured' : 'Menu'}</span>
         </div>
       </MotionWrapper>
 
-      <MotionWrapper config={animationConfig} index={1}>
+      <MotionWrapper config={animationConfig} index={1} variant="heading">
         <h2
           id={`category-${config.slug}`}
           className={cn(
@@ -39,7 +39,7 @@ export function CategoryIntro({ config, themeClasses, animationConfig }: Categor
         </h2>
       </MotionWrapper>
 
-      <MotionWrapper config={animationConfig} index={2}>
+      <MotionWrapper config={animationConfig} index={2} variant="description" delayMs={120}>
         <p
           className={cn(
             'max-w-2xl font-light leading-relaxed text-lg md:text-xl lg:text-2xl',

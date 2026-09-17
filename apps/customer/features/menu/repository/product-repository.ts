@@ -15,8 +15,9 @@ function mapProduct(p: any): MenuProduct {
     description: p.shortDescription || p.description || '',
     image: p.image?.optimizedUrl || p.image?.originalUrl || undefined,
     badge: p.badge !== 'NONE' ? p.badge : undefined,
-    price: p.price.toString(),
+    price: p.price ? `₹${p.price}` : undefined,
     categorySlug: p.category?.slug || '',
+    likeCount: p._count?.likes ?? p.likeCountRel?.count ?? 0,
   };
 }
 
@@ -32,7 +33,12 @@ export const ProductRepository = {
         isVisible: true,
         status: 'PUBLISHED',
       },
-      include: { image: true, category: true },
+      include: {
+        image: true,
+        category: true,
+        likeCountRel: true,
+        _count: { select: { likes: true } },
+      },
       orderBy: { displayOrder: 'asc' },
       ...(limit ? { take: limit } : {}),
     });
@@ -51,7 +57,12 @@ export const ProductRepository = {
     if (heroProductId) {
       const p = await prisma.product.findUnique({
         where: { id: heroProductId },
-        include: { image: true, category: true },
+        include: {
+          image: true,
+          category: true,
+          likeCountRel: true,
+          _count: { select: { likes: true } },
+        },
       });
       if (p && p.isVisible && p.status === 'PUBLISHED') {
         return mapProduct(p);

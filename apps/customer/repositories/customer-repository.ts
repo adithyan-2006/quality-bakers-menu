@@ -88,4 +88,24 @@ export class CustomerRepository {
       return [];
     }
   }
+
+  /**
+   * Fetches signature products strictly ordered by signatureOrder.
+   */
+  static async getSignatureProducts() {
+    try {
+      return await prisma.product.findMany({
+        where: {
+          status: 'PUBLISHED',
+          isVisible: true,
+          isSignature: true,
+        },
+        orderBy: { signatureOrder: 'asc' },
+        include: { image: true, category: true },
+      });
+    } catch (error) {
+      console.error('[CustomerRepository] Failed to fetch signature products:', error);
+      return [];
+    }
+  }
 }

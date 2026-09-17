@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { PageSection } from '../../components/layout/page-section';
+
 import { ScrollReveal } from '../../components/scroll-reveal';
 import { buttonVariants, cn } from '@qbm/ui';
 import type { Prisma } from '@qbm/database';
@@ -15,25 +15,25 @@ export function SignatureHighlight({ title, description }: SignatureHighlightPro
   if (!title && !description) return null;
 
   return (
-    <PageSection
+    <section
       id="about"
-      className="px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto py-16 md:py-32 text-center"
+      className="relative w-full bg-[#BC1D1A] min-h-[calc(100vh-52px)] md:min-h-[calc(100vh-64px)] flex items-center justify-center py-16 md:py-32 scroll-mt-[52px] md:scroll-mt-[64px]"
     >
-      <div className="flex flex-col items-center justify-center">
+      <div className="w-full px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto text-center flex flex-col items-center justify-center">
         <ScrollReveal animation="fade-up">
-          <span className="text-sm uppercase tracking-widest text-primary font-medium mb-6 block">
+          <span className="text-sm uppercase tracking-widest text-[#FDFADB]/70 font-medium mb-6 block">
             About Us
           </span>
         </ScrollReveal>
 
         <ScrollReveal animation="fade-up" delayMs={150}>
-          <h2 className="text-3xl md:text-5xl font-serif font-bold tracking-tight text-foreground mb-8 leading-tight max-w-2xl">
+          <h2 className="text-3xl md:text-5xl font-serif font-bold tracking-tight text-[#FDFADB] mb-8 leading-tight max-w-2xl">
             {title || 'Our Story'}
           </h2>
         </ScrollReveal>
 
         <ScrollReveal animation="fade-up" delayMs={300}>
-          <p className="text-lg md:text-xl text-muted-foreground font-light leading-relaxed mb-12 whitespace-pre-wrap max-w-3xl">
+          <p className="text-lg md:text-xl text-[#FDFADB]/80 font-light leading-relaxed mb-12 whitespace-pre-wrap max-w-3xl">
             {description || 'Experience the taste of quality baking.'}
           </p>
         </ScrollReveal>
@@ -43,13 +43,13 @@ export function SignatureHighlight({ title, description }: SignatureHighlightPro
             href="/categories"
             className={cn(
               buttonVariants({ variant: 'outline', size: 'lg' }),
-              'rounded-full px-10 py-6 text-lg hover:-translate-y-1 hover:shadow-md transition-all duration-300',
+              'rounded-full px-10 py-6 text-lg hover:-translate-y-1 hover:shadow-md transition-all duration-300 text-[#FDFADB] border-[#FDFADB]/20 hover:bg-[#FDFADB] hover:text-[#BC1D1A]',
             )}
           >
             Explore Menu
           </TopScrollLink>
         </ScrollReveal>
       </div>
-    </PageSection>
+    </section>
   );
 }
