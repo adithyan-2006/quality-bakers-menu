@@ -417,7 +417,6 @@ model ProductLike {
   createdAt       DateTime @default(now())
 
   @@unique([productId, anonymousUserId])
-  @@index([productId])
   @@index([anonymousUserId])
 }
 
