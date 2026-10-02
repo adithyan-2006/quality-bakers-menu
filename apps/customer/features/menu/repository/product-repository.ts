@@ -73,15 +73,52 @@ export const ProductRepository = {
   },
 
   /**
-   * Returns featured products across all categories, up to the given limit.
-   * Used by homepage popular preview sections.
-   * Today: returns the first product from each of the given slugs.
+   * Returns featured products across all categories, up to the given limit per category.
+   * Fetches matching products in a single batched query to eliminate N+1 query overhead,
+   * while preserving per-category limits and categorySlugs input ordering.
    */
   async getFeaturedProducts(categorySlugs: string[], limitPerCategory = 1): Promise<MenuProduct[]> {
-    const promises = categorySlugs.map((slug) =>
-      this.getProductsForCategory(slug, limitPerCategory),
-    );
-    const results = await Promise.all(promises);
-    return results.flat();
+    if (!categorySlugs.length || limitPerCategory <= 0) {
+      return [];
+    }
+
+    const products = await prisma.product.findMany({
+      where: {
+        category: { slug: { in: categorySlugs } },
+        isVisible: true,
+        status: 'PUBLISHED',
+      },
+      include: {
+        image: true,
+        category: true,
+        likeCountRel: true,
+        _count: { select: { likes: true } },
+      },
+      orderBy: { displayOrder: 'asc' },
+    });
+
+    const productsByCategory = new Map<string, MenuProduct[]>();
+    for (const p of products) {
+      const slug = p.category?.slug;
+      if (!slug) continue;
+      let group = productsByCategory.get(slug);
+      if (!group) {
+        group = [];
+        productsByCategory.set(slug, group);
+      }
+      if (group.length < limitPerCategory) {
+        group.push(mapProduct(p));
+      }
+    }
+
+    const results: MenuProduct[] = [];
+    for (const slug of categorySlugs) {
+      const categoryProducts = productsByCategory.get(slug);
+      if (categoryProducts) {
+        results.push(...categoryProducts);
+      }
+    }
+
+    return results;
   },
 } as const;
