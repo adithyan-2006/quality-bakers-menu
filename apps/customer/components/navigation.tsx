@@ -17,25 +17,25 @@ export function Navigation() {
   };
 
   return (
-    <nav className="flex items-center space-x-8 text-sm font-medium uppercase tracking-wider">
+    <nav className="flex items-center space-x-8 text-base font-medium uppercase tracking-wider">
       <Link
         href="/#home"
         onClick={handleScroll('home')}
-        className="transition-colors text-[#FDFADB]/70 hover:text-[#FDFADB]"
+        className="transition-colors text-[#A71920]/85 hover:text-[#A71920]"
       >
         Home
       </Link>
       <Link
         href="/#signature"
         onClick={handleScroll('signature')}
-        className="transition-colors text-[#FDFADB]/70 hover:text-[#FDFADB]"
+        className="transition-colors text-[#A71920]/85 hover:text-[#A71920]"
       >
         Signature
       </Link>
       <Link
         href="/#about"
         onClick={handleScroll('about')}
-        className="transition-colors text-[#FDFADB]/70 hover:text-[#FDFADB]"
+        className="transition-colors text-[#A71920]/85 hover:text-[#A71920]"
       >
         About
       </Link>

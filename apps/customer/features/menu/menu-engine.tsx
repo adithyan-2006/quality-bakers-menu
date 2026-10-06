@@ -27,7 +27,7 @@ export async function MenuEngine() {
   );
 
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex flex-col w-full bg-[#BC1D1A]">
       <CategoryNav categories={navItems} />
       <div className="flex flex-col">
         {categoryProducts.map(({ config, products }) => (

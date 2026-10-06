@@ -49,12 +49,12 @@ export function CategorySection({ config, products }: CategorySectionProps) {
       id={config.slug}
       aria-labelledby={`category-${config.slug}`}
       className={cn(
-        'relative scroll-mt-24',
+        'relative scroll-mt-28 md:scroll-mt-32',
         pacing === 'hero'
-          ? 'py-24 md:py-32 lg:py-40'
+          ? 'py-8 sm:py-10 md:py-32 lg:py-40'
           : pacing === 'compact'
-            ? 'py-12 md:py-16'
-            : 'py-16 md:py-24', // standard
+            ? 'py-6 sm:py-8 md:py-16'
+            : 'py-8 sm:py-10 md:py-24', // standard
         themeClasses.section,
       )}
       style={sectionStyle}
@@ -80,10 +80,10 @@ export function CategorySection({ config, products }: CategorySectionProps) {
         )}
       </ContentContainer>
 
-      {/* Subtle Category Closing / Breathing Room */}
+      {/* Subtle Category Closing / Breathing Room — hidden on mobile */}
       <div
         className={cn(
-          'mx-auto h-px bg-gradient-to-r from-transparent via-border to-transparent',
+          'hidden md:block mx-auto h-px bg-gradient-to-r from-transparent via-border to-transparent',
           pacing === 'hero'
             ? 'mt-24 md:mt-32 w-32 md:w-48 opacity-100'
             : pacing === 'compact'

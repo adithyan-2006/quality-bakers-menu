@@ -3,7 +3,6 @@ import { FeaturedCategories } from '../features/home/featured-categories';
 import { PopularPreview } from '../features/home/popular-preview';
 import { SignatureHighlight } from '../features/home/signature-highlight';
 import { SignatureShowcase } from '../features/home/signature-showcase';
-import { BrowseCta } from '../features/home/browse-cta';
 import { CustomerRepository } from '../repositories/customer-repository';
 export const revalidate = 60;
 import { buttonVariants } from '@qbm/ui';
@@ -50,7 +49,7 @@ export default async function HomePage() {
   });
 
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex flex-col w-full bg-[#BC1D1A]">
       <EditorialIntro
         homepage={homepage}
         businessName={business?.name || 'Quality Bakers'}
@@ -65,7 +64,6 @@ export default async function HomePage() {
         description={homepage.aboutDescription}
         image={homepage.aboutImage}
       />
-      <BrowseCta />
     </div>
   );
 }

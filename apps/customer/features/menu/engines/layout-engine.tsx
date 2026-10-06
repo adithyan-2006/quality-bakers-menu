@@ -1,5 +1,6 @@
 import * as React from 'react';
 import type { LayoutType, MenuProduct, ThemeClasses, AnimationConfig } from '../types';
+import { SingleColumnStack } from '../layouts/single-column-stack';
 import { EditorialGrid } from '../layouts/editorial-grid';
 import { PinterestGrid } from '../layouts/pinterest-grid';
 import { MagazineSplit } from '../layouts/magazine-split';
@@ -21,22 +22,12 @@ export interface LayoutComponentProps {
 type LayoutComponent = (props: LayoutComponentProps) => React.ReactElement | null;
 
 /**
- * Layout Registry — Open/Closed for Extension
+ * Desktop Layout Registry — Open/Closed for Extension
  *
- * Maps LayoutType → Layout Component.
- * NO switch statements. NO imperative dispatch logic.
- *
- * To add a new layout:
- *   1. Create the component implementing LayoutComponentProps
- *   2. Add the entry here
- *   3. Add the key to the LayoutType union type
- *   That is all. LayoutEngine requires no other changes.
- *
- * Future: entries can be wrapped in React.lazy() / next/dynamic()
- * here without changing the public LayoutEngine API.
- * Example: 'masonry': React.lazy(() => import('../layouts/masonry'))
+ * Maps LayoutType → Desktop Layout Component.
+ * Restores the previous visual editorial desktop arrangement for PC/desktop.
  */
-const LAYOUT_REGISTRY: Record<LayoutType, LayoutComponent> = {
+const DESKTOP_LAYOUT_REGISTRY: Record<LayoutType, LayoutComponent> = {
   'editorial-grid': EditorialGrid,
   'pinterest-grid': PinterestGrid,
   'magazine-split': MagazineSplit,
@@ -45,7 +36,7 @@ const LAYOUT_REGISTRY: Record<LayoutType, LayoutComponent> = {
   'alternating-layout': AlternatingLayout,
 };
 
-const DEFAULT_LAYOUT: LayoutComponent = EditorialGrid;
+const DEFAULT_DESKTOP_LAYOUT: LayoutComponent = EditorialGrid;
 
 interface LayoutEngineProps extends LayoutComponentProps {
   layoutType: LayoutType;
@@ -54,12 +45,9 @@ interface LayoutEngineProps extends LayoutComponentProps {
 /**
  * Layout Engine — Server Component
  *
- * Resolves layoutType to a Layout Component via the registry.
- * Falls back to EditorialGrid for any unregistered type.
- *
- * Public API is intentionally stable:
- *   { layoutType, products, themeClasses, animationConfig }
- * This contract will not change even if internals switch to lazy loading.
+ * Responsively renders:
+ * - Mobile & Tablet (< lg): SingleColumnStack (untouched, one card per row stack)
+ * - PC / Desktop (lg+): Restored category-specific desktop layout
  */
 export function LayoutEngine({
   layoutType,
@@ -67,8 +55,27 @@ export function LayoutEngine({
   themeClasses,
   animationConfig,
 }: LayoutEngineProps) {
-  const Layout = LAYOUT_REGISTRY[layoutType] ?? DEFAULT_LAYOUT;
+  const DesktopLayout = DESKTOP_LAYOUT_REGISTRY[layoutType] ?? DEFAULT_DESKTOP_LAYOUT;
+
   return (
-    <Layout products={products} themeClasses={themeClasses} animationConfig={animationConfig} />
+    <>
+      {/* Mobile & Tablet (< lg): Current single-column stack, completely untouched */}
+      <div className="block lg:hidden">
+        <SingleColumnStack
+          products={products}
+          themeClasses={themeClasses}
+          animationConfig={animationConfig}
+        />
+      </div>
+
+      {/* PC / Desktop (lg+): Previous desktop layout restored */}
+      <div className="hidden lg:block">
+        <DesktopLayout
+          products={products}
+          themeClasses={themeClasses}
+          animationConfig={animationConfig}
+        />
+      </div>
+    </>
   );
 }

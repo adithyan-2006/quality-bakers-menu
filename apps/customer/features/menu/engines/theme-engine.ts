@@ -23,7 +23,7 @@ const SHARED_TOKENS = {
   heading: 'font-serif text-[#FDFADB] tracking-tight',
   subheading: 'font-sans text-brand-cream/60 font-bold uppercase tracking-[0.15em] text-xs',
   description: 'font-sans text-[#FDFADB] font-light leading-relaxed',
-  card: 'bg-[#FDFADB] border-2 border-brand-cream/80 rounded-2xl shadow-sm',
+  card: 'bg-[#FDFADB] border-2 border-brand-cream/80 rounded-2xl sm:rounded-3xl shadow-sm',
   cardHover: 'hover:shadow-xl hover:-translate-y-1 transition-all duration-500',
   badge:
     'bg-brand-cream/80 border border-brand-dark/10 text-brand-dark uppercase tracking-widest font-bold text-[10px] px-3 py-1 rounded-full backdrop-blur-md',

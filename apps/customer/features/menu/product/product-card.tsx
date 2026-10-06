@@ -15,7 +15,7 @@ export interface ProductCardProps {
     | 'gallery-standard'
     | 'signature-standard';
   emphasis?: 'normal' | 'featured' | 'hero';
-  aspectRatio?: 'square' | '4/3' | '3/4' | '16/9' | 'wide';
+  aspectRatio?: 'square' | '4/3' | '3/4' | '16/9' | '16/10' | 'wide';
   imagePosition?: 'left' | 'right';
   priority?: boolean;
 }
@@ -55,7 +55,7 @@ export function ProductCard({
       ? 'square'
       : presentationStyle === 'overlay' && emphasis === 'hero'
         ? 'wide'
-        : '4/3');
+        : '16/10');
 
   // Focus ring styles shared across all variants
   const focusClasses =
@@ -390,16 +390,16 @@ export function ProductCard({
 
   // ─── STANDARD STYLE ───────────────────────────────────────────────────────
   return (
-    <article className="h-full">
+    <article className="w-full h-full">
       <div
         className={cn(
-          'group flex flex-col h-full rounded-2xl overflow-hidden',
+          'group flex flex-col w-full h-full rounded-2xl sm:rounded-3xl overflow-hidden',
           themeClasses.card,
           themeClasses.cardHover,
           focusClasses,
         )}
       >
-        <div className="relative overflow-hidden bg-brand-deep-cream border-b border-black/5">
+        <div className="relative overflow-hidden bg-brand-deep-cream">
           <ProductImage
             src={product.image}
             alt={product.name}
@@ -407,27 +407,27 @@ export function ProductCard({
             priority={priority}
           />
           {product.badge && (
-            <div className="absolute top-4 left-4 bg-brand-warm-cream/95 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm z-10">
-              <span className="text-[10px] md:text-xs uppercase tracking-[0.1em] text-brand-brick-red font-bold">
+            <div className="absolute top-3.5 left-3.5 sm:top-4 sm:left-4 bg-[#FDFADB] px-3.5 py-1 rounded-full shadow-sm z-10">
+              <span className="text-[10px] sm:text-xs uppercase tracking-[0.12em] text-[#BC1D1A] font-bold">
                 {product.badge}
               </span>
             </div>
           )}
         </div>
 
-        <div className="flex flex-col flex-1 p-5 md:p-6">
-          <h3 className="leading-tight text-xl md:text-2xl font-serif font-bold mb-2 text-[#BC1D1A] group-hover:text-brand-brick-red transition-colors duration-300">
+        <div className="flex flex-col flex-1 p-4 sm:p-5 md:p-6 bg-[#FDFADB]">
+          <h3 className="leading-tight text-[22px] sm:text-2xl md:text-[26px] font-serif font-bold mb-1 sm:mb-1.5 text-[#BC1D1A] group-hover:text-brand-brick-red transition-colors duration-300">
             {product.name}
           </h3>
           {product.description && (
-            <p className="line-clamp-2 text-sm md:text-base leading-relaxed text-[#BC1D1A]/70 mb-4">
+            <p className="line-clamp-2 text-base sm:text-[17px] md:text-lg font-sans leading-relaxed text-[#BC1D1A]/70 mb-3 sm:mb-4">
               {product.description}
             </p>
           )}
 
-          <div className="mt-auto pt-3 border-t border-black/15 flex items-center justify-between">
+          <div className="mt-auto pt-2.5 sm:pt-3 border-t border-black/10 flex items-center justify-between">
             {formattedPrice && (
-              <span className="font-bold font-sans tracking-wide text-sm md:text-base text-brand-dark">
+              <span className="font-bold font-sans tracking-wide text-base sm:text-lg text-brand-dark">
                 {formattedPrice}
               </span>
             )}

@@ -89,9 +89,10 @@ export function FeaturedCategories({ categories }: FeaturedCategoriesProps) {
     const maxDistance = stops.length > 0 ? (stops[stops.length - 1] ?? 0) : 0;
     maxDistanceRef.current = maxDistance;
 
-    // Read the actual CSS `top` value. Fall back to 68 (header height) — never 0.
+    // Read the actual CSS `top` value. Fall back to header height (52 mobile, 68 desktop) — never 0.
+    const fallbackTop = typeof window !== 'undefined' && window.innerWidth < 768 ? 52 : 68;
     const stickyTopRaw = parseInt(getComputedStyle(stickyRef.current).top, 10);
-    const stickyTop = isNaN(stickyTopRaw) || stickyTopRaw === 0 ? 68 : stickyTopRaw;
+    const stickyTop = isNaN(stickyTopRaw) || stickyTopRaw === 0 ? fallbackTop : stickyTopRaw;
     stickyTopRef.current = stickyTop;
 
     // Physical sticky travel proof:
@@ -177,7 +178,8 @@ export function FeaturedCategories({ categories }: FeaturedCategoriesProps) {
       const maxDistance = maxDistanceRef.current;
 
       // 1. Entry Animation (Vertical Parallax & Opacity)
-      const entryWindow = window.innerWidth < 768 ? windowHeight : windowHeight / 2;
+      const entryWindow =
+        window.innerWidth < 768 ? Math.min(windowHeight * 0.5, 360) : windowHeight / 2;
       const entryProgress = Math.min(Math.max((scrolled + entryWindow) / entryWindow, 0), 1);
       let entryY = 0;
       if (scrolled < 0) {
@@ -227,40 +229,99 @@ export function FeaturedCategories({ categories }: FeaturedCategoriesProps) {
       // ONE authoritative transform write per frame.
       trackRef.current.style.transform = `translate3d(-${currentScroll.current}px, ${entryY}px, 0)`;
 
-      // Center focus: scale cards by distance from viewport centre.
+      // Center focus:
       const viewportCenterX = window.innerWidth / 2;
-      const isDesktop = window.innerWidth >= 768; // md breakpoint
+      const isDesktop = window.innerWidth >= 1024; // desktop/PC breakpoint
 
       cardsRef.current.forEach((card) => {
         if (!card) return;
-        const rect = card.getBoundingClientRect();
-        const cardCenterX = rect.left + rect.width / 2;
-        const distance = Math.abs(viewportCenterX - cardCenterX);
-        const visualRadius =
-          window.innerWidth < 768 ? window.innerWidth * 0.6 : window.innerWidth * 0.4;
-        const normalizedDistance = Math.min(distance / visualRadius, 1);
-        const intensity = 1 - normalizedDistance;
 
-        const scale = 1 + 0.05 * intensity;
-        // Remove black overlay on non-centered cards ONLY on desktop.
-        // Mobile retains the dark dimming.
-        const opacity = isDesktop ? 1 : 0.4 + 0.6 * intensity;
-        const baseBrightness = isDesktop ? 1 : 0.7;
-        const brightnessBoost = isDesktop ? 0.1 : 0.4;
-        const brightness = baseBrightness + brightnessBoost * intensity;
-        const shadowOpacity = 0.4 * intensity;
-        const shadowY = 30 * intensity;
-        const shadowBlur = 60 * intensity;
         const imageWrapper = card.querySelector('.focus-scale') as HTMLElement;
         const imageBg = card.querySelector('.focus-image') as HTMLElement;
 
-        if (imageWrapper) {
-          imageWrapper.style.transform = `scale(${scale})`;
-          imageWrapper.style.opacity = `${opacity}`;
-          imageWrapper.style.boxShadow = `0 ${shadowY}px ${shadowBlur}px -15px rgba(0,0,0,${shadowOpacity})`;
-        }
-        if (imageBg) {
-          imageBg.style.filter = `brightness(${brightness})`;
+        if (isDesktop) {
+          // PC/Desktop: All cards share identical top position, identical height, identical bottom position, and consistent layered physical elevation shadow.
+          const rect = card.getBoundingClientRect();
+          const cardCenterX = rect.left + rect.width / 2;
+          const distance = Math.abs(viewportCenterX - cardCenterX);
+          const visualRadius = window.innerWidth * 0.4;
+          const normalizedDistance = Math.min(distance / visualRadius, 1);
+          const intensity = 1 - normalizedDistance;
+
+          const baseBrightness = 1;
+          const brightnessBoost = 0.08 * intensity;
+          const brightness = baseBrightness + brightnessBoost;
+
+          // Soft layered dark physical shadow consistent across all cards on PC
+          const desktopShadow =
+            '0 4px 6px -1px rgba(0, 0, 0, 0.22), 0 12px 24px -4px rgba(0, 0, 0, 0.28), 0 20px 36px -8px rgba(0, 0, 0, 0.20)';
+
+          if (imageWrapper) {
+            imageWrapper.style.transform = 'none';
+            imageWrapper.style.opacity = '1';
+            imageWrapper.style.boxShadow = desktopShadow;
+            imageWrapper.style.border = 'none';
+            imageWrapper.style.outline = 'none';
+          }
+          if (imageBg) {
+            imageBg.style.filter = `brightness(${brightness.toFixed(2)})`;
+          }
+        } else {
+          // Mobile & Tablet: retain the current convex/curved convoy effect and refined shadow
+          const rect = card.getBoundingClientRect();
+          const cardCenterX = rect.left + rect.width / 2;
+          const offset = cardCenterX - viewportCenterX;
+
+          // Approximate inter-card center distance (width + gap)
+          const cardWidth = rect.width;
+          const gap = window.innerWidth < 640 ? 16 : 24;
+          const spacing = cardWidth + gap;
+          const norm = spacing > 0 ? offset / spacing : 0;
+          const absNorm = Math.abs(norm);
+
+          // Intensity: 1 at center, drops to 0 at adjacent neighbor (norm = 1)
+          const intensity = Math.max(0, 1 - Math.min(absNorm, 1));
+
+          // Scale: Center card is largest (1.03), neighbor cards slightly smaller (0.95), further cards down to 0.88
+          const scale = 1.03 - Math.min(absNorm, 2) * 0.075;
+
+          // Convex Convoy Rotation (rotateY):
+          // Center card faces directly forward (0deg).
+          // Card to the left (offset < 0) angles subtly toward center (+rotateY).
+          // Card to the right (offset > 0) angles subtly toward center (-rotateY).
+          // Max angle ~5.5deg ensures subtle, tactile card curve without distorting food photography.
+          const rotY = -Math.sign(offset) * Math.min(absNorm, 1.2) * 5.5;
+
+          // Depth (translateZ): Center card closest to viewer, neighboring cards subtly recessed
+          const transZ = -Math.min(absNorm, 2) * 16;
+
+          // Controlled opacity: Center card is fully prominent; neighbors remain readable
+          const opacity = 0.72 + 0.28 * intensity;
+
+          // Brightness: center card is vibrant, neighbor cards slightly softer
+          const brightness = 0.85 + 0.1 * intensity;
+
+          // Accurate Shadow on red background:
+          // Multi-layered: tight ambient occlusion + soft elevation drop
+          // Center card: strongest elevation
+          // Neighbor cards: softer, gentle elevation
+          const elevY = Math.round(8 + 12 * intensity);
+          const elevBlur = Math.round(18 + 22 * intensity);
+          const elevAlpha = (0.2 + 0.16 * intensity).toFixed(2);
+          const ambY = Math.round(2 + 2 * intensity);
+          const ambBlur = Math.round(6 + 6 * intensity);
+          const ambAlpha = (0.14 + 0.08 * intensity).toFixed(2);
+
+          if (imageWrapper) {
+            imageWrapper.style.border = '';
+            imageWrapper.style.outline = '';
+            imageWrapper.style.transform = `perspective(1000px) rotateY(${rotY.toFixed(2)}deg) translateZ(${transZ.toFixed(1)}px) scale(${scale.toFixed(3)})`;
+            imageWrapper.style.opacity = `${opacity.toFixed(2)}`;
+            imageWrapper.style.boxShadow = `0 ${elevY}px ${elevBlur}px -8px rgba(0,0,0,${elevAlpha}), 0 ${ambY}px ${ambBlur}px -2px rgba(0,0,0,${ambAlpha})`;
+          }
+          if (imageBg) {
+            imageBg.style.filter = `brightness(${brightness.toFixed(2)})`;
+          }
         }
       });
 
@@ -293,19 +354,19 @@ export function FeaturedCategories({ categories }: FeaturedCategoriesProps) {
   if (!categories || categories.length === 0) return null;
 
   return (
-    <section ref={containerRef} className="relative w-full bg-background">
-      {/* Sticky panel — top:68px keeps content below the fixed 68px header */}
+    <section ref={containerRef} className="relative w-full bg-[#BC1D1A]">
+      {/* Sticky panel — top:52px mobile, 68px desktop keeps content below the compact header */}
       <div
         ref={stickyRef}
-        className="sticky top-[68px] w-full h-[calc(100vh-68px)] overflow-hidden flex flex-col justify-center pt-4 pb-16 md:pt-8 md:pb-20"
+        className="sticky top-[52px] md:top-[68px] w-full h-[calc(100vh-52px)] md:h-[calc(100vh-68px)] overflow-hidden flex flex-col justify-center py-4 md:pt-8 md:pb-20"
       >
         {/* Section Header */}
         <div
           ref={headerRef}
-          className="w-full max-w-7xl mx-auto px-6 lg:px-8 mb-10 md:mb-16 will-change-transform opacity-0"
+          className="w-full max-w-7xl mx-auto px-6 lg:px-8 mb-6 md:mb-14 will-change-transform opacity-0"
         >
-          <SectionTitle className="text-left">Explore Collections</SectionTitle>
-          <p className="mt-4 text-lg md:text-xl text-muted-foreground font-light max-w-xl">
+          <SectionTitle className="text-left text-[#FDFADB]">Explore Collections</SectionTitle>
+          <p className="mt-4 text-lg md:text-xl text-[#FDFADB]/80 font-light max-w-xl">
             A handcrafted selection of our signature drinks and desserts.
           </p>
         </div>
@@ -314,7 +375,7 @@ export function FeaturedCategories({ categories }: FeaturedCategoriesProps) {
         <div className="w-full relative">
           <div
             ref={trackRef}
-            className="flex items-center gap-6 md:gap-10 px-6 lg:px-8 w-max will-change-transform opacity-0"
+            className="flex items-center gap-4 sm:gap-6 md:gap-8 px-6 lg:px-8 w-max will-change-transform opacity-0"
           >
             {categories.map((category, idx) => {
               const imageUrl = category.coverImage
@@ -328,10 +389,10 @@ export function FeaturedCategories({ categories }: FeaturedCategoriesProps) {
                   ref={(el) => {
                     cardsRef.current[idx] = el;
                   }}
-                  className="explore-card group relative block w-[280px] sm:w-[300px] md:w-[360px] aspect-[4/5] flex-shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-2xl"
+                  className="explore-card group relative block w-[56vw] min-w-[200px] max-w-[240px] sm:w-[260px] sm:max-w-none md:w-[300px] lg:w-[360px] aspect-[4/5] flex-shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FDFADB] rounded-2xl"
                 >
                   {/* Scalable Container for Center Focus */}
-                  <div className="focus-scale w-full h-full relative overflow-hidden rounded-2xl border border-border/40 will-change-transform">
+                  <div className="focus-scale w-full h-full relative overflow-hidden rounded-2xl border border-white/10 lg:border-0 will-change-transform lg:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.22),0_12px_24px_-4px_rgba(0,0,0,0.28),0_20px_36px_-8px_rgba(0,0,0,0.20)]">
                     {/* Image Placeholder */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent z-20" />
 
@@ -342,12 +403,12 @@ export function FeaturedCategories({ categories }: FeaturedCategoriesProps) {
                         className="focus-image absolute inset-0 w-full h-full object-cover z-10 transition-transform duration-700 group-hover:scale-105 will-change-transform"
                       />
                     ) : (
-                      <div className="focus-image absolute inset-0 bg-muted/80 z-10 transition-transform duration-700 group-hover:scale-105 will-change-transform" />
+                      <div className="focus-image absolute inset-0 bg-[#8F211B]/40 z-10 transition-transform duration-700 group-hover:scale-105 will-change-transform" />
                     )}
 
                     {/* Content (Bottom Anchored) */}
                     <div className="relative z-30 h-full p-6 md:p-8 flex flex-col justify-end text-left">
-                      <h3 className="font-serif text-2xl md:text-3xl font-medium text-white drop-shadow-md tracking-wide mb-1">
+                      <h3 className="font-serif text-xl sm:text-2xl md:text-3xl font-medium text-[#FDFADB] drop-shadow-md tracking-wide mb-1">
                         {category.name}
                       </h3>
                     </div>
@@ -390,6 +451,8 @@ export function FeaturedCategories({ categories }: FeaturedCategoriesProps) {
           }
           .focus-scale {
             transform: none !important;
+            box-shadow: 0 10px 24px -8px rgba(0,0,0,0.25) !important;
+            opacity: 1 !important;
           }
         }
       `,

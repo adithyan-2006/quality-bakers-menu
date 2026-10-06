@@ -73,7 +73,7 @@ export function SignatureShowcase({ products }: SignatureShowcaseProps) {
               milk — never heated, never processed, always crafted with uncompromising care.
             </p>
 
-            <div className="flex items-center gap-3 pt-4 md:pt-6 border-t border-brand-cream/20">
+            <div className="flex items-center gap-3 pt-4 md:pt-6 border-t-0 md:border-t border-brand-cream/20">
               <div className="w-10 h-10 md:w-12 md:h-12 rounded-full border border-brand-cream/40 flex items-center justify-center flex-shrink-0 text-[9px] md:text-[10px] font-bold tracking-widest uppercase">
                 QB
               </div>
