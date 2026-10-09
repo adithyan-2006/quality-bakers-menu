@@ -1,13 +1,22 @@
-export async function revalidateCustomerApp() {
+export interface CustomerRevalidationResult {
+  revalidated: boolean;
+  error?: string;
+}
+
+export async function revalidateCustomerApp(): Promise<CustomerRevalidationResult> {
   const customerUrl = process.env.CUSTOMER_APP_URL;
   const revalidationSecret = process.env.REVALIDATION_SECRET;
 
   if (!customerUrl || !revalidationSecret) {
-    console.warn(
+    const errorMsg =
       '[Admin] CUSTOMER_APP_URL or REVALIDATION_SECRET is not set. ' +
-        'Customer ISR cache was NOT revalidated.',
-    );
-    return;
+      'Database write succeeded, but customer ISR cache was NOT revalidated.';
+    console.warn(errorMsg);
+    return {
+      revalidated: false,
+      error:
+        'Revalidation credentials not configured (CUSTOMER_APP_URL or REVALIDATION_SECRET missing)',
+    };
   }
 
   try {
@@ -15,11 +24,25 @@ export async function revalidateCustomerApp() {
     const res = await fetch(url, { method: 'POST' });
     if (!res.ok) {
       const body = await res.text().catch(() => '(unreadable body)');
-      console.error(`[Admin] Customer revalidation request failed - status ${res.status}: ${body}`);
+      const errorMsg = `[Admin] Database write succeeded, but customer revalidation request failed - status ${res.status}: ${body}`;
+      console.error(errorMsg);
+      return {
+        revalidated: false,
+        error: `Customer revalidation failed with status ${res.status}: ${body}`,
+      };
     } else {
-      console.log('[Admin] Customer ISR cache successfully revalidated.');
+      console.log(
+        '[Admin] Database write succeeded and customer ISR cache successfully revalidated.',
+      );
+      return { revalidated: true };
     }
   } catch (err) {
-    console.error('[Admin] Customer revalidation request threw an error:', err);
+    const errDetail = err instanceof Error ? err.message : String(err);
+    const errorMsg = `[Admin] Database write succeeded, but customer revalidation request threw an error: ${errDetail}`;
+    console.error(errorMsg);
+    return {
+      revalidated: false,
+      error: `Customer revalidation network error: ${errDetail}`,
+    };
   }
 }

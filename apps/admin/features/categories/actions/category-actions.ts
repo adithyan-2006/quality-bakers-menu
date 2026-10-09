@@ -15,6 +15,10 @@ export async function getCategoryAction(id: string) {
 export async function createCategoryAction(data: any) {
   const result = await RepositoryFactory.getCategoryRepository().createCategory(data);
   revalidatePath('/categories');
+
+  // Cross-app revalidation
+  await revalidateCustomerApp();
+
   return result;
 }
 
@@ -31,6 +35,10 @@ export async function updateCategoryAction(id: string, data: any) {
 export async function updateCategoryDisplayOrderAction(items: any[]) {
   const result = await RepositoryFactory.getCategoryRepository().updateDisplayOrder(items);
   revalidatePath('/categories');
+
+  // Cross-app revalidation
+  await revalidateCustomerApp();
+
   return result;
 }
 

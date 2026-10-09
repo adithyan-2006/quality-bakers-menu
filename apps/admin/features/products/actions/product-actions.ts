@@ -17,6 +17,10 @@ export async function getProductAction(id: string): Promise<AdminProduct | null>
 export async function createProductAction(data: Partial<AdminProduct>): Promise<AdminProduct> {
   const result = await RepositoryFactory.getProductRepository().createProduct(data);
   revalidatePath('/products');
+
+  // Cross-app revalidation
+  await revalidateCustomerApp();
+
   return result;
 }
 
@@ -38,12 +42,20 @@ export async function updateProductDisplayOrderAction(
 ): Promise<void> {
   const result = await RepositoryFactory.getProductRepository().updateDisplayOrder(items);
   revalidatePath('/products');
+
+  // Cross-app revalidation
+  await revalidateCustomerApp();
+
   return result;
 }
 
 export async function duplicateProductAction(id: string): Promise<AdminProduct> {
   const result = await RepositoryFactory.getProductRepository().duplicateProduct(id);
   revalidatePath('/products');
+
+  // Cross-app revalidation
+  await revalidateCustomerApp();
+
   return result;
 }
 
