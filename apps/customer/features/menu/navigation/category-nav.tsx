@@ -240,7 +240,7 @@ export function CategoryNav({ categories }: CategoryNavProps) {
                 handleCategoryClick(slug);
               }}
               className={cn(
-                'relative z-10 flex-shrink-0 px-1 py-1.5 md:py-2 text-[15px] md:text-base font-medium text-[#FDFADB] whitespace-nowrap snap-center tracking-wide',
+                'relative z-10 flex-shrink-0 px-1 py-1.5 md:py-2 text-sm md:text-base font-medium text-[#FDFADB] whitespace-nowrap snap-center tracking-wide',
                 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FDFADB] focus-visible:ring-offset-2 focus-visible:ring-offset-[#BC1D1A]',
               )}
             >

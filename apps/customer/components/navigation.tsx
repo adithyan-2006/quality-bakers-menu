@@ -17,7 +17,7 @@ export function Navigation() {
   };
 
   return (
-    <nav className="flex items-center space-x-8 text-base font-medium uppercase tracking-wider">
+    <nav className="flex items-center space-x-8 text-sm font-medium uppercase tracking-wider">
       <Link
         href="/#home"
         onClick={handleScroll('home')}

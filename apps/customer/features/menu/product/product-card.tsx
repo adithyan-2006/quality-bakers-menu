@@ -408,7 +408,7 @@ export function ProductCard({
           />
           {product.badge && (
             <div className="absolute top-3.5 left-3.5 sm:top-4 sm:left-4 bg-[#FDFADB] px-3.5 py-1 rounded-full shadow-sm z-10">
-              <span className="text-[10px] sm:text-xs uppercase tracking-[0.12em] text-[#BC1D1A] font-bold">
+              <span className="text-[10px] md:text-xs uppercase tracking-[0.1em] text-[#BC1D1A] font-bold">
                 {product.badge}
               </span>
             </div>
@@ -416,18 +416,18 @@ export function ProductCard({
         </div>
 
         <div className="flex flex-col flex-1 p-4 sm:p-5 md:p-6 bg-[#FDFADB]">
-          <h3 className="leading-tight text-[22px] sm:text-2xl md:text-[26px] font-serif font-bold mb-1 sm:mb-1.5 text-[#BC1D1A] group-hover:text-brand-brick-red transition-colors duration-300">
+          <h3 className="leading-tight text-xl md:text-2xl font-serif font-bold mb-2 text-[#BC1D1A] group-hover:text-brand-brick-red transition-colors duration-300">
             {product.name}
           </h3>
           {product.description && (
-            <p className="line-clamp-2 text-base sm:text-[17px] md:text-lg font-sans leading-relaxed text-[#BC1D1A]/70 mb-3 sm:mb-4">
+            <p className="line-clamp-2 text-sm md:text-base leading-relaxed text-[#BC1D1A]/70 mb-4">
               {product.description}
             </p>
           )}
 
           <div className="mt-auto pt-2.5 sm:pt-3 border-t border-black/10 flex items-center justify-between">
             {formattedPrice && (
-              <span className="font-bold font-sans tracking-wide text-base sm:text-lg text-brand-dark">
+              <span className="font-bold font-sans tracking-wide text-sm md:text-base text-brand-dark">
                 {formattedPrice}
               </span>
             )}

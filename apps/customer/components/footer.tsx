@@ -8,7 +8,7 @@ export async function Footer() {
     <footer className="border-t border-[#BC1D1A]/15 py-12 md:py-16 bg-[#FDFADB] mt-auto">
       <ContentContainer className="flex flex-col md:flex-row justify-between items-center gap-6 text-sm text-[#BC1D1A]/80 font-light">
         <div className="flex flex-col items-center md:items-start space-y-1">
-          <span className="font-serif text-lg font-bold text-[#BC1D1A] mb-2">
+          <span className="font-serif text-lg font-medium text-[#BC1D1A] mb-2">
             {business?.name || 'Quality Bakers'}
           </span>
           <span>

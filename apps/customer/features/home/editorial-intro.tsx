@@ -5,6 +5,7 @@ import { ArrowRight } from 'lucide-react';
 
 import { ScrollReveal } from '../../components/scroll-reveal';
 import { ContentContainer } from '../../components/layout/content-container';
+import { DrippingAnimation } from './dripping-animation';
 import type { Prisma } from '@qbm/database';
 
 type HomepageWithRelations = Prisma.HomepageGetPayload<{
@@ -27,61 +28,8 @@ export function EditorialIntro({
       id="home"
       className="relative w-full bg-[#BC1D1A] flex flex-col min-h-[calc(100vh-64px)] md:min-h-[calc(100vh-80px)] min-h-[calc(100dvh-64px)] md:min-h-[calc(100dvh-80px)]"
     >
-      {/* Animated Falling Droplets Overlay (Strictly on Landing Page Hero) */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden z-20" aria-hidden="true">
-        {/* Droplet 1: Right signature glaze drip lane (x ≈ 75.7%) */}
-        <div
-          className="anim-drop-1 absolute -top-1"
-          style={{
-            left: 'calc(75.7% - 3.5px)',
-            width: '7px',
-            height: '9px',
-            borderRadius: '50% 50% 50% 50% / 40% 40% 60% 60%',
-            background:
-              'radial-gradient(circle at 35% 28%, #FFFFFF 0%, #FFF1D8 45%, #E5CAA0 85%, #C28F50 100%)',
-            boxShadow: '0 3px 5px rgba(70, 15, 10, 0.3)',
-          }}
-        />
-
-        {/* Droplet 2: Center-right hanging area lane (x ≈ 53.8%) */}
-        <div
-          className="anim-drop-2 absolute -top-1"
-          style={{
-            left: 'calc(53.8% - 2.5px)',
-            width: '5px',
-            height: '6px',
-            borderRadius: '50%',
-            background: 'radial-gradient(circle at 35% 28%, #FFFFFF 0%, #FFF1D8 50%, #DFC090 90%)',
-            boxShadow: '0 2px 4px rgba(70, 15, 10, 0.28)',
-          }}
-        />
-
-        {/* Droplet 3: Center belly lane (x ≈ 35.1%) */}
-        <div
-          className="anim-drop-3 absolute -top-1 hidden sm:block"
-          style={{
-            left: 'calc(35.1% - 2px)',
-            width: '4px',
-            height: '5px',
-            borderRadius: '50%',
-            background: 'radial-gradient(circle at 35% 28%, #FFFFFF 0%, #FFF1D8 50%, #DFC090 90%)',
-            boxShadow: '0 2px 4px rgba(70, 15, 10, 0.25)',
-          }}
-        />
-
-        {/* Droplet 4: Left hanging lobe lane (x ≈ 11.5%) */}
-        <div
-          className="anim-drop-4 absolute -top-1 hidden md:block"
-          style={{
-            left: 'calc(11.5% - 2px)',
-            width: '4px',
-            height: '5px',
-            borderRadius: '50%',
-            background: 'radial-gradient(circle at 35% 28%, #FFFFFF 0%, #FFF1D8 50%, #DFC090 90%)',
-            boxShadow: '0 2px 4px rgba(70, 15, 10, 0.25)',
-          }}
-        />
-      </div>
+      {/* Living Melted Header Dripping & Natural Splash Animation */}
+      <DrippingAnimation />
 
       {/* Top Banner (Marquee) */}
       <div className="w-full border-b border-[#FDFADB]/15 py-2.5 sm:py-3 md:py-3.5 flex items-center overflow-hidden flex-shrink-0 bg-[#BC1D1A] z-20 relative mt-5 sm:mt-6 md:mt-7">
@@ -103,6 +51,8 @@ export function EditorialIntro({
             </span>
           ))}
         </div>
+        {/* Accent Bar Segment on bottom border matching Reference Panel 5 */}
+        <div className="absolute bottom-0 left-0 w-28 sm:w-36 md:w-44 h-[3px] bg-[#F9E6CE] rounded-r-sm pointer-events-none" />
       </div>
 
       {/* Main Hero Content */}

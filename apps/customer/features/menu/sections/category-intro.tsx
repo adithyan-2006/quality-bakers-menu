@@ -31,7 +31,7 @@ export function CategoryIntro({ config, themeClasses, animationConfig }: Categor
         <h2
           id={`category-${config.slug}`}
           className={cn(
-            'font-bold leading-[1.1] font-serif tracking-tight text-4xl sm:text-5xl md:text-7xl lg:text-8xl mb-4 md:mb-8',
+            'font-bold leading-[1.1] font-serif tracking-tight text-5xl md:text-7xl lg:text-8xl mb-6 md:mb-8',
             themeClasses.heading,
           )}
         >
@@ -42,7 +42,7 @@ export function CategoryIntro({ config, themeClasses, animationConfig }: Categor
       <MotionWrapper config={animationConfig} index={2} variant="description" delayMs={120}>
         <p
           className={cn(
-            'max-w-2xl font-light leading-relaxed text-base md:text-xl lg:text-2xl',
+            'max-w-2xl font-light leading-relaxed text-lg md:text-xl lg:text-2xl',
             themeClasses.description,
           )}
         >

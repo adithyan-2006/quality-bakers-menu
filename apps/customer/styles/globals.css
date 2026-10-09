@@ -488,162 +488,484 @@
   .animate-heart-fade-in {
     animation: heart-fade-in 520ms ease-out forwards;
   }
+}
 
-  /* Cream Header Melting Droplets Traveling Down Through Landing Page */
-  @keyframes drop-journey-1 {
-    0% {
-      transform: translate3d(0, 0, 0) scale(0.3, 0.4);
-      opacity: 0;
-    }
-    10% {
-      transform: translate3d(0, 5px, 0) scale(1, 1.3);
-      opacity: 0.95;
-    }
-    25% {
-      transform: translate3d(0, 25px, 0) scale(0.85, 1.4);
-      opacity: 0.95;
-    }
-    55% {
-      transform: translate3d(1px, 140px, 0) scale(0.9, 1.2);
-      opacity: 0.85;
-    }
-    80% {
-      transform: translate3d(2px, 240px, 0) scale(0.85, 1.05);
-      opacity: 0.55;
-    }
-    95% {
-      transform: translate3d(2px, 320px, 0) scale(0.75, 0.85);
-      opacity: 0;
-    }
-    100% {
-      transform: translate3d(2px, 320px, 0) scale(0.3, 0.3);
-      opacity: 0;
-    }
-  }
+/* ─── Melting Header Dripping & Natural Splash Animations ───────────────── */
 
-  @keyframes drop-journey-2 {
-    0% {
-      transform: translate3d(0, 0, 0) scale(0.3, 0.4);
-      opacity: 0;
-    }
-    12% {
-      transform: translate3d(0, 4px, 0) scale(0.95, 1.25);
-      opacity: 0.95;
-    }
-    30% {
-      transform: translate3d(-1px, 22px, 0) scale(0.85, 1.35);
-      opacity: 0.95;
-    }
-    60% {
-      transform: translate3d(-2px, 110px, 0) scale(0.9, 1.15);
-      opacity: 0.8;
-    }
-    85% {
-      transform: translate3d(-2px, 180px, 0) scale(0.85, 1);
-      opacity: 0.45;
-    }
-    96% {
-      transform: translate3d(-2px, 230px, 0) scale(0.7, 0.8);
-      opacity: 0;
-    }
-    100% {
-      transform: translate3d(-2px, 230px, 0) scale(0.3, 0.3);
-      opacity: 0;
-    }
-  }
+:root {
+  --tip-lane-1: 27.2px;
+  --tip-lane-3: 38.5px;
+  --tip-lane-5: 23.3px;
+}
 
-  @keyframes drop-journey-3 {
-    0% {
-      transform: translate3d(0, 0, 0) scale(0.3, 0.4);
-      opacity: 0;
-    }
-    14% {
-      transform: translate3d(0, 4px, 0) scale(0.9, 1.2);
-      opacity: 0.9;
-    }
-    32% {
-      transform: translate3d(1px, 20px, 0) scale(0.85, 1.35);
-      opacity: 0.9;
-    }
-    62% {
-      transform: translate3d(1px, 100px, 0) scale(0.9, 1.15);
-      opacity: 0.75;
-    }
-    88% {
-      transform: translate3d(2px, 150px, 0) scale(0.85, 1);
-      opacity: 0.35;
-    }
-    98% {
-      transform: translate3d(2px, 180px, 0) scale(0.7, 0.8);
-      opacity: 0;
-    }
-    100% {
-      transform: translate3d(2px, 180px, 0) scale(0.3, 0.3);
-      opacity: 0;
-    }
+@media (max-width: 639px) {
+  :root {
+    --tip-lane-1: 17.2px;
+    --tip-lane-3: 19.4px;
+    --tip-lane-5: 10.6px;
   }
+}
 
-  @keyframes drop-journey-4 {
-    0% {
-      transform: translate3d(0, 0, 0) scale(0.3, 0.4);
-      opacity: 0;
-    }
-    12% {
-      transform: translate3d(0, 4px, 0) scale(0.95, 1.25);
-      opacity: 0.95;
-    }
-    28% {
-      transform: translate3d(-1px, 25px, 0) scale(0.85, 1.35);
-      opacity: 0.9;
-    }
-    58% {
-      transform: translate3d(-2px, 130px, 0) scale(0.9, 1.15);
-      opacity: 0.75;
-    }
-    82% {
-      transform: translate3d(-2px, 200px, 0) scale(0.85, 1);
-      opacity: 0.4;
-    }
-    95% {
-      transform: translate3d(-2px, 250px, 0) scale(0.7, 0.8);
-      opacity: 0;
-    }
-    100% {
-      transform: translate3d(-2px, 250px, 0) scale(0.3, 0.3);
-      opacity: 0;
-    }
+@media (min-width: 640px) and (max-width: 767px) {
+  :root {
+    --tip-lane-1: 18.9px;
+    --tip-lane-3: 21.1px;
+    --tip-lane-5: 12.1px;
   }
+}
 
-  .anim-drop-1 {
-    animation: drop-journey-1 9s cubic-bezier(0.35, 0, 0.25, 1) infinite 0s;
+@media (min-width: 768px) and (max-width: 1023px) {
+  :root {
+    --tip-lane-1: 25.5px;
+    --tip-lane-3: 36.2px;
+    --tip-lane-5: 22px;
   }
-  .anim-drop-2 {
-    animation: drop-journey-2 11s cubic-bezier(0.35, 0, 0.25, 1) infinite 3.5s;
-  }
-  .anim-drop-3 {
-    animation: drop-journey-3 8.6s cubic-bezier(0.35, 0, 0.25, 1) infinite 1.8s;
-  }
-  .anim-drop-4 {
-    animation: drop-journey-4 12.2s cubic-bezier(0.35, 0, 0.25, 1) infinite 6s;
-  }
+}
 
-  @media (prefers-reduced-motion: reduce) {
-    .animate-like-pop,
-    .animate-like-unpop,
-    .animate-float-heart-1,
-    .animate-float-heart-2,
-    .animate-float-heart-3,
-    .animate-float-heart-4,
-    .animate-heart-break-left,
-    .animate-heart-break-right,
-    .animate-heart-fade-in,
-    .anim-drop-1,
-    .anim-drop-2,
-    .anim-drop-3,
-    .anim-drop-4 {
-      animation: none !important;
-      transform: none !important;
-      opacity: 0 !important;
-    }
+@media (min-width: 1024px) {
+  :root {
+    --tip-lane-1: 27.2px;
+    --tip-lane-3: 38.5px;
+    --tip-lane-5: 23.3px;
+  }
+}
+
+/* Shared Cream Droplet & Splash Styling */
+.drip-lane {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 48px;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+/* The 3D Melting & Falling Cream Teardrop */
+.cream-drip-drop {
+  position: absolute;
+  left: 50%;
+  transform-origin: 50% 0%;
+  filter: drop-shadow(0 2.5px 4px rgba(72, 5, 5, 0.65)) drop-shadow(0 6px 14px rgba(105, 8, 8, 0.4))
+    drop-shadow(0 12px 24px rgba(125, 13, 13, 0.18));
+  will-change: top, transform, opacity;
+}
+
+.cream-splash-target {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.cream-splash-ring {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translate3d(-50%, -50%, 0) scale(0.1, 0.05);
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 250, 242, 0.95);
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255, 250, 242, 0.55) 0%,
+    rgba(240, 186, 142, 0.22) 65%,
+    transparent 100%
+  );
+  box-shadow: 0 2px 6px rgba(55, 3, 3, 0.45);
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+.cream-splash-bead {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 30%, #ffffff 0%, #fffdf7 40%, #eaa97b 100%);
+  box-shadow: 0 1px 3px rgba(55, 3, 3, 0.45);
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+/* Physics Teardrop Keyframe Animations: Fluid Melting Swell, Necking Stretch, Snap Detachment & Smooth Gravity Freefall */
+@keyframes drop-fall-lane1 {
+  0%,
+  5% {
+    top: calc(var(--tip-lane-1) - 2px);
+    opacity: 0;
+    transform: translate3d(-50%, 0, 0) scale(0, 0);
+    animation-timing-function: ease-out;
+  }
+  9% {
+    top: calc(var(--tip-lane-1) - 2px);
+    opacity: 1;
+    transform: translate3d(-50%, 0, 0) scale(0.4, 0.3);
+    animation-timing-function: ease-in-out;
+  }
+  19% {
+    top: calc(var(--tip-lane-1) - 1px);
+    opacity: 1;
+    transform: translate3d(-50%, 0, 0) scale(0.7, 0.65);
+    animation-timing-function: ease-in-out;
+  }
+  29% {
+    top: var(--tip-lane-1);
+    opacity: 1;
+    transform: translate3d(-50%, 0, 0) scale(1, 1);
+    animation-timing-function: ease-in;
+  }
+  34% {
+    top: calc(var(--tip-lane-1) + 2.5px);
+    opacity: 1;
+    transform: translate3d(-50%, 0, 0) scale(0.92, 1.25);
+    animation-timing-function: ease-in;
+  }
+  38% {
+    top: calc(var(--tip-lane-1) + 6px);
+    opacity: 1;
+    transform: translate3d(-50%, 0, 0) scale(0.82, 1.48);
+    animation-timing-function: ease-in;
+  }
+  39.5% {
+    top: calc(var(--tip-lane-1) + 10px);
+    opacity: 1;
+    transform: translate3d(-50%, 0, 0) scale(1, 1.05);
+    animation-timing-function: cubic-bezier(0.42, 0, 0.82, 0.35);
+  }
+  54% {
+    top: calc(100% - 18px);
+    opacity: 1;
+    transform: translate3d(-50%, 0, 0) scale(1.8, 0.22);
+    animation-timing-function: ease-out;
+  }
+  57% {
+    top: calc(100% - 18px);
+    opacity: 0;
+    transform: translate3d(-50%, 0, 0) scale(2.15, 0.05);
+  }
+  100% {
+    top: calc(100% - 18px);
+    opacity: 0;
+    transform: translate3d(-50%, 0, 0) scale(0, 0);
+  }
+}
+
+@keyframes drop-fall-lane3 {
+  0%,
+  5% {
+    top: calc(var(--tip-lane-3) - 2px);
+    opacity: 0;
+    transform: translate3d(-50%, 0, 0) scale(0, 0);
+    animation-timing-function: ease-out;
+  }
+  9% {
+    top: calc(var(--tip-lane-3) - 2px);
+    opacity: 1;
+    transform: translate3d(-50%, 0, 0) scale(0.42, 0.32);
+    animation-timing-function: ease-in-out;
+  }
+  19% {
+    top: calc(var(--tip-lane-3) - 1px);
+    opacity: 1;
+    transform: translate3d(-50%, 0, 0) scale(0.72, 0.65);
+    animation-timing-function: ease-in-out;
+  }
+  29% {
+    top: var(--tip-lane-3);
+    opacity: 1;
+    transform: translate3d(-50%, 0, 0) scale(1, 1);
+    animation-timing-function: ease-in;
+  }
+  34% {
+    top: calc(var(--tip-lane-3) + 3px);
+    opacity: 1;
+    transform: translate3d(-50%, 0, 0) scale(0.92, 1.25);
+    animation-timing-function: ease-in;
+  }
+  38% {
+    top: calc(var(--tip-lane-3) + 7px);
+    opacity: 1;
+    transform: translate3d(-50%, 0, 0) scale(0.82, 1.5);
+    animation-timing-function: ease-in;
+  }
+  39.5% {
+    top: calc(var(--tip-lane-3) + 12px);
+    opacity: 1;
+    transform: translate3d(-50%, 0, 0) scale(1, 1.05);
+    animation-timing-function: cubic-bezier(0.42, 0, 0.82, 0.35);
+  }
+  54% {
+    top: calc(100% - 20px);
+    opacity: 1;
+    transform: translate3d(-50%, 0, 0) scale(1.85, 0.22);
+    animation-timing-function: ease-out;
+  }
+  57% {
+    top: calc(100% - 20px);
+    opacity: 0;
+    transform: translate3d(-50%, 0, 0) scale(2.2, 0.05);
+  }
+  100% {
+    top: calc(100% - 20px);
+    opacity: 0;
+    transform: translate3d(-50%, 0, 0) scale(0, 0);
+  }
+}
+
+@keyframes drop-fall-lane5 {
+  0%,
+  5% {
+    top: calc(var(--tip-lane-5) - 2px);
+    opacity: 0;
+    transform: translate3d(-50%, 0, 0) scale(0, 0);
+    animation-timing-function: ease-out;
+  }
+  9% {
+    top: calc(var(--tip-lane-5) - 2px);
+    opacity: 1;
+    transform: translate3d(-50%, 0, 0) scale(0.4, 0.3);
+    animation-timing-function: ease-in-out;
+  }
+  19% {
+    top: calc(var(--tip-lane-5) - 1px);
+    opacity: 1;
+    transform: translate3d(-50%, 0, 0) scale(0.7, 0.65);
+    animation-timing-function: ease-in-out;
+  }
+  29% {
+    top: var(--tip-lane-5);
+    opacity: 1;
+    transform: translate3d(-50%, 0, 0) scale(1, 1);
+    animation-timing-function: ease-in;
+  }
+  34% {
+    top: calc(var(--tip-lane-5) + 2.5px);
+    opacity: 1;
+    transform: translate3d(-50%, 0, 0) scale(0.92, 1.25);
+    animation-timing-function: ease-in;
+  }
+  38% {
+    top: calc(var(--tip-lane-5) + 6px);
+    opacity: 1;
+    transform: translate3d(-50%, 0, 0) scale(0.82, 1.48);
+    animation-timing-function: ease-in;
+  }
+  39.5% {
+    top: calc(var(--tip-lane-5) + 11px);
+    opacity: 1;
+    transform: translate3d(-50%, 0, 0) scale(1, 1.05);
+    animation-timing-function: cubic-bezier(0.42, 0, 0.82, 0.35);
+  }
+  54% {
+    top: calc(100% - 19px);
+    opacity: 1;
+    transform: translate3d(-50%, 0, 0) scale(1.82, 0.22);
+    animation-timing-function: ease-out;
+  }
+  57% {
+    top: calc(100% - 19px);
+    opacity: 0;
+    transform: translate3d(-50%, 0, 0) scale(2.18, 0.05);
+  }
+  100% {
+    top: calc(100% - 19px);
+    opacity: 0;
+    transform: translate3d(-50%, 0, 0) scale(0, 0);
+  }
+}
+
+/* Synchronized Splash Animations with 3D Elliptical Meniscus Ripple & Parabolic Beads */
+@keyframes splash-ring-pop {
+  0%,
+  53% {
+    opacity: 0;
+    transform: translate3d(-50%, -50%, 0) scale(0.1, 0.04);
+  }
+  54% {
+    opacity: 0.95;
+    transform: translate3d(-50%, -50%, 0) scale(0.5, 0.18);
+  }
+  59% {
+    opacity: 0.8;
+    transform: translate3d(-50%, -50%, 0) scale(1.25, 0.45);
+  }
+  65% {
+    opacity: 0;
+    transform: translate3d(-50%, -50%, 0) scale(1.8, 0.6);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(-50%, -50%, 0) scale(1.8, 0.6);
+  }
+}
+
+@keyframes splash-bead-left {
+  0%,
+  53% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) scale(0.3);
+  }
+  55% {
+    opacity: 0.95;
+    transform: translate3d(-14px, -20px, 0) scale(1);
+  }
+  60% {
+    opacity: 0.75;
+    transform: translate3d(-22px, -8px, 0) scale(0.75);
+  }
+  65% {
+    opacity: 0;
+    transform: translate3d(-28px, 0px, 0) scale(0.2);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(-28px, 0px, 0) scale(0.2);
+  }
+}
+
+@keyframes splash-bead-center {
+  0%,
+  53% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) scale(0.3);
+  }
+  55% {
+    opacity: 0.95;
+    transform: translate3d(0, -24px, 0) scale(1);
+  }
+  60% {
+    opacity: 0.75;
+    transform: translate3d(0, -10px, 0) scale(0.75);
+  }
+  65% {
+    opacity: 0;
+    transform: translate3d(0, 0px, 0) scale(0.2);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(0, 0px, 0) scale(0.2);
+  }
+}
+
+@keyframes splash-bead-right {
+  0%,
+  53% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) scale(0.3);
+  }
+  55% {
+    opacity: 0.95;
+    transform: translate3d(14px, -20px, 0) scale(1);
+  }
+  60% {
+    opacity: 0.75;
+    transform: translate3d(22px, -8px, 0) scale(0.75);
+  }
+  65% {
+    opacity: 0;
+    transform: translate3d(28px, 0px, 0) scale(0.2);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(28px, 0px, 0) scale(0.2);
+  }
+}
+
+/* ── Lane Dimensions & Animation Bindings (Rhythmic, Dynamic, Living Bakery Physics) ── */
+
+/* Lane 3: Center Deep Wave Nadir (x ≈ 45.8% desktop / 46.55% mobile) - Primary Voluptuous Droplet */
+.lane-drip-3 .cream-drip-drop {
+  width: 22px;
+  height: 34px;
+  animation: drop-fall-lane3 3.8s linear infinite 0s;
+}
+.lane-drip-3 .cream-splash-ring {
+  width: 44px;
+  height: 16px;
+  animation: splash-ring-pop 3.8s ease-out infinite 0s;
+}
+.lane-drip-3 .bead-l {
+  width: 4.5px;
+  height: 4.5px;
+  animation: splash-bead-left 3.8s ease-out infinite 0s;
+}
+.lane-drip-3 .bead-c {
+  width: 4px;
+  height: 4px;
+  animation: splash-bead-center 3.8s ease-out infinite 0s;
+}
+.lane-drip-3 .bead-r {
+  width: 4.5px;
+  height: 4.5px;
+  animation: splash-bead-right 3.8s ease-out infinite 0s;
+}
+
+/* Lane 1: Left Wave Nadir (x ≈ 14.0%) - Medium Droplet */
+.lane-drip-1 .cream-drip-drop {
+  width: 19px;
+  height: 30px;
+  animation: drop-fall-lane1 4.2s linear infinite 1.8s;
+}
+.lane-drip-1 .cream-splash-ring {
+  width: 38px;
+  height: 13px;
+  animation: splash-ring-pop 4.2s ease-out infinite 1.8s;
+}
+.lane-drip-1 .bead-l {
+  width: 3.8px;
+  height: 3.8px;
+  animation: splash-bead-left 4.2s ease-out infinite 1.8s;
+}
+.lane-drip-1 .bead-r {
+  width: 3.8px;
+  height: 3.8px;
+  animation: splash-bead-right 4.2s ease-out infinite 1.8s;
+}
+
+/* Lane 5: Right Teardrop Wave (x ≈ 83.3%) - Organic Teardrop Droplet */
+.lane-drip-5 .cream-drip-drop {
+  width: 20px;
+  height: 32px;
+  animation: drop-fall-lane5 4s linear infinite 3s;
+}
+.lane-drip-5 .cream-splash-ring {
+  width: 40px;
+  height: 14px;
+  animation: splash-ring-pop 4s ease-out infinite 3s;
+}
+.lane-drip-5 .bead-l {
+  width: 4px;
+  height: 4px;
+  animation: splash-bead-left 4s ease-out infinite 3s;
+}
+.lane-drip-5 .bead-c {
+  width: 3.6px;
+  height: 3.6px;
+  animation: splash-bead-center 4s ease-out infinite 3s;
+}
+.lane-drip-5 .bead-r {
+  width: 4px;
+  height: 4px;
+  animation: splash-bead-right 4s ease-out infinite 3s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-like-pop,
+  .animate-like-unpop,
+  .animate-float-heart-1,
+  .animate-float-heart-2,
+  .animate-float-heart-3,
+  .animate-float-heart-4,
+  .animate-heart-break-left,
+  .animate-heart-break-right,
+  .animate-heart-fade-in,
+  .cream-drip-drop,
+  .cream-splash-ring,
+  .cream-splash-bead {
+    animation: none !important;
+    transform: none !important;
+    opacity: 0 !important;
   }
 }

@@ -408,7 +408,7 @@ export function FeaturedCategories({ categories }: FeaturedCategoriesProps) {
 
                     {/* Content (Bottom Anchored) */}
                     <div className="relative z-30 h-full p-6 md:p-8 flex flex-col justify-end text-left">
-                      <h3 className="font-serif text-xl sm:text-2xl md:text-3xl font-medium text-[#FDFADB] drop-shadow-md tracking-wide mb-1">
+                      <h3 className="font-serif text-2xl md:text-3xl font-medium text-[#FDFADB] drop-shadow-md tracking-wide mb-1">
                         {category.name}
                       </h3>
                     </div>

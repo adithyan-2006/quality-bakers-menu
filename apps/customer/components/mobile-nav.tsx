@@ -125,25 +125,25 @@ export function MobileNav() {
               href="/#home"
               role="menuitem"
               onClick={handleNavClick('home')}
-              className="font-sans text-[22px] sm:text-[24px] font-medium uppercase tracking-[0.22em] text-[#A71920] hover:opacity-80 transition-opacity"
+              className="font-serif text-2xl font-medium text-[#A71920] hover:opacity-80 transition-opacity"
             >
-              HOME
+              Home
             </Link>
             <Link
               href="/#signature"
               role="menuitem"
               onClick={handleNavClick('signature')}
-              className="font-sans text-[22px] sm:text-[24px] font-medium uppercase tracking-[0.22em] text-[#A71920] hover:opacity-80 transition-opacity"
+              className="font-serif text-2xl font-medium text-[#A71920] hover:opacity-80 transition-opacity"
             >
-              SIGNATURE
+              Signature
             </Link>
             <Link
               href="/#about"
               role="menuitem"
               onClick={handleNavClick('about')}
-              className="font-sans text-[22px] sm:text-[24px] font-medium uppercase tracking-[0.22em] text-[#A71920] hover:opacity-80 transition-opacity"
+              className="font-serif text-2xl font-medium text-[#A71920] hover:opacity-80 transition-opacity"
             >
-              ABOUT
+              About
             </Link>
           </nav>
         </div>
