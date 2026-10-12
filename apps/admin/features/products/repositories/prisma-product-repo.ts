@@ -49,16 +49,26 @@ function mapPrismaProduct(prod: any): AdminProduct {
 }
 
 export const PrismaProductRepository = {
+  /**
+   * Retrieves products for the admin panel.
+   *
+   * By default, returns all products ordered by displayOrder asc (no truncation).
+   * Supports optional filtering by search term or categoryId.
+   * Supports explicit pagination if limit (and optional page) is provided,
+   * unless all: true is explicitly requested.
+   */
   getProducts: async (options?: {
     search?: string;
     categoryId?: string;
     page?: number;
     limit?: number;
+    all?: boolean;
   }): Promise<AdminProduct[]> => {
     try {
+      const limit = options?.all ? undefined : options?.limit;
       const page = options?.page ?? 1;
-      const limit = options?.limit ?? 50;
-      const skip = (page - 1) * limit;
+      const skip = limit !== undefined ? (page - 1) * limit : undefined;
+      const take = limit;
 
       const where: any = {};
       if (options?.search) {
@@ -70,8 +80,8 @@ export const PrismaProductRepository = {
 
       const products = await prisma.product.findMany({
         where,
-        skip,
-        take: limit,
+        ...(skip !== undefined ? { skip } : {}),
+        ...(take !== undefined ? { take } : {}),
         orderBy: { displayOrder: 'asc' },
         include: {
           image: true,

@@ -6,8 +6,18 @@ import { AdminProduct } from '../repositories/product-repo';
 import { revalidatePath } from 'next/cache';
 import { revalidateCustomerApp } from '../../../lib/revalidate-customer';
 
-export async function getProductsAction(): Promise<AdminProduct[]> {
-  return await RepositoryFactory.getProductRepository().getProducts();
+/**
+ * Retrieves products for the admin panel.
+ * Default behavior retrieves all products (no truncation).
+ */
+export async function getProductsAction(options?: {
+  search?: string;
+  categoryId?: string;
+  page?: number;
+  limit?: number;
+  all?: boolean;
+}): Promise<AdminProduct[]> {
+  return await RepositoryFactory.getProductRepository().getProducts(options);
 }
 
 export async function getProductAction(id: string): Promise<AdminProduct | null> {

@@ -95,8 +95,29 @@ const mockProducts: AdminProduct[] = [
 ];
 
 export const ProductRepository = {
-  getProducts: async (): Promise<AdminProduct[]> => {
-    return [...mockProducts].sort((a, b) => a.displayOrder - b.displayOrder);
+  getProducts: async (options?: {
+    search?: string;
+    categoryId?: string;
+    page?: number;
+    limit?: number;
+    all?: boolean;
+  }): Promise<AdminProduct[]> => {
+    let prods = [...mockProducts];
+    if (options?.search) {
+      const q = options.search.toLowerCase();
+      prods = prods.filter((p) => p.name.toLowerCase().includes(q));
+    }
+    if (options?.categoryId) {
+      prods = prods.filter((p) => p.categoryId === options.categoryId);
+    }
+    prods.sort((a, b) => a.displayOrder - b.displayOrder);
+    const limit = options?.all ? undefined : options?.limit;
+    if (limit) {
+      const page = options?.page ?? 1;
+      const skip = (page - 1) * limit;
+      prods = prods.slice(skip, skip + limit);
+    }
+    return prods;
   },
 
   getProduct: async (id: string): Promise<AdminProduct | null> => {

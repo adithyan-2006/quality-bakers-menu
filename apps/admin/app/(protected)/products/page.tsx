@@ -5,7 +5,10 @@ import Link from 'next/link';
 import { Plus } from 'lucide-react';
 
 export default async function ProductsPage() {
-  const [products, categories] = await Promise.all([getProductsAction(), getCategoriesAction()]);
+  const [products, categories] = await Promise.all([
+    getProductsAction({ all: true }),
+    getCategoriesAction(),
+  ]);
 
   return (
     <div className="space-y-6 max-w-6xl mx-auto">
