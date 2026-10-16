@@ -3,10 +3,9 @@ import { FeaturedCategories } from '../features/home/featured-categories';
 import { PopularPreview } from '../features/home/popular-preview';
 import { SignatureHighlight } from '../features/home/signature-highlight';
 import { SignatureShowcase } from '../features/home/signature-showcase';
-import { BrowseCta } from '../features/home/browse-cta';
 import { CustomerRepository } from '../repositories/customer-repository';
 export const revalidate = 60;
-import { buttonVariants } from '@qbm/ui';
+import { buttonVariants, formatBadge } from '@qbm/ui';
 import Link from 'next/link';
 
 export default async function HomePage() {
@@ -35,22 +34,21 @@ export default async function HomePage() {
   // The `image` field from Prisma is a nested Media object; we extract the URL here
   // so SignatureShowcase and ProductCard receive a plain string (or undefined).
   const mappedSignatureProducts = signatureProducts.map((p) => {
-    const res: any = {
+    const imageUrl = p.image?.secureUrl || p.image?.optimizedUrl || p.image?.originalUrl;
+    return {
       id: p.id,
       name: p.name,
       slug: p.slug,
       description: p.shortDescription,
       categorySlug: p.category?.slug ?? '',
+      image: imageUrl || undefined,
+      badge: formatBadge(p.badge),
+      price: p.price ? `₹${p.price}` : undefined,
     };
-    const imageUrl = p.image?.secureUrl || p.image?.optimizedUrl || p.image?.originalUrl;
-    if (imageUrl) res.image = imageUrl;
-    if (p.badge && p.badge !== 'NONE') res.badge = p.badge.toLowerCase().replace('_', '-');
-    if (p.price) res.price = `₹${p.price}`;
-    return res;
   });
 
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex flex-col w-full bg-[#BC1D1A]">
       <EditorialIntro
         homepage={homepage}
         businessName={business?.name || 'Quality Bakers'}
@@ -65,7 +63,6 @@ export default async function HomePage() {
         description={homepage.aboutDescription}
         image={homepage.aboutImage}
       />
-      <BrowseCta />
     </div>
   );
 }

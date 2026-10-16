@@ -49,12 +49,12 @@ export function CategorySection({ config, products }: CategorySectionProps) {
       id={config.slug}
       aria-labelledby={`category-${config.slug}`}
       className={cn(
-        'relative scroll-mt-24',
+        'relative scroll-mt-[138px] md:scroll-mt-[158px] lg:scroll-mt-[168px]',
         pacing === 'hero'
-          ? 'py-24 md:py-32 lg:py-40'
+          ? 'py-8 sm:py-10 md:py-12 lg:py-14'
           : pacing === 'compact'
-            ? 'py-12 md:py-16'
-            : 'py-16 md:py-24', // standard
+            ? 'py-6 sm:py-8 md:py-8 lg:py-10'
+            : 'py-8 sm:py-10 md:py-10 lg:py-12', // standard
         themeClasses.section,
       )}
       style={sectionStyle}
@@ -80,15 +80,15 @@ export function CategorySection({ config, products }: CategorySectionProps) {
         )}
       </ContentContainer>
 
-      {/* Subtle Category Closing / Breathing Room */}
+      {/* Subtle Category Closing / Breathing Room — hidden on mobile */}
       <div
         className={cn(
-          'mx-auto h-px bg-gradient-to-r from-transparent via-border to-transparent',
+          'hidden md:block mx-auto h-px bg-gradient-to-r from-transparent via-border to-transparent',
           pacing === 'hero'
-            ? 'mt-24 md:mt-32 w-32 md:w-48 opacity-100'
+            ? 'mt-8 md:mt-10 w-32 md:w-48 opacity-100'
             : pacing === 'compact'
-              ? 'mt-12 md:mt-16 w-16 opacity-50'
-              : 'mt-16 md:mt-24 w-24 opacity-80', // standard
+              ? 'mt-4 md:mt-6 w-16 opacity-50'
+              : 'mt-6 md:mt-8 w-24 opacity-80', // standard
         )}
       />
     </section>

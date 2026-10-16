@@ -5,7 +5,7 @@ import { cn } from '@qbm/ui';
 interface ProductImageProps {
   src?: string | undefined;
   alt: string;
-  aspectRatio?: 'square' | '4/3' | '3/4' | '16/9' | 'wide';
+  aspectRatio?: 'square' | '4/3' | '3/4' | '16/9' | '16/10' | 'wide';
   priority?: boolean;
   className?: string;
   /** Zoom effect on parent group hover */
@@ -34,6 +34,7 @@ interface ProductImageProps {
  *   4/3       → 4:3    — standard product card
  *   3/4       → 3:4    — portrait / Pinterest cards
  *   16/9      → 16:9   — wide feature cards
+ *   16/10     → 16:10  — single column editorial stack cards
  *   wide      → 7:3    — cinematic hero cards
  */
 const ASPECT_CLASSES: Record<NonNullable<ProductImageProps['aspectRatio']>, string> = {
@@ -41,6 +42,7 @@ const ASPECT_CLASSES: Record<NonNullable<ProductImageProps['aspectRatio']>, stri
   '4/3': 'aspect-[4/3]',
   '3/4': 'aspect-[3/4]',
   '16/9': 'aspect-video',
+  '16/10': 'aspect-[16/10]',
   wide: 'aspect-[7/3]',
 };
 

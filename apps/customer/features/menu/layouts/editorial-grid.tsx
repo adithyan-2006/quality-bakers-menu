@@ -17,7 +17,7 @@ export function EditorialGrid({ products, themeClasses, animationConfig }: Layou
             product={product}
             themeClasses={themeClasses}
             presentationStyle="standard"
-            aspectRatio="4/3"
+            aspectRatio="16/10"
             priority={idx < 2} // Optimizes LCP for the first row
           />
         </MotionWrapper>

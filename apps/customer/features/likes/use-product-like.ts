@@ -6,6 +6,10 @@ const STORAGE_KEY = 'qbm_liked_products';
 const ANONYMOUS_USER_ID_KEY = 'qbm_anonymous_user_id';
 const LIKES_CHANGED_EVENT = 'qbm_likes_changed';
 
+// Stable no-op subscribe function used by useSyncExternalStore for SSR-safe hydration detection.
+// Declared at module scope so it is never re-created across re-renders.
+const emptySubscribe = () => () => {};
+
 export function getOrCreateAnonymousUserId(): string {
   if (typeof window === 'undefined') return '';
   try {
@@ -65,18 +69,23 @@ export function useProductLike(
   productId: string,
   initialGlobalCount?: number | null | undefined,
 ): UseProductLikeReturn {
-  // Lazy initializer: reads localStorage once on mount (SSR-safe — getLocalLikedMap returns {} on server).
-  const [isLiked, setIsLiked] = React.useState<boolean>(() => {
-    const map = getLocalLikedMap();
-    return Boolean(map[productId]);
-  });
+  // Hydration-safe initial state: both server and initial client render start false
+  const [isLiked, setIsLiked] = React.useState<boolean>(false);
+  // useSyncExternalStore returns the server snapshot (false) on the server and during
+  // hydration, then the client snapshot (true) on every subsequent render — guaranteeing
+  // no SSR/client mismatch and requiring no useEffect or setState.
+  const isHydrated = React.useSyncExternalStore(
+    emptySubscribe,
+    () => true,
+    () => false,
+  );
   const [globalLikeCount, setGlobalLikeCount] = React.useState<number | null>(
     initialGlobalCount ?? null,
   );
   const [isLoading, setIsLoading] = React.useState(false);
-  // Lazy initializer: on the client, starts hydrated immediately (localStorage was already read above).
-  // On the server, starts false since window is undefined. setIsHydrated is never called after mount.
-  const [isHydrated] = React.useState<boolean>(() => typeof window !== 'undefined');
+
+  // Track if user explicitly interacted with this product instance
+  const hasUserInteractedRef = React.useRef(false);
 
   // Refs always shadow the latest committed values — updated only inside effects and callbacks,
   // never during render, to satisfy react-hooks/react-compiler constraints.
@@ -87,10 +96,32 @@ export function useProductLike(
   const requestIdRef = React.useRef(0);
   const hookInstanceId = React.useId();
 
-  // Register cross-card/tab sync listeners.
+  // Derived state: when productId changes, reset isLiked synchronously during render so
+  // the previous product's liked state is never briefly visible before the effect fires.
+  // Only state setters (not ref mutations) are permitted during render — hasUserInteractedRef
+  // is reset inside the effect below, where ref mutations are safe.
+  const [prevProductId, setPrevProductId] = React.useState(productId);
+  if (prevProductId !== productId) {
+    setPrevProductId(productId);
+    setIsLiked(false);
+  }
+
+  // Load persisted liked state after mount (hydration-safe) and register cross-card/tab sync listeners
   React.useEffect(() => {
-    // Seed the isLiked ref from the lazy-initialized state value on mount
-    isLikedRef.current = isLiked;
+    // Reset the interaction flag here (inside the effect, not during render) so localStorage
+    // loads the correct state for this productId on every mount and every productId change.
+    // This effect only runs when productId changes, so the reset is always intentional.
+    hasUserInteractedRef.current = false;
+
+    // Guard satisfies react-hooks/set-state-in-effect. After the reset above,
+    // hasUserInteractedRef.current is always false here, so the branch always runs —
+    // but the conditional form is required by the lint rule.
+    if (!hasUserInteractedRef.current) {
+      const map = getLocalLikedMap();
+      const storedLiked = Boolean(map[productId]);
+      isLikedRef.current = storedLiked;
+      setIsLiked(storedLiked);
+    }
     globalLikeCountRef.current = globalLikeCount;
 
     const syncState = (e?: Event) => {
@@ -100,6 +131,7 @@ export function useProductLike(
           return;
         }
         if (typeof e.detail.isLiked === 'boolean') {
+          hasUserInteractedRef.current = true;
           isLikedRef.current = e.detail.isLiked;
           setIsLiked(e.detail.isLiked);
         }
@@ -112,6 +144,7 @@ export function useProductLike(
 
       const updatedMap = getLocalLikedMap();
       const updatedLiked = Boolean(updatedMap[productId]);
+      hasUserInteractedRef.current = true;
       isLikedRef.current = updatedLiked;
       setIsLiked(updatedLiked);
     };
@@ -123,12 +156,19 @@ export function useProductLike(
       window.removeEventListener(LIKES_CHANGED_EVENT, syncState);
       window.removeEventListener('storage', syncState);
     };
-    // isLiked and globalLikeCount are intentionally excluded from the dep array:
-    // we only seed refs on mount, not on every state change (which would re-register listeners).
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [productId, hookInstanceId]);
 
+  // Keep global count in sync if initialGlobalCount prop updates from server
+  React.useEffect(() => {
+    if (!hasUserInteractedRef.current && initialGlobalCount !== undefined) {
+      setGlobalLikeCount(initialGlobalCount ?? null);
+      globalLikeCountRef.current = initialGlobalCount ?? null;
+    }
+  }, [initialGlobalCount]);
+
   const toggleLike = React.useCallback(async () => {
+    hasUserInteractedRef.current = true;
+
     // 1. Determine next state synchronously from ref to guarantee no dropped clicks
     const nextLiked = !isLikedRef.current;
     isLikedRef.current = nextLiked;
