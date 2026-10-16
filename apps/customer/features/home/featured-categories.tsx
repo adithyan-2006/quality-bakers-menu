@@ -426,6 +426,10 @@ export function FeaturedCategories({ categories }: FeaturedCategoriesProps) {
                 <Link
                   key={category.id}
                   href={`/categories#${category.slug}`}
+                  scroll={false}
+                  onClick={() => {
+                    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+                  }}
                   ref={(el) => {
                     cardsRef.current[idx] = el;
                   }}

@@ -6,7 +6,7 @@ import { SignatureShowcase } from '../features/home/signature-showcase';
 import { CustomerRepository } from '../repositories/customer-repository';
 export const revalidate = 60;
 import { buttonVariants, formatBadge } from '@qbm/ui';
-import Link from 'next/link';
+import { TopScrollLink } from '../components/top-scroll-link';
 
 export default async function HomePage() {
   const [business, homepage, popularProducts, signatureProducts] = await Promise.all([
@@ -23,9 +23,9 @@ export default async function HomePage() {
         <p className="text-muted-foreground mb-8">
           We are currently setting up our digital menu. Please check back soon!
         </p>
-        <Link href="/categories" className={buttonVariants({ variant: 'primary' })}>
+        <TopScrollLink href="/categories" className={buttonVariants({ variant: 'primary' })}>
           Browse Categories
-        </Link>
+        </TopScrollLink>
       </div>
     );
   }

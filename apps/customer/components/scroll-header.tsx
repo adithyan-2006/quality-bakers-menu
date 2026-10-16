@@ -28,6 +28,8 @@ export function ScrollHeader({
       if (pathname === '/') {
         e.preventDefault();
         scrollToSection('home');
+      } else {
+        window.scrollTo({ top: 0, behavior: 'instant' });
       }
     },
     [pathname],
