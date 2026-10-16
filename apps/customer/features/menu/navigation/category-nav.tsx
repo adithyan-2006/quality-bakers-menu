@@ -247,11 +247,37 @@ export function CategoryNav({ categories }: CategoryNavProps) {
 
   // Handle cross-page and browser back/forward hash navigation
   React.useEffect(() => {
+    const validSlugs = new Set(categories.map((c) => c.slug));
+
+    const forceScrollTop = () => {
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+      requestAnimationFrame(() => {
+        window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+      });
+      setTimeout(() => {
+        window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+      }, 80);
+      setTimeout(() => {
+        window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+      }, 180);
+    };
+
     const handleHashNav = () => {
       const hash = window.location.hash;
-      if (!hash) return;
+      if (!hash) {
+        forceScrollTop();
+        return;
+      }
 
       const slug = hash.replace('#', '');
+      if (!validSlugs.has(slug)) {
+        if (window.location.hash) {
+          window.history.replaceState(null, '', window.location.pathname);
+        }
+        forceScrollTop();
+        return;
+      }
+
       let attempts = 0;
       const maxAttempts = 30;
 
@@ -259,9 +285,14 @@ export function CategoryNav({ categories }: CategoryNavProps) {
         const section = document.getElementById(slug);
         if (section) {
           handleCategoryClick(slug);
+          setTimeout(() => {
+            scrollToCategory(slug);
+          }, 200);
         } else if (attempts < maxAttempts) {
           attempts++;
           requestAnimationFrame(tryScroll);
+        } else {
+          forceScrollTop();
         }
       };
 
@@ -276,7 +307,7 @@ export function CategoryNav({ categories }: CategoryNavProps) {
       window.removeEventListener('hashchange', handleHashNav);
       window.removeEventListener('popstate', handleHashNav);
     };
-  }, [handleCategoryClick]);
+  }, [categories, handleCategoryClick, scrollToCategory]);
 
   return (
     <nav

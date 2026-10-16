@@ -167,16 +167,19 @@ export function MobileNav() {
 
   const handleNavClick =
     (id: string, isExternalPage?: boolean) => (e: React.MouseEvent<HTMLAnchorElement>) => {
+      closeMenu();
       if (isExternalPage) {
+        window.scrollTo({ top: 0, behavior: 'instant' });
         return;
       }
-      closeMenu();
       setActiveSection(id);
       if (pathname === '/') {
         e.preventDefault();
         scrollToSection(id);
       } else {
-        scrollToHashWithRetry(id);
+        if (id === 'home') {
+          window.scrollTo({ top: 0, behavior: 'instant' });
+        }
       }
     };
 
@@ -221,11 +224,12 @@ export function MobileNav() {
               const isCurrent = isExternalPage
                 ? pathname === href || pathname?.startsWith('/categories')
                 : pathname === '/' && activeSection === id;
+              const shouldDisableScroll = !isExternalPage && pathname === '/';
               return (
                 <Link
                   key={id}
                   href={href}
-                  scroll={false}
+                  {...(shouldDisableScroll ? { scroll: false } : {})}
                   role="menuitem"
                   onClick={handleNavClick(id, isExternalPage)}
                   className={cn(

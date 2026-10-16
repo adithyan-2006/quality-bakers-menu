@@ -1,5 +1,5 @@
 import { EmptyState, buttonVariants } from '@qbm/ui';
-import Link from 'next/link';
+import { TopScrollLink } from '../components/top-scroll-link';
 
 export default function NotFound() {
   return (
@@ -8,9 +8,9 @@ export default function NotFound() {
         title="Page Not Found"
         description="The page you are looking for does not exist or has been moved."
         action={
-          <Link href="/" className={buttonVariants({ variant: 'primary' })}>
+          <TopScrollLink href="/" className={buttonVariants({ variant: 'primary' })}>
             Return Home
-          </Link>
+          </TopScrollLink>
         }
       />
     </div>

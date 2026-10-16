@@ -1,6 +1,6 @@
 import * as React from 'react';
-import Link from 'next/link';
 import { cn } from '@qbm/ui';
+import { TopScrollLink } from '../../components/top-scroll-link';
 
 import { ScrollReveal } from '../../components/scroll-reveal';
 import { ContentContainer } from '../../components/layout/content-container';
@@ -78,7 +78,7 @@ export function EditorialIntro({
 
           {/* CTA: Explore Menu button (Simple flat pill with minimal shadow and red text, no arrow, stable colors) */}
           <ScrollReveal animation="fade-up" delayMs={300} className="w-full flex justify-start">
-            <Link
+            <TopScrollLink
               href={homepage.heroCtaLink || '/categories'}
               className={cn(
                 'mt-6 sm:mt-7 inline-flex items-center justify-center',
@@ -93,7 +93,7 @@ export function EditorialIntro({
               <span>
                 {homepage.heroCtaText ? homepage.heroCtaText.toUpperCase() : 'EXPLORE MENU'}
               </span>
-            </Link>
+            </TopScrollLink>
           </ScrollReveal>
         </div>
 
@@ -120,7 +120,7 @@ export function EditorialIntro({
 
           {/* CTA: Explore Menu button (Simple flat pill with minimal shadow and red text, no arrow, stable colors) */}
           <ScrollReveal animation="fade-up" delayMs={300} className="w-full flex justify-center">
-            <Link
+            <TopScrollLink
               href={homepage.heroCtaLink || '/categories'}
               className={cn(
                 'mt-6 sm:mt-7 md:mt-8 inline-flex items-center justify-center',
@@ -135,7 +135,7 @@ export function EditorialIntro({
               <span>
                 {homepage.heroCtaText ? homepage.heroCtaText.toUpperCase() : 'EXPLORE MENU'}
               </span>
-            </Link>
+            </TopScrollLink>
           </ScrollReveal>
         </div>
       </ContentContainer>

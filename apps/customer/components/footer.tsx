@@ -1,6 +1,5 @@
-import Image from 'next/image';
-import Link from 'next/link';
 import { CustomerRepository } from '../repositories/customer-repository';
+import { FooterBrandLink, FooterQuickLinks } from './footer-nav';
 
 // Continuous rhythmic cubic Bezier wave contours calibrated from Reference Image 2:
 const DESKTOP_WAVE_PATH =
@@ -497,23 +496,7 @@ export async function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-[1.2fr_0.8fr_1fr] items-start gap-5 md:gap-12 lg:gap-16">
           {/* Column 1: Brand & Tagline & Circular Social Badges */}
           <div className="flex flex-col items-center md:items-start text-center md:text-left">
-            <Link
-              href="/"
-              className="flex items-center gap-2.5 sm:gap-3 mb-2.5 md:mb-3.5 group outline-none select-none"
-            >
-              {logoUrl && (
-                <Image
-                  src={logoUrl}
-                  alt={businessName}
-                  width={40}
-                  height={40}
-                  className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full object-contain shrink-0"
-                />
-              )}
-              <h3 className="font-serif text-2xl lg:text-3xl font-bold text-[#BC1D1A] tracking-tight leading-none">
-                {businessName}
-              </h3>
-            </Link>
+            <FooterBrandLink businessName={businessName} logoUrl={logoUrl} />
             <p className="text-[#BC1D1A]/85 text-xs lg:text-sm font-light leading-relaxed max-w-xs mb-3.5 md:mb-5">
               {tagline}
             </p>
@@ -549,27 +532,7 @@ export async function Footer() {
             <h3 className="font-serif text-lg lg:text-xl font-bold text-[#BC1D1A] mb-3.5 tracking-tight">
               Quick Links
             </h3>
-            <ul className="flex flex-col space-y-2.5 text-xs lg:text-sm text-[#BC1D1A]/85 font-light">
-              <li>
-                <Link href="/" scroll={false} className="hover:text-[#BC1D1A] transition-colors">
-                  Home
-                </Link>
-              </li>
-              <li>
-                <Link href="/categories" className="hover:text-[#BC1D1A] transition-colors">
-                  Menu
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/#about"
-                  scroll={false}
-                  className="hover:text-[#BC1D1A] transition-colors"
-                >
-                  About
-                </Link>
-              </li>
-            </ul>
+            <FooterQuickLinks />
           </div>
 
           {/* Column 3: Get in Touch */}
