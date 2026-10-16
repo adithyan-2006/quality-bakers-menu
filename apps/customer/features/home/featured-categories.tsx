@@ -339,7 +339,7 @@ export function FeaturedCategories({ categories }: FeaturedCategoriesProps) {
       {/* Sticky panel — top:64px mobile, 72px md, 76px lg keeps content below the header */}
       <div
         ref={stickyRef}
-        className="sticky top-[64px] md:top-[72px] lg:top-[76px] w-full h-[calc(100vh-64px)] md:h-[calc(100vh-72px)] lg:h-[calc(100vh-76px)] overflow-hidden flex flex-col justify-center py-4 md:pt-8 md:pb-20"
+        className="sticky top-[64px] md:top-[72px] lg:top-[76px] w-full h-[calc(100vh-64px)] md:h-[calc(100vh-72px)] lg:h-[calc(100vh-76px)] h-[calc(100dvh-64px)] md:h-[calc(100dvh-72px)] lg:h-[calc(100dvh-76px)] overflow-hidden flex flex-col justify-center py-4 md:pt-8 md:pb-20"
       >
         {/* Section Header */}
         <div

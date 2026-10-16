@@ -128,7 +128,7 @@ export function SignatureShowcase({ products }: SignatureShowcaseProps) {
       {/* PANEL — Sticky on desktop (72px md, 76px lg), natural flow on mobile (< md) to prevent content clipping */}
       <div
         ref={stickyRef}
-        className="relative md:sticky md:top-[72px] lg:top-[76px] h-auto md:h-[calc(100vh-72px)] lg:h-[calc(100vh-76px)] z-10 overflow-visible md:overflow-hidden"
+        className="relative md:sticky md:top-[72px] lg:top-[76px] h-auto md:h-[calc(100vh-72px)] lg:h-[calc(100vh-76px)] md:h-[calc(100dvh-72px)] lg:h-[calc(100dvh-76px)] z-10 overflow-visible md:overflow-hidden"
       >
         <div className="h-full flex flex-col md:flex-row">
           {/* LEFT: Editorial */}

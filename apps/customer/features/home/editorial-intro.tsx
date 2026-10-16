@@ -27,7 +27,7 @@ export function EditorialIntro({
   return (
     <section
       id="home"
-      className="relative w-full bg-[#BC1D1A] flex flex-col min-h-[calc(100vh-64px)] md:min-h-[calc(100vh-80px)] min-h-[calc(100dvh-64px)] md:min-h-[calc(100dvh-80px)] scroll-mt-[64px] md:scroll-mt-[72px] lg:scroll-mt-[76px]"
+      className="relative w-full bg-[#BC1D1A] flex flex-col min-h-[calc(100vh-64px)] md:min-h-[calc(100vh-72px)] lg:min-h-[calc(100vh-76px)] min-h-[calc(100dvh-64px)] md:min-h-[calc(100dvh-72px)] lg:min-h-[calc(100dvh-76px)] scroll-mt-[64px] md:scroll-mt-[72px] lg:scroll-mt-[76px]"
     >
       {/* Living Melted Header Dripping & Natural Splash Animation */}
       <DrippingAnimation />
@@ -60,11 +60,11 @@ export function EditorialIntro({
         <div className="flex md:hidden flex-col items-start text-left w-full max-w-sm sm:max-w-md mx-auto px-2">
           {/* Top Line: quality bakers - since 2019 */}
           <ScrollReveal animation="fade-up" delayMs={100} className="w-full">
-            <div className="flex items-center gap-2.5 w-full mb-3 select-none">
-              <span className="text-[#FDFADB]/90 uppercase font-sans text-[10px] sm:text-[11px] tracking-[0.24em] font-medium whitespace-nowrap">
+            <div className="flex items-center gap-2 sm:gap-2.5 w-full mb-3 select-none min-w-0">
+              <span className="text-[#FDFADB]/90 uppercase font-sans text-[9px] min-[360px]:text-[10px] sm:text-[11px] tracking-[0.14em] min-[360px]:tracking-[0.2em] sm:tracking-[0.24em] font-medium truncate">
                 QUALITY BAKERS - SINCE 2019
               </span>
-              <span className="h-[1px] flex-1 max-w-[45px] bg-[#FDFADB]/35" />
+              <span className="h-[1px] flex-1 min-w-[12px] max-w-[45px] bg-[#FDFADB]/35 shrink-0" />
             </div>
           </ScrollReveal>
 

@@ -80,13 +80,13 @@ export function FooterQuickLinks() {
   };
 
   return (
-    <ul className="flex flex-col space-y-2.5 text-xs lg:text-sm text-[#BC1D1A]/85 font-light">
+    <ul className="flex flex-row md:flex-col items-center md:items-start justify-center gap-2 sm:gap-4 md:gap-0 md:space-y-2 text-xs lg:text-sm text-[#BC1D1A]/85 font-light">
       <li>
         <Link
           href="/#home"
           scroll={false}
           onClick={handleHomeClick}
-          className="hover:text-[#BC1D1A] transition-colors"
+          className="hover:text-[#BC1D1A] transition-colors py-1.5 px-2 inline-flex items-center min-h-[36px] sm:min-h-[44px]"
         >
           Home
         </Link>
@@ -96,7 +96,7 @@ export function FooterQuickLinks() {
           href="/categories"
           scroll={false}
           onClick={handleMenuClick}
-          className="hover:text-[#BC1D1A] transition-colors"
+          className="hover:text-[#BC1D1A] transition-colors py-1.5 px-2 inline-flex items-center min-h-[36px] sm:min-h-[44px]"
         >
           Menu
         </Link>
@@ -106,7 +106,7 @@ export function FooterQuickLinks() {
           href="/#about"
           scroll={false}
           onClick={handleAboutClick}
-          className="hover:text-[#BC1D1A] transition-colors"
+          className="hover:text-[#BC1D1A] transition-colors py-1.5 px-2 inline-flex items-center min-h-[36px] sm:min-h-[44px]"
         >
           About
         </Link>
