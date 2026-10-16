@@ -88,6 +88,7 @@ export function Navigation() {
 
   const handleNavClick = (item: NavItem) => (e: React.MouseEvent<HTMLAnchorElement>) => {
     if (item.isExternalPage) {
+      window.scrollTo({ top: 0, behavior: 'instant' });
       return;
     }
     setActiveSection(item.id);
@@ -95,7 +96,9 @@ export function Navigation() {
       e.preventDefault();
       scrollToSection(item.id);
     } else {
-      scrollToHashWithRetry(item.id);
+      if (item.id === 'home') {
+        window.scrollTo({ top: 0, behavior: 'instant' });
+      }
     }
   };
 
@@ -105,11 +108,12 @@ export function Navigation() {
         const isActive = item.isExternalPage
           ? pathname === item.href || pathname?.startsWith('/categories')
           : pathname === '/' && activeSection === item.id;
+        const shouldDisableScroll = !item.isExternalPage && pathname === '/';
         return (
           <Link
             key={item.id}
             href={item.href}
-            scroll={false}
+            {...(shouldDisableScroll ? { scroll: false } : {})}
             onClick={handleNavClick(item)}
             className={cn(
               'transition-colors duration-200 font-sans font-bold uppercase tracking-[0.15em] text-xs sm:text-sm',
