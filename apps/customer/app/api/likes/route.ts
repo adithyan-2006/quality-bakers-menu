@@ -4,9 +4,18 @@ import { prisma } from '@qbm/database';
 export const dynamic = 'force-dynamic';
 
 export async function POST(request: NextRequest) {
+  let body: any;
   try {
-    const body = await request.json();
-    const { productId, anonymousUserId, action } = body;
+    body = await request.json();
+  } catch {
+    return NextResponse.json(
+      { success: false, error: 'Invalid or missing JSON payload' },
+      { status: 400 },
+    );
+  }
+
+  try {
+    const { productId, anonymousUserId, action } = body || {};
 
     if (!productId || typeof productId !== 'string') {
       return NextResponse.json(
@@ -86,9 +95,10 @@ export async function POST(request: NextRequest) {
       isLiked: result.isLiked,
       globalLikeCount: result.globalLikeCount,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('[API /api/likes POST Error]:', error);
-    if (error.message === 'Product not found') {
+    const message = error instanceof Error ? error.message : '';
+    if (message === 'Product not found') {
       return NextResponse.json({ success: false, error: 'Product not found' }, { status: 404 });
     }
     return NextResponse.json({ success: false, error: 'Internal server error' }, { status: 500 });

@@ -1,4 +1,5 @@
 import { prisma } from '@qbm/database';
+import { formatBadge } from '@qbm/ui';
 import type { MenuProduct } from '../types';
 
 /**
@@ -14,7 +15,7 @@ function mapProduct(p: any): MenuProduct {
     slug: p.slug,
     description: p.shortDescription || p.description || '',
     image: p.image?.optimizedUrl || p.image?.originalUrl || undefined,
-    badge: p.badge !== 'NONE' ? p.badge : undefined,
+    badge: formatBadge(p.badge),
     price: p.price ? `₹${p.price}` : undefined,
     categorySlug: p.category?.slug || '',
     likeCount: p._count?.likes ?? p.likeCountRel?.count ?? 0,
@@ -73,15 +74,86 @@ export const ProductRepository = {
   },
 
   /**
-   * Returns featured products across all categories, up to the given limit.
-   * Used by homepage popular preview sections.
-   * Today: returns the first product from each of the given slugs.
+   * Returns featured products across all categories, up to the given limit per category.
+   * Fetches matching products in a single batched query to eliminate N+1 query overhead,
+   * while preserving per-category limits and categorySlugs input ordering.
    */
   async getFeaturedProducts(categorySlugs: string[], limitPerCategory = 1): Promise<MenuProduct[]> {
-    const promises = categorySlugs.map((slug) =>
-      this.getProductsForCategory(slug, limitPerCategory),
-    );
-    const results = await Promise.all(promises);
-    return results.flat();
+    if (!categorySlugs.length || limitPerCategory <= 0) {
+      return [];
+    }
+
+    const products = await prisma.product.findMany({
+      where: {
+        category: { slug: { in: categorySlugs } },
+        isVisible: true,
+        status: 'PUBLISHED',
+      },
+      include: {
+        image: true,
+        category: true,
+        likeCountRel: true,
+        _count: { select: { likes: true } },
+      },
+      orderBy: { displayOrder: 'asc' },
+    });
+
+    const productsByCategory = new Map<string, MenuProduct[]>();
+    for (const p of products) {
+      const slug = p.category?.slug;
+      if (!slug) continue;
+      let group = productsByCategory.get(slug);
+      if (!group) {
+        group = [];
+        productsByCategory.set(slug, group);
+      }
+      if (group.length < limitPerCategory) {
+        group.push(mapProduct(p));
+      }
+    }
+
+    const results: MenuProduct[] = [];
+    for (const slug of categorySlugs) {
+      const categoryProducts = productsByCategory.get(slug);
+      if (categoryProducts) {
+        results.push(...categoryProducts);
+      }
+    }
+
+    return results;
+  },
+
+  /**
+   * Returns all products grouped by category slug in a single query.
+   * Eliminates connection pool pressure and N+1 queries.
+   */
+  async getProductsForCategories(categorySlugs: string[]): Promise<Record<string, MenuProduct[]>> {
+    if (!categorySlugs.length) return {};
+    const products = await prisma.product.findMany({
+      where: {
+        category: { slug: { in: categorySlugs } },
+        isVisible: true,
+        status: 'PUBLISHED',
+      },
+      include: {
+        image: true,
+        category: true,
+        likeCountRel: true,
+        _count: { select: { likes: true } },
+      },
+      orderBy: { displayOrder: 'asc' },
+    });
+
+    const result: Record<string, MenuProduct[]> = {};
+    for (const slug of categorySlugs) {
+      result[slug] = [];
+    }
+    for (const p of products) {
+      const slug = p.category?.slug;
+      if (slug && result[slug]) {
+        result[slug].push(mapProduct(p));
+      }
+    }
+    return result;
   },
 } as const;

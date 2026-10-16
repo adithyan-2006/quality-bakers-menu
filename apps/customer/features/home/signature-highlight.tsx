@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { ScrollReveal } from '../../components/scroll-reveal';
-import { buttonVariants, cn } from '@qbm/ui';
+import { cn } from '@qbm/ui';
 import type { Prisma } from '@qbm/database';
 import { TopScrollLink } from '../../components/top-scroll-link';
 
@@ -12,12 +12,10 @@ interface SignatureHighlightProps {
 }
 
 export function SignatureHighlight({ title, description }: SignatureHighlightProps) {
-  if (!title && !description) return null;
-
   return (
     <section
       id="about"
-      className="relative w-full bg-[#BC1D1A] min-h-[calc(100vh-52px)] md:min-h-[calc(100vh-64px)] flex items-center justify-center py-16 md:py-32 scroll-mt-[52px] md:scroll-mt-[64px]"
+      className="relative w-full bg-[#BC1D1A] min-h-[calc(100vh-64px)] md:min-h-[calc(100vh-72px)] lg:min-h-[calc(100vh-76px)] flex items-center justify-center py-16 md:py-32 scroll-mt-[64px] md:scroll-mt-[72px] lg:scroll-mt-[76px]"
     >
       <div className="w-full px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto text-center flex flex-col items-center justify-center">
         <ScrollReveal animation="fade-up">
@@ -42,11 +40,16 @@ export function SignatureHighlight({ title, description }: SignatureHighlightPro
           <TopScrollLink
             href="/categories"
             className={cn(
-              buttonVariants({ variant: 'outline', size: 'lg' }),
-              'rounded-full px-10 py-6 text-lg hover:-translate-y-1 hover:shadow-md transition-all duration-300 text-[#FDFADB] border-[#FDFADB]/20 hover:bg-[#FDFADB] hover:text-[#BC1D1A]',
+              'inline-flex items-center justify-center',
+              'px-8 sm:px-10 md:px-11 py-3.5 sm:py-4 rounded-full',
+              'bg-[#FDFADB]',
+              'text-[#BC1D1A]',
+              'font-sans font-bold text-xs sm:text-sm uppercase tracking-[0.18em] sm:tracking-[0.2em]',
+              'shadow-[0_4px_12px_rgba(0,0,0,0.18)] hover:shadow-md',
+              'hover:scale-105 active:scale-95 transition-all duration-300 select-none',
             )}
           >
-            Explore Menu
+            <span>EXPLORE MENU</span>
           </TopScrollLink>
         </ScrollReveal>
       </div>

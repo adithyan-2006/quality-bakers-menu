@@ -18,16 +18,17 @@ export async function MenuEngine() {
   const categories = await CategoryRepository.getVisible();
   const navItems = categories.map(({ id, name, slug }) => ({ id, name, slug }));
 
-  // Fetch all products in parallel
-  const categoryProducts = await Promise.all(
-    categories.map(async (config) => {
-      const products = await ProductRepository.getProductsForCategory(config.slug);
-      return { config, products };
-    }),
-  );
+  // Fetch all products in a single batched query to eliminate connection pool pressure
+  const categorySlugs = categories.map((c) => c.slug);
+  const productsBySlug = await ProductRepository.getProductsForCategories(categorySlugs);
+
+  const categoryProducts = categories.map((config) => ({
+    config,
+    products: productsBySlug[config.slug] || [],
+  }));
 
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex flex-col w-full bg-[#BC1D1A]">
       <CategoryNav categories={navItems} />
       <div className="flex flex-col">
         {categoryProducts.map(({ config, products }) => (

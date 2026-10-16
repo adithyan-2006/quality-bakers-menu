@@ -1,9 +1,12 @@
 import * as React from 'react';
 import Link from 'next/link';
-import { buttonVariants, cn } from '@qbm/ui';
-import { ArrowRight } from 'lucide-react';
+import { cn } from '@qbm/ui';
 
 import { ScrollReveal } from '../../components/scroll-reveal';
+import { ContentContainer } from '../../components/layout/content-container';
+import { DrippingAnimation } from './dripping-animation';
+import { QualityYouCanTasteMark } from '../../components/brand/quality-you-can-taste-mark';
+import { QualityYouCanTasteMobileMark } from '../../components/brand/quality-you-can-taste-mobile-mark';
 import type { Prisma } from '@qbm/database';
 
 type HomepageWithRelations = Prisma.HomepageGetPayload<{
@@ -24,10 +27,13 @@ export function EditorialIntro({
   return (
     <section
       id="home"
-      className="relative w-full bg-[#BC1D1A] flex flex-col min-h-[calc(100vh-64px)] md:min-h-[calc(100vh-80px)] min-h-[calc(100dvh-64px)] md:min-h-[calc(100dvh-80px)]"
+      className="relative w-full bg-[#BC1D1A] flex flex-col min-h-[calc(100vh-64px)] md:min-h-[calc(100vh-80px)] min-h-[calc(100dvh-64px)] md:min-h-[calc(100dvh-80px)] scroll-mt-[64px] md:scroll-mt-[72px] lg:scroll-mt-[76px]"
     >
+      {/* Living Melted Header Dripping & Natural Splash Animation */}
+      <DrippingAnimation />
+
       {/* Top Banner (Marquee) */}
-      <div className="w-full border-b border-[#FDFADB]/15 py-2.5 sm:py-3 md:py-3.5 flex items-center overflow-hidden flex-shrink-0 bg-[#BC1D1A] z-20 relative">
+      <div className="w-full border-b border-[#FDFADB]/15 py-2.5 sm:py-3 md:py-3.5 flex items-center overflow-hidden flex-shrink-0 bg-[#BC1D1A] z-20 relative mt-5 sm:mt-6 md:mt-7">
         <div className="flex whitespace-nowrap animate-marquee motion-reduce:animate-none w-max">
           {[...Array(20)].map((_, i) => (
             <span key={i} className="flex items-center">
@@ -48,63 +54,91 @@ export function EditorialIntro({
         </div>
       </div>
 
-      {/* Main Hero Content */}
-      <div className="relative flex flex-col lg:flex-row items-stretch lg:items-center flex-1 pt-3 pb-6 sm:pt-4 sm:pb-6 lg:pt-6 lg:pb-8 px-4 sm:px-8 max-w-7xl mx-auto gap-6 lg:gap-12 w-full">
-        {/* Left Column: Typography & Content */}
-        <div className="flex flex-col justify-center text-left relative z-10 w-full lg:w-7/12 xl:w-2/3 flex-shrink-0">
-          <ScrollReveal animation="fade-up">
-            <span className="inline-block mt-1 md:mt-2 mb-2 md:mb-4 text-[#FDFADB]/70 uppercase tracking-[0.2em] text-[10px] md:text-xs font-bold font-sans">
-              EST. 2026
-            </span>
+      {/* Main Hero Content - Responsive Layout */}
+      <ContentContainer className="relative flex flex-col flex-1 pt-6 pb-12 sm:pt-10 sm:pb-16 md:pt-14 md:pb-20 lg:pt-16 lg:pb-24 justify-center">
+        {/* MOBILE VIEW (< md): Everything left-aligned, stacked 3-line big typography */}
+        <div className="flex md:hidden flex-col items-start text-left w-full max-w-sm sm:max-w-md mx-auto px-2">
+          {/* Top Line: quality bakers - since 2019 */}
+          <ScrollReveal animation="fade-up" delayMs={100} className="w-full">
+            <div className="flex items-center gap-2.5 w-full mb-3 select-none">
+              <span className="text-[#FDFADB]/90 uppercase font-sans text-[10px] sm:text-[11px] tracking-[0.24em] font-medium whitespace-nowrap">
+                QUALITY BAKERS - SINCE 2019
+              </span>
+              <span className="h-[1px] flex-1 max-w-[45px] bg-[#FDFADB]/35" />
+            </div>
           </ScrollReveal>
 
-          <ScrollReveal animation="fade-up" delayMs={100}>
-            <h1 className="text-5xl md:text-6xl lg:text-[4.5rem] xl:text-[5.5rem] font-serif font-bold tracking-tight text-[#FDFADB] mb-4 md:mb-6 leading-[1.05] text-balance">
-              {homepage.heroTitle}{' '}
-              <span className="text-[#FDFADB] italic font-medium block mt-1 md:mt-2">
-                {homepage.heroSubtitle}
-              </span>
+          {/* Main Title: Quality \n you \n can taste (Stacked 3-line display matching mobile arrangement) */}
+          <ScrollReveal animation="fade-up" delayMs={200} className="w-full">
+            <h1 className="relative flex flex-col items-start w-full my-2">
+              <span className="sr-only">Quality you can taste</span>
+              <QualityYouCanTasteMobileMark className="w-full max-w-[340px] sm:max-w-[380px] h-auto text-[#FDFADB] select-none filter drop-shadow-[0_4px_22px_rgba(0,0,0,0.25)]" />
             </h1>
           </ScrollReveal>
 
-          <ScrollReveal animation="fade-up" delayMs={200}>
-            <p className="text-lg md:text-xl xl:text-2xl text-[#FDFADB]/80 font-sans font-light mb-6 md:mb-8 max-w-xl xl:max-w-2xl leading-relaxed">
-              Experience our meticulously crafted menu, featuring everything from fresh fruit salads
-              to signature faloodas, prepared daily with uncompromising quality.
-            </p>
-          </ScrollReveal>
-
-          <ScrollReveal animation="fade-up" delayMs={300}>
+          {/* CTA: Explore Menu button (Simple flat pill with minimal shadow and red text, no arrow, stable colors) */}
+          <ScrollReveal animation="fade-up" delayMs={300} className="w-full flex justify-start">
             <Link
               href={homepage.heroCtaLink || '/categories'}
               className={cn(
-                buttonVariants({ variant: 'primary', size: 'lg' }),
-                'px-8 h-[64px] text-base rounded-full bg-[#FFF4D6] hover:bg-[#FFF4D6]/90 text-[#C91F1F] border-none font-sans font-medium tracking-wide transition-all duration-300 w-[240px] flex items-center justify-between group',
+                'mt-6 sm:mt-7 inline-flex items-center justify-center',
+                'px-8 sm:px-10 py-3.5 sm:py-4 rounded-full',
+                'bg-[#FDFADB]',
+                'text-[#BC1D1A]',
+                'font-sans font-bold text-xs sm:text-sm uppercase tracking-[0.18em] sm:tracking-[0.2em]',
+                'shadow-[0_4px_12px_rgba(0,0,0,0.18)] hover:shadow-md',
+                'hover:scale-105 active:scale-95 transition-all duration-300 select-none',
               )}
             >
-              <span>{homepage.heroCtaText || 'Explore Menu'}</span>
-              <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
+              <span>
+                {homepage.heroCtaText ? homepage.heroCtaText.toUpperCase() : 'EXPLORE MENU'}
+              </span>
             </Link>
           </ScrollReveal>
         </div>
 
-        {/* Right Column: Imagery */}
-        {homepage.heroImage ? (
-          <div className="w-full lg:w-5/12 xl:w-1/3 flex-1 lg:flex-none lg:self-stretch min-h-[200px] relative z-0 flex items-center justify-center my-4 lg:my-0">
-            <ScrollReveal animation="scale-up" delayMs={200} className="w-full h-full">
-              <div className="w-full h-full relative rounded-[2rem] overflow-hidden border border-border/10 shadow-2xl">
-                <div
-                  className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-1000 hover:scale-105"
-                  style={{
-                    backgroundImage: `url(${homepage.heroImage.secureUrl || homepage.heroImage.originalUrl})`,
-                  }}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-brand-dark/40 to-transparent" />
-              </div>
-            </ScrollReveal>
-          </div>
-        ) : null}
-      </div>
+        {/* DESKTOP / TABLET VIEW (>= md): Centered, wide single-line display */}
+        <div className="hidden md:flex flex-col items-center justify-center text-center relative z-10 w-full max-w-5xl mx-auto px-4">
+          {/* Top Line: Quality Bakers - Since 2019 flanked by subtle horizontal rules */}
+          <ScrollReveal animation="fade-up" delayMs={100} className="w-full flex justify-center">
+            <div className="flex items-center justify-center gap-3 sm:gap-4 md:gap-5 w-full max-w-md md:max-w-xl mx-auto mb-3 sm:mb-4 md:mb-5">
+              <span className="h-[1px] flex-1 max-w-[60px] sm:max-w-[80px] md:max-w-[110px] bg-[#FDFADB]/35" />
+              <span className="text-[#FDFADB]/90 uppercase font-sans text-[10px] sm:text-xs md:text-sm tracking-[0.22em] sm:tracking-[0.26em] md:tracking-[0.3em] font-medium whitespace-nowrap select-none">
+                QUALITY BAKERS - SINCE 2019
+              </span>
+              <span className="h-[1px] flex-1 max-w-[60px] sm:max-w-[80px] md:max-w-[110px] bg-[#FDFADB]/35" />
+            </div>
+          </ScrollReveal>
+
+          {/* Main Title: Quality you can taste (Display size with ornate flourishes) */}
+          <ScrollReveal animation="fade-up" delayMs={200} className="w-full flex justify-center">
+            <h1 className="relative flex flex-col items-center justify-center w-full my-1 sm:my-2">
+              <span className="sr-only">Quality you can taste</span>
+              <QualityYouCanTasteMark className="w-[96%] sm:w-[92%] md:w-[88%] max-w-[540px] sm:max-w-[720px] md:max-w-[880px] lg:max-w-[980px] xl:max-w-[1040px] h-auto text-[#FDFADB] select-none filter drop-shadow-[0_4px_22px_rgba(0,0,0,0.22)]" />
+            </h1>
+          </ScrollReveal>
+
+          {/* CTA: Explore Menu button (Simple flat pill with minimal shadow and red text, no arrow, stable colors) */}
+          <ScrollReveal animation="fade-up" delayMs={300} className="w-full flex justify-center">
+            <Link
+              href={homepage.heroCtaLink || '/categories'}
+              className={cn(
+                'mt-6 sm:mt-7 md:mt-8 inline-flex items-center justify-center',
+                'px-8 sm:px-10 md:px-11 py-3.5 sm:py-4 rounded-full',
+                'bg-[#FDFADB]',
+                'text-[#BC1D1A]',
+                'font-sans font-bold text-xs sm:text-sm uppercase tracking-[0.18em] sm:tracking-[0.2em]',
+                'shadow-[0_4px_12px_rgba(0,0,0,0.18)] hover:shadow-md',
+                'hover:scale-105 active:scale-95 transition-all duration-300 select-none',
+              )}
+            >
+              <span>
+                {homepage.heroCtaText ? homepage.heroCtaText.toUpperCase() : 'EXPLORE MENU'}
+              </span>
+            </Link>
+          </ScrollReveal>
+        </div>
+      </ContentContainer>
     </section>
   );
 }

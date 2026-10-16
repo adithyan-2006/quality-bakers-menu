@@ -24,7 +24,7 @@ export function AlternatingLayout({
               themeClasses={themeClasses}
               presentationStyle="side-by-side"
               emphasis="featured"
-              aspectRatio="4/3"
+              aspectRatio="16/10"
               imagePosition={isEven ? 'left' : 'right'}
               priority={idx < 2}
             />

@@ -13,6 +13,9 @@ const config: Config = {
       fontFamily: {
         sans: ['var(--font-sans)', 'sans-serif'],
         serif: ['var(--font-serif)', 'serif'],
+        fraunces: ['var(--font-fraunces)', 'serif'],
+        cormorant: ['var(--font-cormorant)', 'serif'],
+        script: ['var(--font-script)', 'cursive'],
       },
       colors: {
         background: 'var(--background)',

@@ -17,182 +17,287 @@ interface CategoryNavProps {
 export function CategoryNav({ categories }: CategoryNavProps) {
   const [activeSlug, setActiveSlug] = React.useState<string>(categories[0]?.slug ?? '');
 
-  // Refs for auto-centering and the pill highlight
+  // Refs for elements and state
+  const navRef = React.useRef<HTMLElement>(null);
   const scrollContainerRef = React.useRef<HTMLDivElement>(null);
   const itemsRef = React.useRef<Map<string, HTMLAnchorElement>>(new Map());
-  const indicatorRef = React.useRef<HTMLDivElement>(null);
   const isClickInitiated = React.useRef(false);
+  const clickTimerRef = React.useRef<NodeJS.Timeout | null>(null);
 
-  // Track visibility and selection
-  const visibleSections = React.useRef<Set<string>>(new Set());
+  // Cached section offsets to prevent forced layout reflow during scroll
+  const sectionPositionsRef = React.useRef<{ slug: string; top: number; bottom: number }[]>([]);
+  const activationLineRef = React.useRef<number>(180);
 
+  // Update cached section offsets on mount, resize, and when content loads
+  const updateCachedPositions = React.useCallback(() => {
+    if (typeof window === 'undefined' || categories.length === 0) return;
+    const isMobile = window.innerWidth < 768;
+    const isLg = window.innerWidth >= 1024;
+    const headerH = isMobile ? 64 : isLg ? 76 : 72;
+    const navH = navRef.current ? navRef.current.offsetHeight : isMobile ? 58 : 72;
+    const navBottom = headerH + navH;
+    activationLineRef.current = navBottom + (isMobile ? 36 : 48);
+
+    const list: { slug: string; top: number; bottom: number }[] = [];
+    for (const cat of categories) {
+      const el = document.getElementById(cat.slug);
+      if (el) {
+        const top = el.getBoundingClientRect().top + window.scrollY;
+        const bottom = top + el.offsetHeight;
+        list.push({ slug: cat.slug, top, bottom });
+      }
+    }
+    sectionPositionsRef.current = list;
+  }, [categories]);
+
+  // Deterministic scroll tracking with hysteresis — zero layout thrashing
   React.useEffect(() => {
     if (categories.length === 0) return;
 
-    // 1. Observer only tracks which sections are remotely visible
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            visibleSections.current.add(entry.target.id);
-          } else {
-            visibleSections.current.delete(entry.target.id);
-          }
-        });
-      },
-      // Huge root margin to ensure we catch everything in or near the viewport
-      { rootMargin: '100% 0px 100% 0px' },
-    );
-
-    categories.forEach(({ slug }) => {
-      const section = document.getElementById(slug);
-      if (section) observer.observe(section);
-    });
-
-    // 2. Scroll listener calculates distance and guarantees EXACTLY ONE active category
     let rafId: number | null = null;
-    const handleScroll = () => {
-      if (rafId) return;
-      rafId = requestAnimationFrame(() => {
-        rafId = null;
-        if (visibleSections.current.size === 0) return;
 
-        const activationLine = window.innerHeight * 0.35; // 35% from the top
-        let closestSlug = '';
-        let minDistance = Infinity;
+    const determineActiveCategory = (prevSlug: string): string => {
+      const positions = sectionPositionsRef.current;
+      if (!positions.length) return categories[0]?.slug ?? '';
 
-        visibleSections.current.forEach((slug) => {
-          // Measure against the exact heading rather than the entire bounding box
-          const heading = document.getElementById(`category-${slug}`);
-          if (heading) {
-            const rect = heading.getBoundingClientRect();
+      const scrollY = window.scrollY;
 
-            // Absolute distance from the heading to the activation line
-            const distance = Math.abs(rect.top - activationLine);
+      // 1. Check if user is scrolled near the bottom of the page
+      if (window.innerHeight + scrollY >= document.documentElement.scrollHeight - 60) {
+        return categories[categories.length - 1]?.slug ?? '';
+      }
 
-            if (distance < minDistance) {
-              minDistance = distance;
-              closestSlug = slug;
+      const targetY = scrollY + activationLineRef.current;
+      const currentIndex = positions.findIndex((p) => p.slug === prevSlug);
+
+      // Deadband hysteresis buffer (16px) to prevent rapid toggling near section boundaries
+      const hysteresis = 16;
+
+      if (currentIndex !== -1) {
+        // Advancing to subsequent section?
+        if (currentIndex < positions.length - 1) {
+          const next = positions[currentIndex + 1];
+          if (next && targetY >= next.top + hysteresis) {
+            let targetIdx = currentIndex + 1;
+            while (targetIdx < positions.length - 1) {
+              const upcoming = positions[targetIdx + 1];
+              if (upcoming && targetY >= upcoming.top + hysteresis) {
+                targetIdx++;
+              } else {
+                break;
+              }
+            }
+            return positions[targetIdx]?.slug ?? prevSlug;
+          }
+        }
+
+        // Stepping back to previous section?
+        const current = positions[currentIndex];
+        if (current && targetY < current.top - hysteresis) {
+          let targetIdx = currentIndex - 1;
+          while (targetIdx > 0) {
+            const prev = positions[targetIdx];
+            if (prev && targetY < prev.top - hysteresis) {
+              targetIdx--;
+            } else {
+              break;
             }
           }
-        });
-
-        if (closestSlug) {
-          setActiveSlug((prev) => (prev !== closestSlug ? closestSlug : prev));
+          return positions[Math.max(0, targetIdx)]?.slug ?? prevSlug;
         }
+
+        return prevSlug;
+      }
+
+      // Initial / fallback scan
+      let currentSlug = positions[0]?.slug ?? '';
+      for (const p of positions) {
+        if (targetY >= p.top) {
+          currentSlug = p.slug;
+        } else {
+          break;
+        }
+      }
+      return currentSlug;
+    };
+
+    const handleScroll = () => {
+      if (isClickInitiated.current) return;
+      if (rafId !== null) return;
+
+      rafId = window.requestAnimationFrame(() => {
+        rafId = null;
+        setActiveSlug((prev) => determineActiveCategory(prev));
       });
     };
 
+    const handleUserInteraction = () => {
+      if (isClickInitiated.current) {
+        isClickInitiated.current = false;
+        if (clickTimerRef.current) {
+          clearTimeout(clickTimerRef.current);
+          clickTimerRef.current = null;
+        }
+      }
+    };
+
+    const handleResize = () => {
+      updateCachedPositions();
+      handleScroll();
+    };
+
+    // Cache initial positions and schedule follow-ups for dynamic content/images
+    updateCachedPositions();
+    const t1 = setTimeout(updateCachedPositions, 300);
+    const t2 = setTimeout(updateCachedPositions, 1000);
+
     window.addEventListener('scroll', handleScroll, { passive: true });
-    // Initial calculation
+    window.addEventListener('resize', handleResize, { passive: true });
+    window.addEventListener('orientationchange', handleResize, { passive: true });
+    window.addEventListener('wheel', handleUserInteraction, { passive: true });
+    window.addEventListener('touchmove', handleUserInteraction, { passive: true });
+
     handleScroll();
 
     return () => {
-      observer.disconnect();
       window.removeEventListener('scroll', handleScroll);
-      if (rafId) cancelAnimationFrame(rafId);
+      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('orientationchange', handleResize);
+      window.removeEventListener('wheel', handleUserInteraction);
+      window.removeEventListener('touchmove', handleUserInteraction);
+      if (rafId !== null) window.cancelAnimationFrame(rafId);
+      if (clickTimerRef.current) clearTimeout(clickTimerRef.current);
+      clearTimeout(t1);
+      clearTimeout(t2);
     };
-  }, [categories]);
+  }, [categories, updateCachedPositions]);
 
-  // Update sliding pill position and auto-center the container
+  // Smooth auto-scroll only when active item is near/outside visible viewport
   React.useEffect(() => {
     const activeItem = itemsRef.current.get(activeSlug);
     const container = scrollContainerRef.current;
-    const indicator = indicatorRef.current;
 
-    if (activeItem && container && indicator) {
-      // 1. Direct DOM mutation for indicator to avoid React renders
-      indicator.style.transform = `translateX(${activeItem.offsetLeft}px)`;
-      indicator.style.width = `${activeItem.offsetWidth}px`;
-      indicator.style.opacity = '1';
+    if (activeItem && container) {
+      const itemLeft = activeItem.offsetLeft - container.scrollLeft;
+      const itemRight = itemLeft + activeItem.offsetWidth;
+      const containerWidth = container.clientWidth;
 
-      // 2. Auto-center active item
-      const itemCenter = activeItem.offsetLeft + activeItem.offsetWidth / 2;
-      const containerCenter = container.offsetWidth / 2;
-      const scrollTarget = itemCenter - containerCenter;
+      // Keep active item within comfortable center zone without shaking
+      const edgeBuffer = 48;
+      const isComfortablyVisible =
+        itemLeft >= edgeBuffer && itemRight <= containerWidth - edgeBuffer;
 
-      // Use smooth only if user clicked; use instant auto-scroll if it's passive intersection
-      container.scrollTo({
-        left: scrollTarget,
-        behavior: isClickInitiated.current ? 'smooth' : 'auto',
-      });
+      // Only scroll horizontally if item is near/outside edges, or user clicked
+      if (!isComfortablyVisible || isClickInitiated.current) {
+        const itemCenter = activeItem.offsetLeft + activeItem.offsetWidth / 2;
+        const containerCenter = containerWidth / 2;
+        const scrollTarget = itemCenter - containerCenter;
 
-      // Reset the click flag after applying the scroll
-      if (isClickInitiated.current) {
-        isClickInitiated.current = false;
+        container.scrollTo({
+          left: Math.max(0, scrollTarget),
+          behavior: 'smooth',
+        });
       }
     }
-  }, [activeSlug, categories]);
-
-  // Ensure indicator updates on window resize
-  React.useEffect(() => {
-    const handleResize = () => {
-      const activeItem = itemsRef.current.get(activeSlug);
-      const indicator = indicatorRef.current;
-      if (activeItem && indicator) {
-        indicator.style.transform = `translateX(${activeItem.offsetLeft}px)`;
-        indicator.style.width = `${activeItem.offsetWidth}px`;
-      }
-    };
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
   }, [activeSlug]);
+
+  // Dynamic ResizeObserver to refresh section offsets whenever layout or images change
+  React.useEffect(() => {
+    if (typeof ResizeObserver === 'undefined') return;
+    const ro = new ResizeObserver(() => {
+      updateCachedPositions();
+    });
+    ro.observe(document.body);
+    return () => ro.disconnect();
+  }, [updateCachedPositions]);
 
   const scrollToCategory = React.useCallback((slug: string) => {
     const section = document.getElementById(slug);
     if (section) {
-      const offset = 80; // Account for header height
+      const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+      const isLg = typeof window !== 'undefined' && window.innerWidth >= 1024;
+      const headerH = isMobile ? 64 : isLg ? 76 : 72;
+      const navH = navRef.current ? navRef.current.offsetHeight : isMobile ? 58 : 72;
+      const offset = headerH + navH + 16;
       const top = section.getBoundingClientRect().top + window.scrollY - offset;
       window.scrollTo({ top, behavior: 'smooth' });
     }
   }, []);
 
-  // Handle cross-page hash navigation (Next.js App Router bug mitigation)
-  React.useEffect(() => {
-    const hash = window.location.hash;
-    if (!hash) return; // Do nothing if there's no hash
-
-    const slug = hash.replace('#', '');
-    let attempts = 0;
-    const maxAttempts = 30; // Bound retries to ~500ms
-
-    const tryScroll = () => {
-      const section = document.getElementById(slug);
-      if (section) {
-        isClickInitiated.current = true;
-        setActiveSlug(slug);
-
-        // Give the browser one final frame to compute layout
-        requestAnimationFrame(() => {
-          scrollToCategory(slug);
-        });
-      } else if (attempts < maxAttempts) {
-        attempts++;
-        requestAnimationFrame(tryScroll);
+  const handleCategoryClick = React.useCallback(
+    (slug: string) => {
+      if (clickTimerRef.current) {
+        clearTimeout(clickTimerRef.current);
       }
+      isClickInitiated.current = true;
+      setActiveSlug(slug);
+      scrollToCategory(slug);
+
+      if (typeof window !== 'undefined' && window.location.hash !== `#${slug}`) {
+        window.history.pushState(null, '', `#${slug}`);
+      }
+
+      clickTimerRef.current = setTimeout(() => {
+        isClickInitiated.current = false;
+        clickTimerRef.current = null;
+      }, 800);
+    },
+    [scrollToCategory],
+  );
+
+  // Handle cross-page and browser back/forward hash navigation
+  React.useEffect(() => {
+    const handleHashNav = () => {
+      const hash = window.location.hash;
+      if (!hash) return;
+
+      const slug = hash.replace('#', '');
+      let attempts = 0;
+      const maxAttempts = 30;
+
+      const tryScroll = () => {
+        const section = document.getElementById(slug);
+        if (section) {
+          handleCategoryClick(slug);
+        } else if (attempts < maxAttempts) {
+          attempts++;
+          requestAnimationFrame(tryScroll);
+        }
+      };
+
+      requestAnimationFrame(tryScroll);
     };
 
-    // Wait for the first paint before starting to check
-    requestAnimationFrame(tryScroll);
-  }, [scrollToCategory]);
+    handleHashNav();
+    window.addEventListener('hashchange', handleHashNav);
+    window.addEventListener('popstate', handleHashNav);
+
+    return () => {
+      window.removeEventListener('hashchange', handleHashNav);
+      window.removeEventListener('popstate', handleHashNav);
+    };
+  }, [handleCategoryClick]);
 
   return (
     <nav
+      ref={navRef}
       aria-label="Browse menu categories"
-      className="sticky top-[64px] md:top-[80px] z-40 bg-background/90 backdrop-blur-md overflow-hidden"
+      className={cn(
+        'sticky z-40 bg-[#BC1D1A] overflow-hidden',
+        'top-[64px] md:top-[72px] lg:top-[76px]',
+        'pt-[24px] md:pt-[34px] lg:pt-[40px]',
+        'transform-gpu will-change-transform',
+      )}
+      style={{
+        transform: 'translate3d(0, 0, 0)',
+        backfaceVisibility: 'hidden',
+      }}
     >
       <div
         ref={scrollContainerRef}
-        className="relative flex items-center overflow-x-auto scrollbar-none px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto py-2 md:py-3 snap-x snap-mandatory"
+        className="relative flex items-center gap-6 sm:gap-8 overflow-x-auto scrollbar-none px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto pt-1 pb-2.5 md:pt-1 md:pb-3 snap-x snap-proximity"
         role="list"
       >
-        {/* Sliding Pill Indicator */}
-        <div
-          ref={indicatorRef}
-          className="absolute h-10 md:h-12 bg-muted/80 rounded-full transition-all duration-300 ease-out z-0 opacity-0"
-          aria-hidden="true"
-        />
-
         {categories.map(({ id, name, slug }) => {
           const isActive = slug === activeSlug;
           return (
@@ -207,21 +312,18 @@ export function CategoryNav({ categories }: CategoryNavProps) {
               }}
               href={`#${slug}`}
               role="listitem"
+              aria-current={isActive ? 'true' : undefined}
               onClick={(e) => {
                 e.preventDefault();
-                isClickInitiated.current = true;
-                setActiveSlug(slug); // Optimistic UI update
-                scrollToCategory(slug);
+                handleCategoryClick(slug);
               }}
               className={cn(
-                'relative z-10 flex-shrink-0 px-5 py-2 md:py-2.5 text-sm md:text-base font-medium transition-all duration-300 whitespace-nowrap rounded-full snap-center',
-                'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2',
-                isActive
-                  ? 'text-foreground font-semibold scale-105'
-                  : 'text-muted-foreground hover:text-foreground active:scale-95',
+                'relative z-10 flex-shrink-0 px-1 py-1.5 md:py-2 font-sans font-bold uppercase tracking-[0.15em] text-xs sm:text-sm whitespace-nowrap snap-center transition-colors duration-200',
+                isActive ? 'text-[#FDFADB]' : 'text-[#FDFADB]/70 hover:text-[#FDFADB]',
+                'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FDFADB] focus-visible:ring-offset-2 focus-visible:ring-offset-[#BC1D1A]',
               )}
             >
-              {name}
+              <span className="relative inline-block">{name}</span>
             </a>
           );
         })}
