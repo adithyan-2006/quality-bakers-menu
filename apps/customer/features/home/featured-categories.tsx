@@ -317,63 +317,6 @@ export function FeaturedCategories({ categories }: FeaturedCategoriesProps) {
       resizeObserver.observe(trackRef.current);
     }
 
-    // ----------------------------------------------------------------
-    // Touch Swipe Gesture Support for Mobile & Tablets:
-    // Allows horizontal swipe gestures on the collection to advance
-    // the gallery naturally alongside vertical scrolling.
-    // ----------------------------------------------------------------
-    let touchStartX = 0;
-    let touchStartY = 0;
-    let touchScrollTop = 0;
-    let isHorizontalGesture = false;
-
-    const handleTouchStart = (e: TouchEvent) => {
-      const touch = e.touches[0];
-      if (!touch || e.touches.length !== 1) return;
-      touchStartX = touch.clientX;
-      touchStartY = touch.clientY;
-      touchScrollTop = window.scrollY;
-      isHorizontalGesture = false;
-    };
-
-    const handleTouchMove = (e: TouchEvent) => {
-      const touch = e.touches[0];
-      if (!touch || e.touches.length !== 1) return;
-      const dx = touch.clientX - touchStartX;
-      const dy = touch.clientY - touchStartY;
-
-      if (!isHorizontalGesture && (Math.abs(dx) > 10 || Math.abs(dy) > 10)) {
-        if (Math.abs(dx) > Math.abs(dy) * 1.2) {
-          isHorizontalGesture = true;
-        }
-      }
-
-      if (isHorizontalGesture) {
-        const cRect = containerRef.current?.getBoundingClientRect();
-        if (cRect) {
-          const stickyTopPx = stickyTopRef.current;
-          const stickyHeight = stickyRef.current?.offsetHeight ?? 0;
-          const isInStickyZone =
-            cRect.top <= stickyTopPx + 10 && cRect.bottom >= stickyTopPx + stickyHeight - 10;
-
-          if (isInStickyZone) {
-            e.preventDefault();
-            // Swiping left (dx < 0) advances the gallery (scrolls down)
-            window.scrollTo({
-              top: touchScrollTop - dx * 1.3,
-              behavior: 'auto',
-            });
-          }
-        }
-      }
-    };
-
-    const containerEl = containerRef.current;
-    if (containerEl) {
-      containerEl.addEventListener('touchstart', handleTouchStart, { passive: true });
-      containerEl.addEventListener('touchmove', handleTouchMove, { passive: false });
-    }
-
     onScroll();
     rafId.current = requestAnimationFrame(renderLoop);
 
@@ -381,10 +324,6 @@ export function FeaturedCategories({ categories }: FeaturedCategoriesProps) {
       cancelAnimationFrame(initId);
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', onResize);
-      if (containerEl) {
-        containerEl.removeEventListener('touchstart', handleTouchStart);
-        containerEl.removeEventListener('touchmove', handleTouchMove);
-      }
       if (resizeObserver) resizeObserver.disconnect();
       if (rafId.current) cancelAnimationFrame(rafId.current);
     };
@@ -393,7 +332,10 @@ export function FeaturedCategories({ categories }: FeaturedCategoriesProps) {
   if (!categories || categories.length === 0) return null;
 
   return (
-    <section ref={containerRef} className="relative w-full bg-[#BC1D1A]">
+    <section
+      ref={containerRef}
+      className="featured-categories-section relative w-full bg-[#BC1D1A]"
+    >
       {/* Sticky panel — top:64px mobile, 72px md, 76px lg keeps content below the header */}
       <div
         ref={stickyRef}
@@ -414,7 +356,7 @@ export function FeaturedCategories({ categories }: FeaturedCategoriesProps) {
         <div className="w-full relative touch-pan-y" style={{ perspective: '1400px' }}>
           <div
             ref={trackRef}
-            className="flex items-center gap-4 sm:gap-6 md:gap-8 px-6 lg:px-8 w-max will-change-transform opacity-0"
+            className="featured-categories-track flex items-center gap-4 sm:gap-6 md:gap-8 px-6 lg:px-8 w-max will-change-transform opacity-0"
             style={{ transformStyle: 'preserve-3d' }}
           >
             {categories.map((category, idx) => {
@@ -478,31 +420,31 @@ export function FeaturedCategories({ categories }: FeaturedCategoriesProps) {
         dangerouslySetInnerHTML={{
           __html: `
         @media (prefers-reduced-motion: reduce) {
-          section {
+          .featured-categories-section {
             min-height: auto !important;
             padding-top: 4rem;
             padding-bottom: 4rem;
           }
-          .sticky {
+          .featured-categories-section .sticky {
             position: relative !important;
             height: auto !important;
             top: auto !important;
             padding: 0 !important;
           }
-          .will-change-transform {
+          .featured-categories-section .will-change-transform {
             opacity: 1 !important;
             transform: none !important;
           }
-          .w-max {
+          .featured-categories-section .featured-categories-track {
             flex-wrap: wrap !important;
             width: 100% !important;
             justify-content: center;
           }
-          .explore-card {
+          .featured-categories-section .explore-card {
             width: 100% !important;
             max-width: 360px;
           }
-          .focus-scale {
+          .featured-categories-section .focus-scale {
             transform: none !important;
             box-shadow: 0 16px 40px -8px rgba(25,2,2,0.65) !important;
             opacity: 1 !important;
