@@ -74,7 +74,19 @@ function TeardropSvg({ variant = 1 }: { variant?: 1 | 2 | 3 }) {
  * across the home page and over the marquee banner, executing a natural liquid splash animation
  * upon hitting the bottom baseline of the home section.
  */
-export function DrippingAnimation() {
+interface DrippingAnimationProps {
+  /**
+   * Whether the dripping animation is active.
+   * Defaults to false to stop the animation while keeping all assets and logic intact.
+   */
+  enabled?: boolean;
+}
+
+export function DrippingAnimation({ enabled = false }: DrippingAnimationProps = {}) {
+  if (!enabled) {
+    return null;
+  }
+
   return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden z-30" aria-hidden="true">
       {/* Shared Root SVG Defs (Never display:none, always resolved globally for all viewports) */}

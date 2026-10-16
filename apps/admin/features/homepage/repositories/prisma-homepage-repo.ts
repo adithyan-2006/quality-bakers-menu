@@ -146,7 +146,22 @@ export const PrismaHomepageRepository = {
                     displayOrder: index,
                   })),
                 });
+
+                // Synchronize category.isFeatured: true for all featured categories
+                await tx.category.updateMany({
+                  where: { id: { in: data.featuredCategories } },
+                  data: { isFeatured: true },
+                });
               }
+
+              // Synchronize category.isFeatured: false for any categories that were removed
+              await tx.category.updateMany({
+                where: {
+                  id: { notIn: data.featuredCategories },
+                  isFeatured: true,
+                },
+                data: { isFeatured: false },
+              });
             }
 
             if (data.seasonalBanner) {

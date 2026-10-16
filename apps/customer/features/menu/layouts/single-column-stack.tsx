@@ -19,7 +19,7 @@ export function SingleColumnStack({
   animationConfig,
 }: LayoutComponentProps) {
   return (
-    <div className="flex flex-col gap-6 sm:gap-8 items-center w-full max-w-[480px] sm:max-w-[520px] md:max-w-[560px] mx-auto">
+    <div className="flex flex-col gap-6 sm:gap-8 items-center w-full max-w-[360px] mx-auto">
       {products.map((product, idx) => (
         <MotionWrapper key={product.id} config={animationConfig} index={idx} className="w-full">
           <ProductCard

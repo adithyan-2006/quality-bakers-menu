@@ -96,6 +96,32 @@ export const PrismaCategoryRepository = {
           _count: { select: { products: true } },
         },
       });
+
+      // Synchronize with Homepage Featured Categories
+      if (data.isFeatured) {
+        const hp = await prisma.homepage.findFirst();
+        if (hp) {
+          const maxHpOrder = await prisma.homepageFeaturedCategory.findFirst({
+            where: { homepageId: hp.id },
+            orderBy: { displayOrder: 'desc' },
+          });
+          await prisma.homepageFeaturedCategory.upsert({
+            where: {
+              homepageId_categoryId: {
+                homepageId: hp.id,
+                categoryId: created.id,
+              },
+            },
+            create: {
+              homepageId: hp.id,
+              categoryId: created.id,
+              displayOrder: (maxHpOrder?.displayOrder ?? -1) + 1,
+            },
+            update: {},
+          });
+        }
+      }
+
       const result = mapPrismaCategory(created);
       await AuditService.logAction('system', 'CREATE', 'CATEGORY', result.id, null, result);
       return result;
@@ -143,6 +169,41 @@ export const PrismaCategoryRepository = {
           _count: { select: { products: true } },
         },
       });
+
+      // Synchronize with Homepage Featured Categories
+      if (data.isFeatured !== undefined) {
+        const hp = await prisma.homepage.findFirst();
+        if (hp) {
+          if (data.isFeatured) {
+            const maxHpOrder = await prisma.homepageFeaturedCategory.findFirst({
+              where: { homepageId: hp.id },
+              orderBy: { displayOrder: 'desc' },
+            });
+            await prisma.homepageFeaturedCategory.upsert({
+              where: {
+                homepageId_categoryId: {
+                  homepageId: hp.id,
+                  categoryId: id,
+                },
+              },
+              create: {
+                homepageId: hp.id,
+                categoryId: id,
+                displayOrder: (maxHpOrder?.displayOrder ?? -1) + 1,
+              },
+              update: {},
+            });
+          } else {
+            await prisma.homepageFeaturedCategory.deleteMany({
+              where: {
+                homepageId: hp.id,
+                categoryId: id,
+              },
+            });
+          }
+        }
+      }
+
       const result = mapPrismaCategory(updated);
       await AuditService.logAction('system', 'UPDATE', 'CATEGORY', result.id, current, result);
       return result;

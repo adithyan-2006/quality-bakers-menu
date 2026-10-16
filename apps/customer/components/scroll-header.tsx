@@ -2,9 +2,12 @@
 
 import * as React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 import { cn } from '@qbm/ui';
 import { MobileNav } from './mobile-nav';
 import { ContentContainer } from './layout/content-container';
+import { scrollToSection } from './scroll-to-section';
 
 interface ScrollHeaderProps {
   businessName?: string;
@@ -12,14 +15,36 @@ interface ScrollHeaderProps {
   children?: React.ReactNode;
 }
 
-export function ScrollHeader({ businessName = 'Quality Bakers', children }: ScrollHeaderProps) {
+export function ScrollHeader({
+  businessName = 'Quality Bakers',
+  logoUrl,
+  children,
+}: ScrollHeaderProps) {
+  const logoSrc = logoUrl || '/images/quality-bakers-logo.png';
+  const pathname = usePathname();
+
+  const handleLogoClick = React.useCallback(
+    (e: React.MouseEvent<HTMLAnchorElement>) => {
+      if (pathname === '/') {
+        e.preventDefault();
+        scrollToSection('home');
+      }
+    },
+    [pathname],
+  );
+
   return (
     <header
       className={cn(
         'sticky top-0 z-50 w-full bg-[#BC1D1A]',
         'h-[64px] md:h-[72px] lg:h-[76px]',
         'flex flex-col justify-center',
+        'transform-gpu will-change-transform',
       )}
+      style={{
+        transform: 'translate3d(0, 0, 0)',
+        backfaceVisibility: 'hidden',
+      }}
     >
       {/* Shared SVG Defs for 3D Shading, Underside Bevel & Specular Gloss */}
       <svg width="0" height="0" className="absolute" aria-hidden="true">
@@ -121,7 +146,11 @@ export function ScrollHeader({ businessName = 'Quality Bakers', children }: Scro
 
       {/* Desktop & Tablet Cream Header SVG (viewBox 0 0 1024 165) */}
       <svg
-        className="cream-svg-desktop absolute inset-x-0 top-0 w-full h-[148px] md:h-[156px] lg:h-[165px] pointer-events-none -z-10 overflow-visible hidden md:block"
+        className="cream-svg-desktop absolute inset-x-0 top-0 w-full h-[148px] md:h-[156px] lg:h-[165px] pointer-events-none -z-10 overflow-visible hidden md:block transform-gpu"
+        style={{
+          transform: 'translate3d(0, 0, 0)',
+          backfaceVisibility: 'hidden',
+        }}
         viewBox="0 0 1024 165"
         preserveAspectRatio="none"
         aria-hidden="true"
@@ -211,7 +240,11 @@ export function ScrollHeader({ businessName = 'Quality Bakers', children }: Scro
 
       {/* Mobile Cream Header SVG (viewBox 0 0 525 145) */}
       <svg
-        className="cream-svg-mobile absolute inset-x-0 top-0 w-full h-[145px] sm:h-[148px] pointer-events-none -z-10 overflow-visible md:hidden"
+        className="cream-svg-mobile absolute inset-x-0 top-0 w-full h-[145px] sm:h-[148px] pointer-events-none -z-10 overflow-visible md:hidden transform-gpu"
+        style={{
+          transform: 'translate3d(0, 0, 0)',
+          backfaceVisibility: 'hidden',
+        }}
         viewBox="0 0 525 145"
         preserveAspectRatio="none"
         aria-hidden="true"
@@ -299,17 +332,30 @@ export function ScrollHeader({ businessName = 'Quality Bakers', children }: Scro
         </g>
       </svg>
 
-      <ContentContainer className="flex items-center justify-between h-full pt-1 pb-1 md:pb-1.5">
+      <ContentContainer className="max-w-none px-4 sm:px-6 md:px-10 lg:px-16 flex items-center justify-between h-full pt-1 pb-1 md:pb-1.5">
         <Link
           href="/"
-          className="outline-none focus-visible:ring-2 focus-visible:ring-[#821419] rounded-sm select-none"
+          onClick={handleLogoClick}
+          className="flex items-center gap-2.5 sm:gap-3 outline-none focus-visible:ring-2 focus-visible:ring-[#BC1D1A] rounded-sm select-none"
         >
-          <span className="font-serif font-bold tracking-tight text-[#821419] text-2xl md:text-3xl leading-none transition-colors">
+          {logoSrc && (
+            <Image
+              src={logoSrc}
+              alt={businessName}
+              width={40}
+              height={40}
+              priority
+              className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full object-contain shrink-0"
+            />
+          )}
+          <span className="font-serif font-bold tracking-tight text-[#BC1D1A] text-2xl md:text-3xl leading-none transition-colors">
             {businessName}
           </span>
         </Link>
         <div className="flex items-center gap-6 md:gap-8">
-          <div className="hidden md:flex items-center gap-8 pb-0.5">{children}</div>
+          <div className="hidden md:flex items-center gap-8 -translate-y-2.5 md:-translate-y-3">
+            {children}
+          </div>
           <div className="-mr-2 sm:-mr-2.5">
             <MobileNav />
           </div>

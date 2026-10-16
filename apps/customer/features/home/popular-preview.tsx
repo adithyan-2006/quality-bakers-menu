@@ -18,9 +18,9 @@ export function PopularPreview({ products }: PopularPreviewProps) {
     <section className="relative w-full bg-[#BC1D1A] pt-0 pb-16 md:py-24">
       <div className="relative px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         {/* Mobile-only Sticky Header:
-            Pins at top-[52px] (below compact 52px mobile header) on mobile throughout Most Loved section.
+            Pins at top-[64px] (below sticky 64px mobile header) with pt-10 to clear dripping cream.
             Releases naturally at the end of the section. Static on desktop. */}
-        <div className="sticky top-[52px] z-20 md:static bg-[#BC1D1A]/95 backdrop-blur-md md:bg-transparent -mx-4 px-4 sm:-mx-6 sm:px-6 md:mx-0 md:px-0 pt-3 pb-4 md:pt-0 md:pb-0 mb-8 md:mb-16 transition-colors">
+        <div className="sticky top-[64px] z-20 md:static bg-[#BC1D1A]/95 backdrop-blur-md md:bg-transparent -mx-4 px-4 sm:-mx-6 sm:px-6 md:mx-0 md:px-0 pt-10 pb-4 md:pt-0 md:pb-0 mb-8 md:mb-16 transition-colors">
           <ScrollReveal animation="heading">
             <div className="flex flex-col items-center text-center md:items-start md:text-left">
               <span className="text-[#FDFADB]/70 uppercase tracking-[0.15em] text-xs font-bold font-sans mb-2 md:mb-4 block">
@@ -41,8 +41,8 @@ export function PopularPreview({ products }: PopularPreviewProps) {
 
             return (
               <ScrollReveal key={item.id} delayMs={delayMs} animation="card">
-                <div className="group flex flex-col h-full bg-[#FDFADB] rounded-2xl p-4 md:p-5 border border-[#BC1D1A]/10 shadow-md hover:shadow-xl transition-all duration-300">
-                  <div className="relative aspect-[4/3] md:aspect-[4/5] rounded-xl bg-brand-deep-cream mb-4 md:mb-6 overflow-hidden">
+                <div className="group flex flex-col h-full bg-[#FDFADB] rounded-2xl sm:rounded-3xl p-4 md:p-5 border border-[#BC1D1A]/12 shadow-[0_12px_32px_-8px_rgba(40,3,3,0.22),0_4px_12px_rgba(0,0,0,0.06)] hover:shadow-[0_22px_48px_-10px_rgba(40,3,3,0.35),0_8px_20px_rgba(0,0,0,0.12)] hover:-translate-y-1.5 transition-all duration-300">
+                  <div className="relative aspect-[4/3] md:aspect-[4/5] rounded-xl sm:rounded-2xl bg-brand-deep-cream mb-4 md:mb-6 overflow-hidden">
                     {imageUrl ? (
                       <img
                         src={imageUrl}

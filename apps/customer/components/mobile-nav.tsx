@@ -2,15 +2,103 @@
 
 import * as React from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Menu, X } from 'lucide-react';
 import { cn, buttonVariants } from '@qbm/ui';
-import { scrollToSection } from './scroll-to-section';
+import { scrollToSection, scrollToHashWithRetry } from './scroll-to-section';
+
+interface NavItem {
+  id: string;
+  label: string;
+  href: string;
+  isExternalPage?: boolean;
+}
+
+const NAV_ITEMS: NavItem[] = [
+  { id: 'home', label: 'Home', href: '/#home' },
+  { id: 'signature', label: 'Signature', href: '/#signature' },
+  { id: 'menu', label: 'Menu', href: '/categories', isExternalPage: true },
+  { id: 'about', label: 'About', href: '/#about' },
+];
 
 export function MobileNav() {
+  const pathname = usePathname();
+  const [prevPathname, setPrevPathname] = React.useState(pathname);
   const [isOpen, setIsOpen] = React.useState(false);
   const [isClosing, setIsClosing] = React.useState(false);
+  const [activeSection, setActiveSection] = React.useState<string>('home');
   const containerRef = React.useRef<HTMLDivElement>(null);
   const closeTimerRef = React.useRef<NodeJS.Timeout | null>(null);
+
+  // Close menu automatically whenever route changes (React 19 render-phase pattern)
+  if (pathname !== prevPathname) {
+    setPrevPathname(pathname);
+    setIsOpen(false);
+    setIsClosing(false);
+  }
+
+  // Synchronize active section on scroll & hash when on homepage
+  React.useEffect(() => {
+    if (pathname !== '/') return;
+
+    let rafId: number | null = null;
+
+    const determineActiveSection = () => {
+      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 60) {
+        return 'about';
+      }
+
+      const activationLine = 140;
+      let current = 'home';
+
+      for (const item of NAV_ITEMS) {
+        if (item.isExternalPage) continue;
+        const el = document.getElementById(item.id);
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          if (rect.top <= activationLine) {
+            current = item.id;
+          } else {
+            break;
+          }
+        }
+      }
+      return current;
+    };
+
+    const handleScroll = () => {
+      if (rafId !== null) return;
+      rafId = window.requestAnimationFrame(() => {
+        rafId = null;
+        const current = determineActiveSection();
+        setActiveSection(current);
+      });
+    };
+
+    const handleHash = () => {
+      const hash = window.location.hash.replace('#', '') || 'home';
+      if (hash === 'signature' || hash === 'about' || hash === 'home') {
+        setActiveSection(hash);
+        scrollToHashWithRetry(hash);
+      }
+    };
+
+    if (window.location.hash) {
+      handleHash();
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('popstate', handleHash);
+    window.addEventListener('hashchange', handleHash);
+    handleScroll();
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('popstate', handleHash);
+      window.removeEventListener('hashchange', handleHash);
+      if (rafId !== null) cancelAnimationFrame(rafId);
+    };
+  }, [pathname]);
 
   const openMenu = React.useCallback(() => {
     if (closeTimerRef.current) {
@@ -39,14 +127,15 @@ export function MobileNav() {
     }
   }, [isOpen, closeMenu, openMenu]);
 
-  // Clean up timer on unmount
+  // Clean up timer on unmount or route change
   React.useEffect(() => {
     return () => {
       if (closeTimerRef.current) {
         clearTimeout(closeTimerRef.current);
+        closeTimerRef.current = null;
       }
     };
-  }, []);
+  }, [pathname]);
 
   // Close on Escape key
   React.useEffect(() => {
@@ -76,13 +165,20 @@ export function MobileNav() {
     return () => document.removeEventListener('pointerdown', handlePointerDown);
   }, [isOpen, isClosing, closeMenu]);
 
-  const handleNavClick = (id: string) => (e: React.MouseEvent<HTMLAnchorElement>) => {
-    closeMenu();
-    if (typeof window !== 'undefined' && window.location.pathname === '/') {
-      e.preventDefault();
-      scrollToSection(id);
-    }
-  };
+  const handleNavClick =
+    (id: string, isExternalPage?: boolean) => (e: React.MouseEvent<HTMLAnchorElement>) => {
+      if (isExternalPage) {
+        return;
+      }
+      closeMenu();
+      setActiveSection(id);
+      if (pathname === '/') {
+        e.preventDefault();
+        scrollToSection(id);
+      } else {
+        scrollToHashWithRetry(id);
+      }
+    };
 
   return (
     <div ref={containerRef} className="md:hidden relative flex items-center">
@@ -120,31 +216,27 @@ export function MobileNav() {
           role="menu"
           aria-label="Mobile navigation"
         >
-          <nav className="flex flex-col gap-5 sm:gap-6" role="none">
-            <Link
-              href="/#home"
-              role="menuitem"
-              onClick={handleNavClick('home')}
-              className="font-serif text-2xl font-medium text-[#A71920] hover:opacity-80 transition-opacity"
-            >
-              Home
-            </Link>
-            <Link
-              href="/#signature"
-              role="menuitem"
-              onClick={handleNavClick('signature')}
-              className="font-serif text-2xl font-medium text-[#A71920] hover:opacity-80 transition-opacity"
-            >
-              Signature
-            </Link>
-            <Link
-              href="/#about"
-              role="menuitem"
-              onClick={handleNavClick('about')}
-              className="font-serif text-2xl font-medium text-[#A71920] hover:opacity-80 transition-opacity"
-            >
-              About
-            </Link>
+          <nav className="flex flex-col gap-4 sm:gap-5" role="none">
+            {NAV_ITEMS.map(({ id, label, href, isExternalPage }) => {
+              const isCurrent = isExternalPage
+                ? pathname === href || pathname?.startsWith('/categories')
+                : pathname === '/' && activeSection === id;
+              return (
+                <Link
+                  key={id}
+                  href={href}
+                  scroll={false}
+                  role="menuitem"
+                  onClick={handleNavClick(id, isExternalPage)}
+                  className={cn(
+                    'font-sans font-bold uppercase tracking-[0.15em] text-base sm:text-lg transition-colors',
+                    isCurrent ? 'text-[#A71920]' : 'text-[#A71920]/70 hover:text-[#A71920]',
+                  )}
+                >
+                  {label}
+                </Link>
+              );
+            })}
           </nav>
         </div>
       )}

@@ -25,7 +25,7 @@ export const CATEGORIES: MenuCategoryConfig[] = [
     name: 'Falooda',
     slug: 'falooda',
     description:
-      'Luxurious, layered towers of rose syrup, creamy vermicelli, sweet basil seeds, and premium ice cream. An indulgence in every spoonful.',
+      'Traditional royal dessert beverages layered with basil seeds and rich ice cream, with select options crafted with or without vermicelli.',
     displayOrder: 1,
     layoutType: 'spotlight',
     displayStyle: 'luxury',
@@ -193,7 +193,8 @@ export const CATEGORIES: MenuCategoryConfig[] = [
     id: 'cat-lime',
     name: 'Lime',
     slug: 'lime',
-    description: 'Simple, sharp, and refreshing. Fresh lime-based beverages prepared to order.',
+    description:
+      'Refreshing citrus creations, from crisp fruit coolers to unique specialties blended with rich ice creams like French, pista, strawberry, and butterscotch.',
     displayOrder: 11,
     layoutType: 'editorial-grid',
     displayStyle: 'minimal',
@@ -223,12 +224,29 @@ export const CATEGORIES: MenuCategoryConfig[] = [
     updatedAt: '2024-01-01T00:00:00Z',
   },
   {
+    id: 'cat-ice-cream',
+    name: 'Ice Cream',
+    slug: 'ice-cream',
+    description:
+      'Rich, velvety scoops churned from fresh dairy cream and premium natural flavours, offering a timeless cool indulgence in every spoonful.',
+    displayOrder: 16,
+    layoutType: 'editorial-grid',
+    displayStyle: 'classic',
+    animationPreset: 'reveal',
+    scrollBehavior: 'standard',
+    isFeatured: false,
+    featuredOnHome: false,
+    isVisible: true,
+    createdAt: '2024-01-01T00:00:00Z',
+    updatedAt: '2024-01-01T00:00:00Z',
+  },
+  {
     id: 'cat-ice-cream-scoops',
     name: 'Ice Cream Scoops',
     slug: 'ice-cream-scoops',
     description:
       'Premium ice cream served one scoop at a time. Rich flavours, smooth textures, and timeless favourites crafted for every dessert lover.',
-    displayOrder: 13,
+    displayOrder: 17,
     layoutType: 'editorial-grid',
     displayStyle: 'classic',
     animationPreset: 'reveal',
@@ -352,6 +370,7 @@ export function getPlaceholderProducts(categorySlug: string, count = 6): MenuPro
     ],
     lime: ['Salted Lime', 'Sweet Lime', 'Lime Soda', 'Honey Lime', 'Ginger Lime'],
     'fruit-salad': ['Seasonal Bowl', 'Tropical Bowl', 'Berry Bowl', 'Citrus Bowl', 'Mixed Bowl'],
+    'ice-cream': ['Vanilla', 'Strawberry', 'Pista', 'Chocolate', 'Butterscotch'],
     'ice-cream-scoops': [
       'Vanilla Scoop',
       'Chocolate Scoop',

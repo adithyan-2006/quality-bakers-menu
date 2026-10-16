@@ -10,7 +10,7 @@ import {
 import { AdminCategory } from '../../categories/repositories/category-repo';
 import { Edit2, Eye, EyeOff, Search, Copy, LayoutTemplate, Trash2 } from 'lucide-react';
 import Link from 'next/link';
-import { cn, Dialog, Button } from '@qbm/ui';
+import { cn, Dialog, Button, formatBadge } from '@qbm/ui';
 
 interface ProductListProps {
   initialProducts: AdminProduct[];
@@ -273,10 +273,8 @@ export function ProductList({ initialProducts, categories }: ProductListProps) {
                         <div className="font-medium text-stone-900 dark:text-stone-50">
                           {product.name}
                         </div>
-                        {product.badge !== 'none' && (
-                          <div className="text-xs text-stone-500 capitalize">
-                            {product.badge.replace('-', ' ')}
-                          </div>
+                        {product.badge !== 'none' && formatBadge(product.badge) && (
+                          <div className="text-xs text-stone-500">{formatBadge(product.badge)}</div>
                         )}
                       </div>
                     </td>

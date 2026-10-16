@@ -42,7 +42,7 @@ export function CategoryIntro({ config, themeClasses, animationConfig }: Categor
       <MotionWrapper config={animationConfig} index={2} variant="description" delayMs={120}>
         <p
           className={cn(
-            'max-w-2xl font-light leading-relaxed text-lg md:text-xl lg:text-2xl',
+            'max-w-2xl font-sans leading-relaxed text-lg md:text-xl lg:text-2xl',
             themeClasses.description,
           )}
         >

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { cn } from '@qbm/ui';
+import { cn, formatBadge } from '@qbm/ui';
 import type { MenuProduct, ThemeClasses } from '../types';
 import { ProductImage } from './product-image';
 import { LikeButton } from './like-button';
@@ -47,6 +47,7 @@ export function ProductCard({
   priority = false,
 }: ProductCardProps) {
   const formattedPrice = formatCurrencyPrice(product.price);
+  const displayBadge = formatBadge(product.badge);
 
   // Resolve default aspect ratios if not explicitly provided
   const resolvedAspectRatio =
@@ -83,10 +84,10 @@ export function ProductCard({
               className="w-full h-full !absolute inset-0 object-cover"
             />
             {/* Badge Over Image */}
-            {product.badge && (
+            {displayBadge && (
               <div className="absolute top-4 left-4 z-10 rounded-full border border-brand-brick-red bg-transparent px-3 py-1">
                 <span className="text-[10px] md:text-xs uppercase tracking-[0.1em] text-brand-brick-red font-bold">
-                  {product.badge}
+                  {displayBadge}
                 </span>
               </div>
             )}
@@ -148,10 +149,10 @@ export function ProductCard({
               className="w-full h-full !absolute inset-0 object-cover"
             />
             {/* Badge Over Image */}
-            {product.badge && (
+            {displayBadge && (
               <div className="absolute top-3 left-3 z-10 rounded-full border border-brand-brick-red bg-transparent px-3 py-1">
                 <span className="text-[10px] uppercase tracking-[0.1em] text-brand-brick-red font-bold">
-                  {product.badge}
+                  {displayBadge}
                 </span>
               </div>
             )}
@@ -265,7 +266,7 @@ export function ProductCard({
           {/* Editorial Header */}
           <div className="flex justify-between items-start mb-0 p-5 md:p-8 pb-0">
             <span className="text-[10px] md:text-xs uppercase tracking-[0.1em] text-brand-brick-red font-bold">
-              {product.badge || 'Featured Signature'}
+              {displayBadge || 'Featured Signature'}
             </span>
             {formattedPrice && (
               <span className="font-bold font-sans tracking-wide text-sm md:text-base text-brand-dark">
@@ -344,10 +345,10 @@ export function ProductCard({
               priority={priority}
               className="w-full h-full object-cover"
             />
-            {product.badge && (
+            {displayBadge && (
               <div className="absolute top-4 left-4 bg-brand-warm-cream/95 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm z-10">
                 <span className="text-[10px] md:text-xs uppercase tracking-[0.1em] text-brand-brick-red font-bold">
-                  {product.badge}
+                  {displayBadge}
                 </span>
               </div>
             )}
@@ -390,10 +391,10 @@ export function ProductCard({
 
   // ─── STANDARD STYLE ───────────────────────────────────────────────────────
   return (
-    <article className="w-full h-full">
+    <article className="w-full h-full max-w-[360px] mx-auto">
       <div
         className={cn(
-          'group flex flex-col w-full h-full rounded-2xl sm:rounded-3xl overflow-hidden',
+          'group flex flex-col w-full h-full rounded-2xl overflow-hidden',
           themeClasses.card,
           themeClasses.cardHover,
           focusClasses,
@@ -406,28 +407,28 @@ export function ProductCard({
             aspectRatio={resolvedAspectRatio}
             priority={priority}
           />
-          {product.badge && (
-            <div className="absolute top-3.5 left-3.5 sm:top-4 sm:left-4 bg-[#FDFADB] px-3.5 py-1 rounded-full shadow-sm z-10">
-              <span className="text-[10px] md:text-xs uppercase tracking-[0.1em] text-[#BC1D1A] font-bold">
-                {product.badge}
+          {displayBadge && (
+            <div className="absolute top-3.5 left-3.5 bg-[#FDFADB] px-3.5 py-1 rounded-full shadow-sm z-10">
+              <span className="text-[10px] uppercase tracking-[0.1em] text-[#BC1D1A] font-bold">
+                {displayBadge}
               </span>
             </div>
           )}
         </div>
 
-        <div className="flex flex-col flex-1 p-4 sm:p-5 md:p-6 bg-[#FDFADB]">
-          <h3 className="leading-tight text-xl md:text-2xl font-serif font-bold mb-2 text-[#BC1D1A] group-hover:text-brand-brick-red transition-colors duration-300">
+        <div className="flex flex-col flex-1 p-4 bg-[#FDFADB]">
+          <h3 className="leading-tight text-xl font-serif font-bold mb-2 text-[#BC1D1A] group-hover:text-brand-brick-red transition-colors duration-300">
             {product.name}
           </h3>
           {product.description && (
-            <p className="line-clamp-2 text-sm md:text-base leading-relaxed text-[#BC1D1A]/70 mb-4">
+            <p className="line-clamp-2 text-sm leading-relaxed text-[#BC1D1A]/70 mb-4">
               {product.description}
             </p>
           )}
 
-          <div className="mt-auto pt-2.5 sm:pt-3 border-t border-black/10 flex items-center justify-between">
+          <div className="mt-auto pt-2.5 border-t border-black/10 flex items-center justify-between">
             {formattedPrice && (
-              <span className="font-bold font-sans tracking-wide text-sm md:text-base text-brand-dark">
+              <span className="font-bold font-sans tracking-wide text-sm text-brand-dark">
                 {formattedPrice}
               </span>
             )}

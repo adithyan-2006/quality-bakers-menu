@@ -79,16 +79,17 @@ async function main() {
       description:
         'A family-owned bakery dedicated to crafting perfect pastries, fresh breads, and signature beverages daily.',
       businessStatus: 'OPEN',
-      phone: '+91 98765 43210',
-      whatsapp: '+91 98765 43210',
-      email: 'hello@qualitybakers.com',
+      phone: '+91 9747995870',
+      whatsapp: '+91 9747995870',
+      email: 'hello.qualitybakers@gmail.com',
       website: 'https://qualitybakers.com',
-      street: '123 Baker Street',
-      city: 'Mumbai',
-      state: 'Maharashtra',
+      street: 'Thodiyoor - Sooranad Rd, Sooranad North',
+      city: 'Sooranad',
+      state: 'Kerala',
       country: 'India',
-      postalCode: '400001',
-      googleMapsUrl: 'https://maps.google.com',
+      postalCode: '690561',
+      googleMapsUrl: 'https://maps.app.goo.gl/7b6qojCh9BaWQjfX7?g_st=atm',
+      instagram: 'https://www.instagram.com/quality_bakers_sooranad?rpxt=MXY4MG9waTB3ZHAzNg==',
       hours: {
         monday: defaultHours,
         tuesday: defaultHours,
@@ -100,10 +101,10 @@ async function main() {
         holidayHours: 'Check our social media for specific holiday timings.',
       },
       coverImageId: mediaCover.id,
-      seoTitle: 'Quality Bakers | Artisanal Bakery in Mumbai',
+      seoTitle: 'Quality Bakers | Artisanal Bakery in Sooranad',
       seoDescription:
         'Visit Quality Bakers for fresh bread, pastries, and signature faloodas. Baked fresh daily.',
-      keywords: 'bakery, fresh bread, pastries, cakes, falooda, mumbai',
+      keywords: 'bakery, fresh bread, pastries, cakes, falooda, sooranad, kerala',
       status: 'PUBLISHED',
       publishedAt: new Date(),
     },
@@ -160,6 +161,23 @@ async function main() {
     },
   });
 
+  const catIceCream = await prisma.category.create({
+    data: {
+      id: 'cat_ice_cream',
+      slug: 'ice-cream',
+      name: 'Ice Cream',
+      description:
+        'Rich, velvety scoops churned from fresh dairy cream and premium natural flavours, offering a timeless cool indulgence in every spoonful.',
+      theme: 'classic',
+      layoutType: 'editorial-grid',
+      animationPreset: 'fade-up',
+      displayOrder: 3,
+      isFeatured: false,
+      isVisible: true,
+      status: 'PUBLISHED',
+    },
+  });
+
   // 6. Create Products
   console.log('Creating Products...');
   await prisma.product.create({
@@ -211,6 +229,93 @@ async function main() {
       status: 'DRAFT',
       displayOrder: 2,
       categoryId: cat3.id,
+    },
+  });
+
+  await prisma.product.create({
+    data: {
+      id: 'prod_ice_cream_vanilla',
+      slug: 'ice-cream-vanilla',
+      name: 'Vanilla',
+      shortDescription:
+        'Classic Madagascar vanilla bean ice cream churned to rich, silky perfection.',
+      price: 60,
+      badge: 'BEST_SELLER',
+      isFeatured: true,
+      isVisible: true,
+      availabilityStatus: 'AVAILABLE',
+      status: 'PUBLISHED',
+      displayOrder: 3,
+      categoryId: catIceCream.id,
+    },
+  });
+
+  await prisma.product.create({
+    data: {
+      id: 'prod_ice_cream_strawberry',
+      slug: 'ice-cream-strawberry',
+      name: 'Strawberry',
+      shortDescription:
+        'Vibrant and creamy scoop blended with sweet, sun-ripened orchard strawberries.',
+      price: 60,
+      badge: 'NONE',
+      isFeatured: false,
+      isVisible: true,
+      availabilityStatus: 'AVAILABLE',
+      status: 'PUBLISHED',
+      displayOrder: 4,
+      categoryId: catIceCream.id,
+    },
+  });
+
+  await prisma.product.create({
+    data: {
+      id: 'prod_ice_cream_pista',
+      slug: 'ice-cream-pista',
+      name: 'Pista',
+      shortDescription: 'Rich, nutty pistachio scoop subtly infused with aromatic cardamom.',
+      price: 70,
+      badge: 'SIGNATURE',
+      isFeatured: true,
+      isVisible: true,
+      availabilityStatus: 'AVAILABLE',
+      status: 'PUBLISHED',
+      displayOrder: 5,
+      categoryId: catIceCream.id,
+    },
+  });
+
+  await prisma.product.create({
+    data: {
+      id: 'prod_ice_cream_chocolate',
+      slug: 'ice-cream-chocolate',
+      name: 'Chocolate',
+      shortDescription: 'Indulgent and velvety scoop crafted with deep, dark cocoa and rich cream.',
+      price: 70,
+      badge: 'BEST_SELLER',
+      isFeatured: true,
+      isVisible: true,
+      availabilityStatus: 'AVAILABLE',
+      status: 'PUBLISHED',
+      displayOrder: 6,
+      categoryId: catIceCream.id,
+    },
+  });
+
+  await prisma.product.create({
+    data: {
+      id: 'prod_ice_cream_butterscotch',
+      slug: 'ice-cream-butterscotch',
+      name: 'Butterscotch',
+      shortDescription: 'Golden caramelised ice cream loaded with crunchy butter praline bits.',
+      price: 70,
+      badge: 'NONE',
+      isFeatured: false,
+      isVisible: true,
+      availabilityStatus: 'AVAILABLE',
+      status: 'PUBLISHED',
+      displayOrder: 7,
+      categoryId: catIceCream.id,
     },
   });
 

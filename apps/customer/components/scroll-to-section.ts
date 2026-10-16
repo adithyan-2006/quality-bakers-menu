@@ -1,38 +1,81 @@
+let activeRetryTimer: ReturnType<typeof setTimeout> | null = null;
+
 /**
  * Authoritative smooth scroll helper for page navigation.
- * Accounts for the dynamic sticky header height across desktop and mobile:
- * - At rest: 80px (desktop), 64px (mobile)
- * - Compact (scrolled): 64px (desktop), 52px (mobile)
+ * Accounts for the dynamic sticky header height across desktop and mobile.
  */
-export function scrollToSection(id: string) {
-  if (typeof window === 'undefined') return;
+export function scrollToSection(id: string, options?: { behavior?: ScrollBehavior }): boolean {
+  if (typeof window === 'undefined') return false;
+
+  const behavior = options?.behavior ?? 'smooth';
 
   if (id === 'home') {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    window.history.pushState(null, '', '/#home');
-    return;
+    window.scrollTo({ top: 0, behavior });
+    if (window.location.hash !== '#home') {
+      window.history.replaceState(null, '', '/#home');
+    }
+    return true;
   }
 
   const el = document.getElementById(id);
-  if (!el) return;
+  if (!el) return false;
 
+  const headerEl = document.querySelector('header');
   const isMobile = window.innerWidth < 768;
-  const compactHeaderH = isMobile ? 52 : 64;
-  const expandedHeaderH = isMobile ? 64 : 80;
-  const headerDelta = expandedHeaderH - compactHeaderH;
+  const isLg = window.innerWidth >= 1024;
+  const fallbackHeaderH = isMobile ? 64 : isLg ? 76 : 72;
+  const headerH = headerEl ? headerEl.getBoundingClientRect().height : fallbackHeaderH;
 
-  // If currently near the top (scrollY < 50), the header is currently in its expanded state.
-  // When scrolling begins, the header will shrink by headerDelta (16px desktop, 12px mobile).
-  // Because the sticky header is in-flow, its shrink moves all subsequent content up by headerDelta.
-  // We deduct this delta to land precisely flush below the compact header.
-  const isCurrentlyExpanded = window.scrollY < 50;
   const currentElementTop = el.getBoundingClientRect().top + window.scrollY;
-  const adjustedElementTop = isCurrentlyExpanded
-    ? currentElementTop - headerDelta
-    : currentElementTop;
+  const targetY = Math.max(0, currentElementTop - headerH);
 
-  const targetY = Math.max(0, adjustedElementTop - compactHeaderH);
+  window.scrollTo({ top: targetY, behavior });
+  if (window.location.hash !== `#${id}`) {
+    window.history.replaceState(null, '', `/#${id}`);
+  }
+  return true;
+}
 
-  window.scrollTo({ top: targetY, behavior: 'smooth' });
-  window.history.pushState(null, '', `/#${id}`);
+/**
+ * Retries scrolling to an element hash until it is rendered in the DOM.
+ * Essential for client-side cross-page transitions in Next.js App Router.
+ */
+export function scrollToHashWithRetry(
+  id: string,
+  options?: { behavior?: ScrollBehavior; maxAttempts?: number; intervalMs?: number },
+) {
+  if (typeof window === 'undefined') return;
+
+  const cleanId = id.replace('#', '');
+  if (!cleanId) return;
+
+  if (activeRetryTimer) {
+    clearTimeout(activeRetryTimer);
+    activeRetryTimer = null;
+  }
+
+  const maxAttempts = options?.maxAttempts ?? 40; // Poll up to 2 seconds
+  const intervalMs = options?.intervalMs ?? 50;
+  let attempts = 0;
+
+  const attemptScroll = () => {
+    attempts++;
+    const success = scrollToSection(cleanId, { behavior: options?.behavior ?? 'smooth' });
+    if (success) {
+      activeRetryTimer = null;
+      // Secondary adjustment after images or dynamic layouts stabilize
+      setTimeout(() => {
+        scrollToSection(cleanId, { behavior: 'smooth' });
+      }, 180);
+      return;
+    }
+
+    if (attempts < maxAttempts) {
+      activeRetryTimer = setTimeout(attemptScroll, intervalMs);
+    } else {
+      activeRetryTimer = null;
+    }
+  };
+
+  attemptScroll();
 }

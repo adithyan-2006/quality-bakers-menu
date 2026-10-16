@@ -24,75 +24,100 @@ export function CategoryNav({ categories }: CategoryNavProps) {
   const isClickInitiated = React.useRef(false);
   const clickTimerRef = React.useRef<NodeJS.Timeout | null>(null);
 
-  // Track header scroll state to ensure zero gap when header compacts
-  const [isScrolled, setIsScrolled] = React.useState(false);
+  // Cached section offsets to prevent forced layout reflow during scroll
+  const sectionPositionsRef = React.useRef<{ slug: string; top: number; bottom: number }[]>([]);
+  const activationLineRef = React.useRef<number>(180);
 
-  React.useEffect(() => {
-    let rafId: number | null = null;
-    const update = () => {
-      const currentY = window.scrollY;
-      setIsScrolled((prev) => {
-        if (!prev && currentY > 50) return true;
-        if (prev && currentY < 15) return false;
-        return prev;
-      });
-      rafId = null;
-    };
+  // Update cached section offsets on mount, resize, and when content loads
+  const updateCachedPositions = React.useCallback(() => {
+    if (typeof window === 'undefined' || categories.length === 0) return;
+    const isMobile = window.innerWidth < 768;
+    const isLg = window.innerWidth >= 1024;
+    const headerH = isMobile ? 64 : isLg ? 76 : 72;
+    const navH = navRef.current ? navRef.current.offsetHeight : isMobile ? 58 : 72;
+    const navBottom = headerH + navH;
+    activationLineRef.current = navBottom + (isMobile ? 36 : 48);
 
-    const handleHeaderScroll = () => {
-      if (rafId === null) {
-        rafId = window.requestAnimationFrame(update);
+    const list: { slug: string; top: number; bottom: number }[] = [];
+    for (const cat of categories) {
+      const el = document.getElementById(cat.slug);
+      if (el) {
+        const top = el.getBoundingClientRect().top + window.scrollY;
+        const bottom = top + el.offsetHeight;
+        list.push({ slug: cat.slug, top, bottom });
       }
-    };
+    }
+    sectionPositionsRef.current = list;
+  }, [categories]);
 
-    update();
-    window.addEventListener('scroll', handleHeaderScroll, { passive: true });
-    return () => {
-      if (rafId !== null) window.cancelAnimationFrame(rafId);
-      window.removeEventListener('scroll', handleHeaderScroll);
-    };
-  }, []);
-
-  // Deterministic scroll tracking to guarantee exactly ONE active category synchronized with viewport
+  // Deterministic scroll tracking with hysteresis — zero layout thrashing
   React.useEffect(() => {
     if (categories.length === 0) return;
 
     let rafId: number | null = null;
 
-    const determineActiveCategory = (): string => {
-      // 1. Check if user is scrolled near the bottom of the page
-      const isAtBottom =
-        window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 60;
+    const determineActiveCategory = (prevSlug: string): string => {
+      const positions = sectionPositionsRef.current;
+      if (!positions.length) return categories[0]?.slug ?? '';
 
-      if (isAtBottom) {
+      const scrollY = window.scrollY;
+
+      // 1. Check if user is scrolled near the bottom of the page
+      if (window.innerHeight + scrollY >= document.documentElement.scrollHeight - 60) {
         return categories[categories.length - 1]?.slug ?? '';
       }
 
-      // 2. Measure sticky navigation bottom edge dynamically
-      const navRect = navRef.current?.getBoundingClientRect();
-      const navBottom = navRect ? navRect.bottom : window.innerWidth < 768 ? 96 : 112;
-      const activationLine = navBottom + (window.innerWidth < 768 ? 20 : 28);
+      const targetY = scrollY + activationLineRef.current;
+      const currentIndex = positions.findIndex((p) => p.slug === prevSlug);
 
-      // 3. Find the last category whose top boundary has crossed the activation line
-      let currentSlug = categories[0]?.slug ?? '';
+      // Deadband hysteresis buffer (16px) to prevent rapid toggling near section boundaries
+      const hysteresis = 16;
 
-      for (let i = 0; i < categories.length; i++) {
-        const cat = categories[i];
-        if (!cat) continue;
-        const slug = cat.slug;
-        const section = document.getElementById(slug);
-        if (section) {
-          const rect = section.getBoundingClientRect();
-          if (rect.top <= activationLine) {
-            currentSlug = slug;
-          } else {
-            // Since sections are strictly ordered vertically, once rect.top > activationLine,
-            // no subsequent section can be active.
-            break;
+      if (currentIndex !== -1) {
+        // Advancing to subsequent section?
+        if (currentIndex < positions.length - 1) {
+          const next = positions[currentIndex + 1];
+          if (next && targetY >= next.top + hysteresis) {
+            let targetIdx = currentIndex + 1;
+            while (targetIdx < positions.length - 1) {
+              const upcoming = positions[targetIdx + 1];
+              if (upcoming && targetY >= upcoming.top + hysteresis) {
+                targetIdx++;
+              } else {
+                break;
+              }
+            }
+            return positions[targetIdx]?.slug ?? prevSlug;
           }
         }
+
+        // Stepping back to previous section?
+        const current = positions[currentIndex];
+        if (current && targetY < current.top - hysteresis) {
+          let targetIdx = currentIndex - 1;
+          while (targetIdx > 0) {
+            const prev = positions[targetIdx];
+            if (prev && targetY < prev.top - hysteresis) {
+              targetIdx--;
+            } else {
+              break;
+            }
+          }
+          return positions[Math.max(0, targetIdx)]?.slug ?? prevSlug;
+        }
+
+        return prevSlug;
       }
 
+      // Initial / fallback scan
+      let currentSlug = positions[0]?.slug ?? '';
+      for (const p of positions) {
+        if (targetY >= p.top) {
+          currentSlug = p.slug;
+        } else {
+          break;
+        }
+      }
       return currentSlug;
     };
 
@@ -102,14 +127,10 @@ export function CategoryNav({ categories }: CategoryNavProps) {
 
       rafId = window.requestAnimationFrame(() => {
         rafId = null;
-        const targetSlug = determineActiveCategory();
-        if (targetSlug) {
-          setActiveSlug((prev) => (prev !== targetSlug ? targetSlug : prev));
-        }
+        setActiveSlug((prev) => determineActiveCategory(prev));
       });
     };
 
-    // Unlock click suppression on manual user gesture (wheel or touch)
     const handleUserInteraction = () => {
       if (isClickInitiated.current) {
         isClickInitiated.current = false;
@@ -120,47 +141,84 @@ export function CategoryNav({ categories }: CategoryNavProps) {
       }
     };
 
+    const handleResize = () => {
+      updateCachedPositions();
+      handleScroll();
+    };
+
+    // Cache initial positions and schedule follow-ups for dynamic content/images
+    updateCachedPositions();
+    const t1 = setTimeout(updateCachedPositions, 300);
+    const t2 = setTimeout(updateCachedPositions, 1000);
+
     window.addEventListener('scroll', handleScroll, { passive: true });
-    window.addEventListener('resize', handleScroll, { passive: true });
-    window.addEventListener('orientationchange', handleScroll, { passive: true });
+    window.addEventListener('resize', handleResize, { passive: true });
+    window.addEventListener('orientationchange', handleResize, { passive: true });
     window.addEventListener('wheel', handleUserInteraction, { passive: true });
     window.addEventListener('touchmove', handleUserInteraction, { passive: true });
 
-    // Initial check on mount
     handleScroll();
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('resize', handleScroll);
-      window.removeEventListener('orientationchange', handleScroll);
+      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('orientationchange', handleResize);
       window.removeEventListener('wheel', handleUserInteraction);
       window.removeEventListener('touchmove', handleUserInteraction);
       if (rafId !== null) window.cancelAnimationFrame(rafId);
       if (clickTimerRef.current) clearTimeout(clickTimerRef.current);
+      clearTimeout(t1);
+      clearTimeout(t2);
     };
-  }, [categories]);
+  }, [categories, updateCachedPositions]);
 
-  // Auto-center active category in container
+  // Smooth auto-scroll only when active item is near/outside visible viewport
   React.useEffect(() => {
     const activeItem = itemsRef.current.get(activeSlug);
     const container = scrollContainerRef.current;
 
     if (activeItem && container) {
-      const itemCenter = activeItem.offsetLeft + activeItem.offsetWidth / 2;
-      const containerCenter = container.offsetWidth / 2;
-      const scrollTarget = itemCenter - containerCenter;
+      const itemLeft = activeItem.offsetLeft - container.scrollLeft;
+      const itemRight = itemLeft + activeItem.offsetWidth;
+      const containerWidth = container.clientWidth;
 
-      container.scrollTo({
-        left: scrollTarget,
-        behavior: isClickInitiated.current ? 'smooth' : 'auto',
-      });
+      // Keep active item within comfortable center zone without shaking
+      const edgeBuffer = 48;
+      const isComfortablyVisible =
+        itemLeft >= edgeBuffer && itemRight <= containerWidth - edgeBuffer;
+
+      // Only scroll horizontally if item is near/outside edges, or user clicked
+      if (!isComfortablyVisible || isClickInitiated.current) {
+        const itemCenter = activeItem.offsetLeft + activeItem.offsetWidth / 2;
+        const containerCenter = containerWidth / 2;
+        const scrollTarget = itemCenter - containerCenter;
+
+        container.scrollTo({
+          left: Math.max(0, scrollTarget),
+          behavior: 'smooth',
+        });
+      }
     }
   }, [activeSlug]);
+
+  // Dynamic ResizeObserver to refresh section offsets whenever layout or images change
+  React.useEffect(() => {
+    if (typeof ResizeObserver === 'undefined') return;
+    const ro = new ResizeObserver(() => {
+      updateCachedPositions();
+    });
+    ro.observe(document.body);
+    return () => ro.disconnect();
+  }, [updateCachedPositions]);
 
   const scrollToCategory = React.useCallback((slug: string) => {
     const section = document.getElementById(slug);
     if (section) {
-      const offset = typeof window !== 'undefined' && window.innerWidth < 768 ? 100 : 120;
+      const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+      const isLg = typeof window !== 'undefined' && window.innerWidth >= 1024;
+      const headerH = isMobile ? 64 : isLg ? 76 : 72;
+      const navH = navRef.current ? navRef.current.offsetHeight : isMobile ? 58 : 72;
+      const offset = headerH + navH + 16;
       const top = section.getBoundingClientRect().top + window.scrollY - offset;
       window.scrollTo({ top, behavior: 'smooth' });
     }
@@ -175,6 +233,10 @@ export function CategoryNav({ categories }: CategoryNavProps) {
       setActiveSlug(slug);
       scrollToCategory(slug);
 
+      if (typeof window !== 'undefined' && window.location.hash !== `#${slug}`) {
+        window.history.pushState(null, '', `#${slug}`);
+      }
+
       clickTimerRef.current = setTimeout(() => {
         isClickInitiated.current = false;
         clickTimerRef.current = null;
@@ -183,26 +245,37 @@ export function CategoryNav({ categories }: CategoryNavProps) {
     [scrollToCategory],
   );
 
-  // Handle cross-page hash navigation (Next.js App Router bug mitigation)
+  // Handle cross-page and browser back/forward hash navigation
   React.useEffect(() => {
-    const hash = window.location.hash;
-    if (!hash) return;
+    const handleHashNav = () => {
+      const hash = window.location.hash;
+      if (!hash) return;
 
-    const slug = hash.replace('#', '');
-    let attempts = 0;
-    const maxAttempts = 30;
+      const slug = hash.replace('#', '');
+      let attempts = 0;
+      const maxAttempts = 30;
 
-    const tryScroll = () => {
-      const section = document.getElementById(slug);
-      if (section) {
-        handleCategoryClick(slug);
-      } else if (attempts < maxAttempts) {
-        attempts++;
-        requestAnimationFrame(tryScroll);
-      }
+      const tryScroll = () => {
+        const section = document.getElementById(slug);
+        if (section) {
+          handleCategoryClick(slug);
+        } else if (attempts < maxAttempts) {
+          attempts++;
+          requestAnimationFrame(tryScroll);
+        }
+      };
+
+      requestAnimationFrame(tryScroll);
     };
 
-    requestAnimationFrame(tryScroll);
+    handleHashNav();
+    window.addEventListener('hashchange', handleHashNav);
+    window.addEventListener('popstate', handleHashNav);
+
+    return () => {
+      window.removeEventListener('hashchange', handleHashNav);
+      window.removeEventListener('popstate', handleHashNav);
+    };
   }, [handleCategoryClick]);
 
   return (
@@ -211,14 +284,18 @@ export function CategoryNav({ categories }: CategoryNavProps) {
       aria-label="Browse menu categories"
       className={cn(
         'sticky z-40 bg-[#BC1D1A] overflow-hidden',
-        'top-[64px]',
-        isScrolled ? 'lg:top-[64px]' : 'lg:top-[80px]',
-        'lg:transition-[top] lg:duration-300 lg:ease-out',
+        'top-[64px] md:top-[72px] lg:top-[76px]',
+        'pt-[24px] md:pt-[34px] lg:pt-[40px]',
+        'transform-gpu will-change-transform',
       )}
+      style={{
+        transform: 'translate3d(0, 0, 0)',
+        backfaceVisibility: 'hidden',
+      }}
     >
       <div
         ref={scrollContainerRef}
-        className="relative flex items-center gap-6 sm:gap-8 overflow-x-auto scrollbar-none px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto py-2.5 md:py-3 snap-x snap-mandatory"
+        className="relative flex items-center gap-6 sm:gap-8 overflow-x-auto scrollbar-none px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto pt-1 pb-2.5 md:pt-1 md:pb-3 snap-x snap-proximity"
         role="list"
       >
         {categories.map(({ id, name, slug }) => {
@@ -235,24 +312,18 @@ export function CategoryNav({ categories }: CategoryNavProps) {
               }}
               href={`#${slug}`}
               role="listitem"
+              aria-current={isActive ? 'true' : undefined}
               onClick={(e) => {
                 e.preventDefault();
                 handleCategoryClick(slug);
               }}
               className={cn(
-                'relative z-10 flex-shrink-0 px-1 py-1.5 md:py-2 text-sm md:text-base font-medium text-[#FDFADB] whitespace-nowrap snap-center tracking-wide',
+                'relative z-10 flex-shrink-0 px-1 py-1.5 md:py-2 font-sans font-bold uppercase tracking-[0.15em] text-xs sm:text-sm whitespace-nowrap snap-center transition-colors duration-200',
+                isActive ? 'text-[#FDFADB]' : 'text-[#FDFADB]/70 hover:text-[#FDFADB]',
                 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FDFADB] focus-visible:ring-offset-2 focus-visible:ring-offset-[#BC1D1A]',
               )}
             >
-              <span className="relative inline-block">
-                {name}
-                {isActive && (
-                  <span
-                    className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-full h-[2px] bg-[#FDFADB] rounded-full pointer-events-none"
-                    aria-hidden="true"
-                  />
-                )}
-              </span>
+              <span className="relative inline-block">{name}</span>
             </a>
           );
         })}

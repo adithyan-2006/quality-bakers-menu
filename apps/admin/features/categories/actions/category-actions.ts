@@ -15,6 +15,7 @@ export async function getCategoryAction(id: string) {
 export async function createCategoryAction(data: any) {
   const result = await RepositoryFactory.getCategoryRepository().createCategory(data);
   revalidatePath('/categories');
+  revalidatePath('/homepage');
 
   // Cross-app revalidation
   await revalidateCustomerApp();
@@ -25,6 +26,7 @@ export async function createCategoryAction(data: any) {
 export async function updateCategoryAction(id: string, data: any) {
   const result = await RepositoryFactory.getCategoryRepository().updateCategory(id, data);
   revalidatePath('/categories');
+  revalidatePath('/homepage');
 
   // Cross-app revalidation
   await revalidateCustomerApp();

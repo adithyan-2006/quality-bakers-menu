@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { ProductCard } from 'customer/features/menu/product/product-card';
 import Link from 'next/link';
 import { ArrowLeft, Edit2 } from 'lucide-react';
+import { formatBadge } from '@qbm/ui';
 import type { MenuProduct } from 'customer/features/menu/types';
 
 interface PreviewProductPageProps {
@@ -30,7 +31,7 @@ export default async function PreviewProductPage({ params }: PreviewProductPageP
       product.price,
     ),
     image: product.image,
-    badge: product.badge === 'none' ? undefined : product.badge,
+    badge: formatBadge(product.badge),
   };
 
   // Mock theme classes for the preview (using a classic elegant theme)

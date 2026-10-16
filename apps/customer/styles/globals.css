@@ -875,6 +875,13 @@
 
 /* ── Lane Dimensions & Animation Bindings (Rhythmic, Dynamic, Living Bakery Physics) ── */
 
+/* Dripping animation stopped per request (do not delete - animations disabled) */
+.cream-drip-drop,
+.cream-splash-ring,
+.cream-splash-bead {
+  animation: none !important;
+}
+
 /* Lane 3: Center Deep Wave Nadir (x ≈ 45.8% desktop / 46.55% mobile) - Primary Voluptuous Droplet */
 .lane-drip-3 .cream-drip-drop {
   width: 22px;
@@ -963,9 +970,135 @@
   .animate-heart-fade-in,
   .cream-drip-drop,
   .cream-splash-ring,
-  .cream-splash-bead {
+  .cream-splash-bead,
+  .animate-circle-fill-1,
+  .animate-circle-fill-2,
+  .animate-circle-fill-3,
+  .animate-circle-fill-4 {
     animation: none !important;
     transform: none !important;
-    opacity: 0 !important;
+  }
+}
+
+/* Loading Screen: Four Hollow Cream Circles Sequential Fill Animation */
+@keyframes circle-sequential-fill-1 {
+  0% {
+    background-color: transparent;
+    border-color: rgba(253, 250, 219, 0.7);
+    transform: scale(1);
+    box-shadow: none;
+  }
+  14%,
+  82% {
+    background-color: #fdfadb;
+    border-color: #fdfadb;
+    transform: scale(1.12);
+    box-shadow: 0 0 8px rgba(253, 250, 219, 0.5);
+  }
+  92%,
+  100% {
+    background-color: transparent;
+    border-color: rgba(253, 250, 219, 0.7);
+    transform: scale(1);
+    box-shadow: none;
+  }
+}
+
+@keyframes circle-sequential-fill-2 {
+  0%,
+  18% {
+    background-color: transparent;
+    border-color: rgba(253, 250, 219, 0.7);
+    transform: scale(1);
+    box-shadow: none;
+  }
+  32%,
+  82% {
+    background-color: #fdfadb;
+    border-color: #fdfadb;
+    transform: scale(1.12);
+    box-shadow: 0 0 8px rgba(253, 250, 219, 0.5);
+  }
+  92%,
+  100% {
+    background-color: transparent;
+    border-color: rgba(253, 250, 219, 0.7);
+    transform: scale(1);
+    box-shadow: none;
+  }
+}
+
+@keyframes circle-sequential-fill-3 {
+  0%,
+  36% {
+    background-color: transparent;
+    border-color: rgba(253, 250, 219, 0.7);
+    transform: scale(1);
+    box-shadow: none;
+  }
+  50%,
+  82% {
+    background-color: #fdfadb;
+    border-color: #fdfadb;
+    transform: scale(1.12);
+    box-shadow: 0 0 8px rgba(253, 250, 219, 0.5);
+  }
+  92%,
+  100% {
+    background-color: transparent;
+    border-color: rgba(253, 250, 219, 0.7);
+    transform: scale(1);
+    box-shadow: none;
+  }
+}
+
+@keyframes circle-sequential-fill-4 {
+  0%,
+  54% {
+    background-color: transparent;
+    border-color: rgba(253, 250, 219, 0.7);
+    transform: scale(1);
+    box-shadow: none;
+  }
+  68%,
+  82% {
+    background-color: #fdfadb;
+    border-color: #fdfadb;
+    transform: scale(1.12);
+    box-shadow: 0 0 8px rgba(253, 250, 219, 0.5);
+  }
+  92%,
+  100% {
+    background-color: transparent;
+    border-color: rgba(253, 250, 219, 0.7);
+    transform: scale(1);
+    box-shadow: none;
+  }
+}
+
+.animate-circle-fill-1 {
+  animation: circle-sequential-fill-1 1.7s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+.animate-circle-fill-2 {
+  animation: circle-sequential-fill-2 1.7s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+.animate-circle-fill-3 {
+  animation: circle-sequential-fill-3 1.7s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+.animate-circle-fill-4 {
+  animation: circle-sequential-fill-4 1.7s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-circle-fill-1,
+  .animate-circle-fill-2,
+  .animate-circle-fill-3,
+  .animate-circle-fill-4 {
+    animation: none !important;
+    background-color: #fdfadb !important;
+    border-color: #fdfadb !important;
+    transform: none !important;
+    box-shadow: none !important;
+    opacity: 0.85 !important;
   }
 }

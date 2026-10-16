@@ -1,5 +1,7 @@
 import * as React from 'react';
-import { cn } from '@qbm/ui';
+import { cn, formatBadge } from '@qbm/ui';
+
+export { formatBadge };
 
 interface ProductBadgeProps {
   label?: string | undefined;
@@ -9,11 +11,12 @@ interface ProductBadgeProps {
 /**
  * Product Badge — Server Component
  *
- * Renders an optional badge (e.g. "Signature", "Popular") over a product image.
+ * Renders an optional badge (e.g. "Signature", "Best Seller") over a product image.
  * If the label is undefined or empty, it renders nothing.
  */
 export function ProductBadge({ label, className }: ProductBadgeProps) {
-  if (!label) return null;
+  const displayLabel = formatBadge(label);
+  if (!displayLabel) return null;
 
   return (
     <span
@@ -22,7 +25,7 @@ export function ProductBadge({ label, className }: ProductBadgeProps) {
         className,
       )}
     >
-      {label}
+      {displayLabel}
     </span>
   );
 }

@@ -54,3 +54,6 @@ prisma/dev.db-journal
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# Temporary development scripts
+/scratch/
