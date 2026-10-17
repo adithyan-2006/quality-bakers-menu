@@ -22,21 +22,22 @@ export interface LayoutComponentProps {
 type LayoutComponent = (props: LayoutComponentProps) => React.ReactElement | null;
 
 /**
- * Desktop Layout Registry — Open/Closed for Extension
+ * Responsive Layout Registry — Open/Closed for Extension
  *
- * Maps LayoutType → Desktop Layout Component.
- * Restores the previous visual editorial desktop arrangement for PC/desktop.
+ * Maps LayoutType → Category Layout Component.
+ * Each layout is inherently responsive from mobile to tablet to desktop.
  */
-const DESKTOP_LAYOUT_REGISTRY: Record<LayoutType, LayoutComponent> = {
+const LAYOUT_REGISTRY: Record<string, LayoutComponent> = {
   'editorial-grid': EditorialGrid,
   'pinterest-grid': PinterestGrid,
   'magazine-split': MagazineSplit,
   'gallery-wall': GalleryWall,
   spotlight: Spotlight,
   'alternating-layout': AlternatingLayout,
+  'single-column-stack': SingleColumnStack,
 };
 
-const DEFAULT_DESKTOP_LAYOUT: LayoutComponent = EditorialGrid;
+const DEFAULT_LAYOUT: LayoutComponent = EditorialGrid;
 
 interface LayoutEngineProps extends LayoutComponentProps {
   layoutType: LayoutType;
@@ -45,9 +46,14 @@ interface LayoutEngineProps extends LayoutComponentProps {
 /**
  * Layout Engine — Server Component
  *
- * Responsively renders:
- * - Mobile & Tablet (< lg): SingleColumnStack (untouched, one card per row stack)
- * - PC / Desktop (lg+): Restored category-specific desktop layout
+ * Renders a single responsive component tree for the category.
+ * Each category-specific layout adapts across:
+ * - Mobile (< 640px / < 768px): comfortable single-column reading and touch targets
+ * - Tablet (768px–1023px): category-tailored 2-column or split layouts
+ * - Desktop (1024px+): full multi-column editorial presentation
+ *
+ * Eliminates duplicate DOM rendering, duplicate Next.js images, and duplicate
+ * interactive like-button state.
  */
 export function LayoutEngine({
   layoutType,
@@ -55,27 +61,9 @@ export function LayoutEngine({
   themeClasses,
   animationConfig,
 }: LayoutEngineProps) {
-  const DesktopLayout = DESKTOP_LAYOUT_REGISTRY[layoutType] ?? DEFAULT_DESKTOP_LAYOUT;
+  const Layout = LAYOUT_REGISTRY[layoutType] ?? DEFAULT_LAYOUT;
 
   return (
-    <>
-      {/* Mobile & Tablet (< lg): Current single-column stack, completely untouched */}
-      <div className="block lg:hidden">
-        <SingleColumnStack
-          products={products}
-          themeClasses={themeClasses}
-          animationConfig={animationConfig}
-        />
-      </div>
-
-      {/* PC / Desktop (lg+): Previous desktop layout restored */}
-      <div className="hidden lg:block">
-        <DesktopLayout
-          products={products}
-          themeClasses={themeClasses}
-          animationConfig={animationConfig}
-        />
-      </div>
-    </>
+    <Layout products={products} themeClasses={themeClasses} animationConfig={animationConfig} />
   );
 }

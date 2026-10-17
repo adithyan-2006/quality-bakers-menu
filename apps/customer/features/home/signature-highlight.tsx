@@ -15,7 +15,7 @@ export function SignatureHighlight({ title, description }: SignatureHighlightPro
   return (
     <section
       id="about"
-      className="relative w-full bg-[#BC1D1A] min-h-[calc(100vh-64px)] md:min-h-[calc(100vh-72px)] lg:min-h-[calc(100vh-76px)] flex items-center justify-center py-16 md:py-32 scroll-mt-[64px] md:scroll-mt-[72px] lg:scroll-mt-[76px]"
+      className="relative w-full bg-[#BC1D1A] min-h-[calc(100vh-64px)] md:min-h-[calc(100vh-72px)] lg:min-h-[calc(100vh-76px)] min-h-[calc(100dvh-64px)] md:min-h-[calc(100dvh-72px)] lg:min-h-[calc(100dvh-76px)] flex items-center justify-center py-16 md:py-32 scroll-mt-[64px] md:scroll-mt-[72px] lg:scroll-mt-[76px]"
     >
       <div className="w-full px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto text-center flex flex-col items-center justify-center">
         <ScrollReveal animation="fade-up">

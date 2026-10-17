@@ -74,8 +74,8 @@ export function LikeButton({
         aria-pressed={showLiked}
         className={cn(
           'group/like relative flex items-center justify-center',
-          // Touch target: 36px x 36px, zero border, 100% transparent background, no red circular ring
-          'w-9 h-9 p-0 bg-transparent border-0 rounded-full cursor-pointer outline-none select-none',
+          // Touch target: accessible 44px x 44px, zero border, 100% transparent background
+          'w-11 h-11 min-w-[44px] min-h-[44px] p-0 bg-transparent border-0 rounded-full cursor-pointer outline-none select-none',
           'transition-transform duration-150 active:scale-90',
           'focus-visible:ring-1 focus-visible:ring-[#BC1D1A]/30',
         )}
