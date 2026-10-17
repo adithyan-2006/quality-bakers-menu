@@ -58,11 +58,11 @@ export function EditorialIntro({
       <ContentContainer className="relative flex flex-col flex-1 pt-6 pb-12 sm:pt-10 sm:pb-16 md:pt-14 md:pb-20 lg:pt-16 lg:pb-24 justify-center">
         {/* MOBILE VIEW (< md): Everything left-aligned, stacked 3-line big typography */}
         <div className="flex md:hidden flex-col items-start text-left w-full max-w-sm sm:max-w-md mx-auto px-2">
-          {/* Top Line: quality bakers - since 2019 */}
+          {/* Top Line: quality bakers - since 2020 */}
           <ScrollReveal animation="fade-up" delayMs={100} className="w-full">
             <div className="flex items-center gap-2 sm:gap-2.5 w-full mb-3 select-none min-w-0">
               <span className="text-[#FDFADB]/90 uppercase font-sans text-[9px] min-[360px]:text-[10px] sm:text-[11px] tracking-[0.14em] min-[360px]:tracking-[0.2em] sm:tracking-[0.24em] font-medium truncate">
-                QUALITY BAKERS - SINCE 2019
+                QUALITY BAKERS - SINCE 2020
               </span>
               <span className="h-[1px] flex-1 min-w-[12px] max-w-[45px] bg-[#FDFADB]/35 shrink-0" />
             </div>
@@ -99,12 +99,12 @@ export function EditorialIntro({
 
         {/* DESKTOP / TABLET VIEW (>= md): Centered, wide single-line display */}
         <div className="hidden md:flex flex-col items-center justify-center text-center relative z-10 w-full max-w-5xl mx-auto px-4">
-          {/* Top Line: Quality Bakers - Since 2019 flanked by subtle horizontal rules */}
+          {/* Top Line: Quality Bakers - Since 2020 flanked by subtle horizontal rules */}
           <ScrollReveal animation="fade-up" delayMs={100} className="w-full flex justify-center">
             <div className="flex items-center justify-center gap-3 sm:gap-4 md:gap-5 w-full max-w-md md:max-w-xl mx-auto mb-3 sm:mb-4 md:mb-5">
               <span className="h-[1px] flex-1 max-w-[60px] sm:max-w-[80px] md:max-w-[110px] bg-[#FDFADB]/35" />
               <span className="text-[#FDFADB]/90 uppercase font-sans text-[10px] sm:text-xs md:text-sm tracking-[0.22em] sm:tracking-[0.26em] md:tracking-[0.3em] font-medium whitespace-nowrap select-none">
-                QUALITY BAKERS - SINCE 2019
+                QUALITY BAKERS - SINCE 2020
               </span>
               <span className="h-[1px] flex-1 max-w-[60px] sm:max-w-[80px] md:max-w-[110px] bg-[#FDFADB]/35" />
             </div>
