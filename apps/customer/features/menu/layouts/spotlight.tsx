@@ -12,7 +12,7 @@ export function Spotlight({ products, themeClasses, animationConfig }: LayoutCom
   const [hero, ...rest] = products;
 
   return (
-    <div className="flex flex-col gap-10 sm:gap-16 md:gap-24">
+    <div className="flex flex-col gap-16 md:gap-24">
       {/* Hero */}
       {hero && (
         <MotionWrapper config={animationConfig} index={0}>
@@ -28,14 +28,9 @@ export function Spotlight({ products, themeClasses, animationConfig }: LayoutCom
 
       {/* Secondary items */}
       {rest.length > 0 && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
           {rest.map((product, idx) => (
-            <MotionWrapper
-              key={product.id}
-              config={animationConfig}
-              index={idx + 1}
-              className="w-full"
-            >
+            <MotionWrapper key={product.id} config={animationConfig} index={idx + 1}>
               <ProductCard
                 product={product}
                 themeClasses={themeClasses}

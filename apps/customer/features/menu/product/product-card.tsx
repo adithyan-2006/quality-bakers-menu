@@ -75,7 +75,7 @@ export function ProductCard({
           )}
         >
           {/* Large Image Block */}
-          <div className="relative w-full md:w-1/2 lg:w-[55%] min-h-[220px] sm:min-h-[300px] md:min-h-[400px] rounded-xl overflow-hidden border border-black/5 shadow-inner flex-shrink-0">
+          <div className="relative w-full md:w-1/2 lg:w-[55%] min-h-[300px] md:min-h-[400px] rounded-xl overflow-hidden border border-black/5 shadow-inner flex-shrink-0">
             <ProductImage
               src={product.image}
               alt={product.name}
@@ -96,7 +96,7 @@ export function ProductCard({
           {/* Product Information */}
           <div className="flex flex-col flex-1 justify-center relative">
             <div className="flex flex-col max-w-[85%] md:max-w-none pt-4 md:pt-6">
-              <h3 className="font-serif font-bold text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-[#BC1D1A] leading-[1.1] group-hover:text-brand-brick-red transition-colors duration-300">
+              <h3 className="font-serif font-bold text-3xl md:text-4xl lg:text-5xl text-[#BC1D1A] leading-[1.1] group-hover:text-brand-brick-red transition-colors duration-300">
                 {product.name}
               </h3>
 
@@ -278,7 +278,7 @@ export function ProductCard({
           {/* Asymmetric Content Block */}
           <div className="flex flex-col md:flex-row flex-1 items-stretch p-5 md:p-8 pt-4 md:gap-10">
             {/* Massive Imagery */}
-            <div className="relative flex-1 w-full min-h-[220px] sm:min-h-[300px] md:min-h-[400px] rounded-xl overflow-hidden bg-brand-deep-cream border border-black/5 shadow-inner">
+            <div className="relative flex-1 w-full min-h-[300px] md:min-h-[400px] rounded-xl overflow-hidden bg-brand-deep-cream border border-black/5 shadow-inner">
               <ProductImage
                 src={product.image}
                 alt={product.name}
@@ -290,7 +290,7 @@ export function ProductCard({
 
             {/* Integrated Text Block */}
             <div className="flex flex-col justify-end md:w-2/5 xl:w-1/3 pb-2 pt-6 md:pt-0">
-              <h3 className="font-serif font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl mb-4 text-[#BC1D1A] leading-[1.05] group-hover:text-brand-brick-red transition-colors duration-300">
+              <h3 className="font-serif font-bold text-4xl md:text-5xl lg:text-6xl mb-4 text-[#BC1D1A] leading-[1.05] group-hover:text-brand-brick-red transition-colors duration-300">
                 {product.name}
               </h3>
               {(emphasis === 'hero' || emphasis === 'featured') && product.description && (
@@ -391,7 +391,7 @@ export function ProductCard({
 
   // ─── STANDARD STYLE ───────────────────────────────────────────────────────
   return (
-    <article className="w-full h-full">
+    <article className="w-full h-full max-w-[360px] mx-auto">
       <div
         className={cn(
           'group flex flex-col w-full h-full rounded-2xl overflow-hidden',

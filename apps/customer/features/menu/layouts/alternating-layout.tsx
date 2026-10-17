@@ -14,11 +14,11 @@ export function AlternatingLayout({
   animationConfig,
 }: LayoutComponentProps) {
   return (
-    <div className="flex flex-col gap-10 sm:gap-14 md:gap-24 lg:gap-32">
+    <div className="flex flex-col gap-16 md:gap-32">
       {products.map((product, idx) => {
         const isEven = idx % 2 === 0;
         return (
-          <MotionWrapper key={product.id} config={animationConfig} index={idx} className="w-full">
+          <MotionWrapper key={product.id} config={animationConfig} index={idx}>
             <ProductCard
               product={product}
               themeClasses={themeClasses}

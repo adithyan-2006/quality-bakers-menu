@@ -10,9 +10,9 @@ import { MotionWrapper } from '../animations/motion-wrapper';
  */
 export function EditorialGrid({ products, themeClasses, animationConfig }: LayoutComponentProps) {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 md:gap-x-8 gap-y-8 sm:gap-y-12 md:gap-y-16">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 md:gap-x-8 gap-y-12 md:gap-y-16">
       {products.map((product, idx) => (
-        <MotionWrapper key={product.id} config={animationConfig} index={idx} className="w-full">
+        <MotionWrapper key={product.id} config={animationConfig} index={idx}>
           <ProductCard
             product={product}
             themeClasses={themeClasses}

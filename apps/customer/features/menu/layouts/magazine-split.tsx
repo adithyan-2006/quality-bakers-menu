@@ -27,14 +27,9 @@ export function MagazineSplit({ products, themeClasses, animationConfig }: Layou
       )}
 
       {/* Side grid */}
-      <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-6 md:gap-8 content-start">
-        {rest.map((product, idx) => (
-          <MotionWrapper
-            key={product.id}
-            config={animationConfig}
-            index={idx + 1}
-            className="w-full"
-          >
+      <div className="lg:col-span-2 grid grid-cols-2 lg:grid-cols-1 gap-6 md:gap-8 content-start">
+        {rest.slice(0, 4).map((product, idx) => (
+          <MotionWrapper key={product.id} config={animationConfig} index={idx + 1}>
             <ProductCard
               product={product}
               themeClasses={themeClasses}

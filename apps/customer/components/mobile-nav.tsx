@@ -189,7 +189,7 @@ export function MobileNav() {
         onClick={toggleMenu}
         className={cn(
           buttonVariants({ variant: 'ghost' }),
-          'min-w-[44px] min-h-[44px] w-11 h-11 flex items-center justify-center p-2 text-[#A71920] hover:bg-[#A71920]/10 hover:text-[#A71920] focus-visible:ring-2 focus-visible:ring-[#A71920] rounded-md transition-colors relative z-50',
+          'p-2 text-[#A71920] hover:bg-[#A71920]/10 hover:text-[#A71920] focus-visible:ring-2 focus-visible:ring-[#A71920] rounded-md transition-colors relative z-50',
         )}
         aria-label={isOpen && !isClosing ? 'Close menu' : 'Open menu'}
         aria-expanded={isOpen && !isClosing}
@@ -213,13 +213,13 @@ export function MobileNav() {
       {isOpen && (
         <div
           className={cn(
-            'absolute right-0 top-full mt-2 w-[calc(100vw-2rem)] max-w-[275px] sm:w-[275px] bg-[#FFF1D8] rounded-3xl shadow-xl border border-[#A71920]/10 p-6 sm:p-7 z-50',
+            'absolute right-0 top-full mt-2 w-[250px] sm:w-[275px] bg-[#FFF1D8] rounded-3xl shadow-xl border border-[#A71920]/10 p-6 sm:p-7 z-50',
             isClosing ? 'animate-menu-close pointer-events-none' : 'animate-menu-open',
           )}
           role="menu"
           aria-label="Mobile navigation"
         >
-          <nav className="flex flex-col gap-1 sm:gap-2" role="none">
+          <nav className="flex flex-col gap-4 sm:gap-5" role="none">
             {NAV_ITEMS.map(({ id, label, href, isExternalPage }) => {
               const isCurrent = isExternalPage
                 ? pathname === href || pathname?.startsWith('/categories')
@@ -234,7 +234,6 @@ export function MobileNav() {
                   onClick={handleNavClick(id, isExternalPage)}
                   className={cn(
                     'font-sans font-bold uppercase tracking-[0.15em] text-base sm:text-lg transition-colors',
-                    'min-h-[44px] flex items-center py-2.5 px-3 -mx-3 rounded-xl hover:bg-[#A71920]/5 active:bg-[#A71920]/10',
                     isCurrent ? 'text-[#A71920]' : 'text-[#A71920]/70 hover:text-[#A71920]',
                   )}
                 >

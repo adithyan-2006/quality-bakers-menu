@@ -34,7 +34,7 @@ export function CategoryNav({ categories }: CategoryNavProps) {
     const isMobile = window.innerWidth < 768;
     const isLg = window.innerWidth >= 1024;
     const headerH = isMobile ? 64 : isLg ? 76 : 72;
-    const navH = navRef.current ? navRef.current.offsetHeight : isMobile ? 52 : 60;
+    const navH = navRef.current ? navRef.current.offsetHeight : isMobile ? 58 : 72;
     const navBottom = headerH + navH;
     activationLineRef.current = navBottom + (isMobile ? 36 : 48);
 
@@ -217,7 +217,7 @@ export function CategoryNav({ categories }: CategoryNavProps) {
       const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
       const isLg = typeof window !== 'undefined' && window.innerWidth >= 1024;
       const headerH = isMobile ? 64 : isLg ? 76 : 72;
-      const navH = navRef.current ? navRef.current.offsetHeight : isMobile ? 52 : 60;
+      const navH = navRef.current ? navRef.current.offsetHeight : isMobile ? 58 : 72;
       const offset = headerH + navH + 16;
       const top = section.getBoundingClientRect().top + window.scrollY - offset;
       window.scrollTo({ top, behavior: 'smooth' });
@@ -316,7 +316,7 @@ export function CategoryNav({ categories }: CategoryNavProps) {
       className={cn(
         'sticky z-40 bg-[#BC1D1A] overflow-hidden',
         'top-[64px] md:top-[72px] lg:top-[76px]',
-        'py-1.5 sm:py-2 md:py-2.5',
+        'pt-[24px] md:pt-[34px] lg:pt-[40px]',
         'transform-gpu will-change-transform',
       )}
       style={{
@@ -326,7 +326,7 @@ export function CategoryNav({ categories }: CategoryNavProps) {
     >
       <div
         ref={scrollContainerRef}
-        className="relative flex items-center gap-4 sm:gap-6 md:gap-8 overflow-x-auto scrollbar-none px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto py-0.5 md:py-1 snap-x snap-proximity"
+        className="relative flex items-center gap-6 sm:gap-8 overflow-x-auto scrollbar-none px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto pt-1 pb-2.5 md:pt-1 md:pb-3 snap-x snap-proximity"
         role="list"
       >
         {categories.map(({ id, name, slug }) => {
@@ -349,7 +349,7 @@ export function CategoryNav({ categories }: CategoryNavProps) {
                 handleCategoryClick(slug);
               }}
               className={cn(
-                'relative z-10 flex-shrink-0 min-h-[44px] flex items-center px-2.5 sm:px-3 py-2 font-sans font-bold uppercase tracking-[0.15em] text-xs sm:text-sm whitespace-nowrap snap-center transition-colors duration-200 rounded-lg',
+                'relative z-10 flex-shrink-0 px-1 py-1.5 md:py-2 font-sans font-bold uppercase tracking-[0.15em] text-xs sm:text-sm whitespace-nowrap snap-center transition-colors duration-200',
                 isActive ? 'text-[#FDFADB]' : 'text-[#FDFADB]/70 hover:text-[#FDFADB]',
                 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FDFADB] focus-visible:ring-offset-2 focus-visible:ring-offset-[#BC1D1A]',
               )}
