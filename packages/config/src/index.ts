@@ -8,3 +8,5 @@ export * from './validation';
 export * from './datetime';
 export * from './features';
 export * from './environment';
+export * from './maintenance';
+export * from './offline-html';

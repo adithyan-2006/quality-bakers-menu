@@ -7,7 +7,7 @@ export function PageContainer({
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) {
   return (
-    <div className={cn('flex flex-col min-h-screen bg-background', className)} {...props}>
+    <div className={cn('flex flex-col min-h-screen bg-[#BC1D1A]', className)} {...props}>
       {children}
     </div>
   );

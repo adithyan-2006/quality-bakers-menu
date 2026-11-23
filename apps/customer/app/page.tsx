@@ -7,6 +7,7 @@ import { CustomerRepository } from '../repositories/customer-repository';
 export const revalidate = 60;
 import { buttonVariants, formatBadge } from '@qbm/ui';
 import { TopScrollLink } from '../components/top-scroll-link';
+import { HomeLoadingGate } from '../components/home-loading-gate';
 
 export default async function HomePage() {
   const [business, homepage, popularProducts, signatureProducts] = await Promise.all([
@@ -18,15 +19,17 @@ export default async function HomePage() {
 
   if (!homepage) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[70vh] text-center px-4">
-        <h1 className="text-4xl font-serif font-bold mb-4">Welcome to Quality Bakers</h1>
-        <p className="text-muted-foreground mb-8">
-          We are currently setting up our digital menu. Please check back soon!
-        </p>
-        <TopScrollLink href="/categories" className={buttonVariants({ variant: 'primary' })}>
-          Browse Categories
-        </TopScrollLink>
-      </div>
+      <HomeLoadingGate>
+        <div className="flex flex-col items-center justify-center min-h-[70vh] text-center px-4">
+          <h1 className="text-4xl font-serif font-bold mb-4">Welcome to Quality Bakers</h1>
+          <p className="text-muted-foreground mb-8">
+            We are currently setting up our digital menu. Please check back soon!
+          </p>
+          <TopScrollLink href="/categories" className={buttonVariants({ variant: 'primary' })}>
+            Browse Categories
+          </TopScrollLink>
+        </div>
+      </HomeLoadingGate>
     );
   }
 
@@ -48,21 +51,23 @@ export default async function HomePage() {
   });
 
   return (
-    <div className="flex flex-col w-full bg-[#BC1D1A]">
-      <EditorialIntro
-        homepage={homepage}
-        businessName={business?.name || 'Quality Bakers'}
-        logoUrl={business?.logo?.secureUrl || business?.logo?.originalUrl}
-      />
-      {/* Explore Collections UI */}
-      <FeaturedCategories categories={homepage.featuredCategories} />
-      <SignatureShowcase products={mappedSignatureProducts} />
-      <PopularPreview products={popularProducts} />
-      <SignatureHighlight
-        title={homepage.aboutTitle}
-        description={homepage.aboutDescription}
-        image={homepage.aboutImage}
-      />
-    </div>
+    <HomeLoadingGate>
+      <div className="flex flex-col w-full bg-[#BC1D1A]">
+        <EditorialIntro
+          homepage={homepage}
+          businessName={business?.name || 'Quality Bakers'}
+          logoUrl={business?.logo?.secureUrl || business?.logo?.originalUrl}
+        />
+        {/* Explore Collections UI */}
+        <FeaturedCategories categories={homepage.featuredCategories} />
+        <SignatureShowcase products={mappedSignatureProducts} />
+        <PopularPreview products={popularProducts} />
+        <SignatureHighlight
+          title={homepage.aboutTitle}
+          description={homepage.aboutDescription}
+          image={homepage.aboutImage}
+        />
+      </div>
+    </HomeLoadingGate>
   );
 }

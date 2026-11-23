@@ -12,5 +12,6 @@ export const prisma = globalThis.prismaGlobal ?? prismaClientSingleton();
 
 export * from '@prisma/client';
 export { Prisma } from '@prisma/client';
+export * from './password';
 
 if (process.env.NODE_ENV !== 'production') globalThis.prismaGlobal = prisma;

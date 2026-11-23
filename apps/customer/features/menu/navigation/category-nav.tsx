@@ -34,7 +34,7 @@ export function CategoryNav({ categories }: CategoryNavProps) {
     const isMobile = window.innerWidth < 768;
     const isLg = window.innerWidth >= 1024;
     const headerH = isMobile ? 64 : isLg ? 76 : 72;
-    const navH = navRef.current ? navRef.current.offsetHeight : isMobile ? 52 : 60;
+    const navH = navRef.current ? navRef.current.offsetHeight : isMobile ? 68 : isLg ? 84 : 76;
     const navBottom = headerH + navH;
     activationLineRef.current = navBottom + (isMobile ? 36 : 48);
 
@@ -217,7 +217,7 @@ export function CategoryNav({ categories }: CategoryNavProps) {
       const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
       const isLg = typeof window !== 'undefined' && window.innerWidth >= 1024;
       const headerH = isMobile ? 64 : isLg ? 76 : 72;
-      const navH = navRef.current ? navRef.current.offsetHeight : isMobile ? 52 : 60;
+      const navH = navRef.current ? navRef.current.offsetHeight : isMobile ? 68 : isLg ? 84 : 76;
       const offset = headerH + navH + 16;
       const top = section.getBoundingClientRect().top + window.scrollY - offset;
       window.scrollTo({ top, behavior: 'smooth' });
@@ -316,7 +316,7 @@ export function CategoryNav({ categories }: CategoryNavProps) {
       className={cn(
         'sticky z-40 bg-[#BC1D1A] overflow-hidden',
         'top-[64px] md:top-[72px] lg:top-[76px]',
-        'py-1.5 sm:py-2 md:py-2.5',
+        'pt-[20px] sm:pt-[22px] md:pt-[28px] lg:pt-[32px] pb-1.5 sm:pb-2 md:pb-2',
         'transform-gpu will-change-transform',
       )}
       style={{

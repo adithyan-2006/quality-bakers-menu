@@ -253,6 +253,75 @@
     transform: scale(1);
   }
 
+  /* Hero Subtitle / Eyebrow (e.g. "QUALITY BAKERS - SINCE 2020") */
+  .reveal-hero-subtitle {
+    opacity: 0;
+    transform: translateY(20px);
+    filter: blur(3px);
+    transition:
+      opacity 800ms cubic-bezier(0.16, 1, 0.3, 1),
+      transform 800ms cubic-bezier(0.16, 1, 0.3, 1),
+      filter 800ms cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform, filter;
+  }
+
+  .reveal-hero-subtitle.is-revealed {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+
+  /* Hero Title (e.g. "Quality you can taste" typography mark) */
+  .reveal-hero-title {
+    opacity: 0;
+    transform: translateY(32px) scale(0.97);
+    filter: blur(4px);
+    transition:
+      opacity 950ms cubic-bezier(0.16, 1, 0.3, 1),
+      transform 950ms cubic-bezier(0.16, 1, 0.3, 1),
+      filter 950ms cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform, filter;
+  }
+
+  .reveal-hero-title.is-revealed {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+
+  /* Hero CTA button (e.g. "EXPLORE MENU") */
+  .reveal-hero-cta {
+    opacity: 0;
+    transform: translateY(24px) scale(0.96);
+    transition:
+      opacity 750ms cubic-bezier(0.16, 1, 0.3, 1),
+      transform 750ms cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+  }
+
+  .reveal-hero-cta.is-revealed {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  /* Text reveal: refined vertical rise with subtle optical focus */
+  .reveal-text {
+    opacity: 0;
+    transform: translateY(22px);
+    filter: blur(3px);
+    transition:
+      opacity 800ms cubic-bezier(0.16, 1, 0.3, 1),
+      transform 800ms cubic-bezier(0.16, 1, 0.3, 1),
+      filter 800ms cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform, filter;
+  }
+
+  .reveal-text.is-revealed {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+
   /* Respect prefers-reduced-motion: disable all transitions and keep fully visible */
   @media (prefers-reduced-motion: reduce) {
     .reveal-card,
@@ -260,10 +329,15 @@
     .reveal-description,
     .reveal-fade-up,
     .reveal-fade-in,
-    .reveal-scale-up {
+    .reveal-scale-up,
+    .reveal-text,
+    .reveal-hero-title,
+    .reveal-hero-subtitle,
+    .reveal-hero-cta {
       opacity: 1 !important;
       transform: none !important;
       transition: none !important;
+      filter: none !important;
       will-change: auto !important;
     }
   }
@@ -274,9 +348,14 @@
     .reveal-description,
     .reveal-fade-up,
     .reveal-fade-in,
-    .reveal-scale-up {
+    .reveal-scale-up,
+    .reveal-text,
+    .reveal-hero-title,
+    .reveal-hero-subtitle,
+    .reveal-hero-cta {
       opacity: 1 !important;
       transform: none !important;
+      filter: none !important;
     }
   }
 
@@ -1100,5 +1179,33 @@
     transform: none !important;
     box-shadow: none !important;
     opacity: 0.85 !important;
+  }
+}
+
+/* ─── Hero Scroll Indicator Cue (Small Jump) ─────────────────────────────── */
+@keyframes scrollCueJump {
+  0%,
+  20%,
+  55%,
+  80%,
+  100% {
+    transform: translateY(0);
+  }
+  38% {
+    transform: translateY(-7px);
+  }
+  68% {
+    transform: translateY(-2.5px);
+  }
+}
+
+.animate-scroll-jump {
+  animation: scrollCueJump 2.4s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-scroll-jump {
+    animation: none !important;
+    transform: none !important;
   }
 }

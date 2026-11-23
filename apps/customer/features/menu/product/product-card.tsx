@@ -75,7 +75,7 @@ export function ProductCard({
           )}
         >
           {/* Large Image Block */}
-          <div className="relative w-full md:w-1/2 lg:w-[55%] min-h-[220px] sm:min-h-[300px] md:min-h-[400px] rounded-xl overflow-hidden border border-black/5 shadow-inner flex-shrink-0">
+          <div className="relative w-full md:w-1/2 lg:w-[55%] min-h-[220px] sm:min-h-[300px] md:min-h-[400px] rounded-xl overflow-hidden border-0 border-transparent shadow-inner flex-shrink-0">
             <ProductImage
               src={product.image}
               alt={product.name}
@@ -140,7 +140,7 @@ export function ProductCard({
           )}
         >
           {/* Image Block */}
-          <div className="relative w-full aspect-[4/3] rounded-xl overflow-hidden border border-black/5 shadow-inner">
+          <div className="relative w-full aspect-[4/3] rounded-xl overflow-hidden border-0 border-transparent shadow-inner">
             <ProductImage
               src={product.image}
               alt={product.name}
@@ -203,7 +203,7 @@ export function ProductCard({
           )}
         >
           {/* Image Block — no badge for Signature showcase */}
-          <div className="relative w-full aspect-[4/3] rounded-xl overflow-hidden border border-black/5 shadow-inner flex-shrink-0">
+          <div className="relative w-full aspect-[4/3] rounded-xl overflow-hidden border-0 border-transparent shadow-inner flex-shrink-0">
             <ProductImage
               src={product.image}
               alt={product.name}
@@ -278,7 +278,7 @@ export function ProductCard({
           {/* Asymmetric Content Block */}
           <div className="flex flex-col md:flex-row flex-1 items-stretch p-5 md:p-8 pt-4 md:gap-10">
             {/* Massive Imagery */}
-            <div className="relative flex-1 w-full min-h-[220px] sm:min-h-[300px] md:min-h-[400px] rounded-xl overflow-hidden bg-brand-deep-cream border border-black/5 shadow-inner">
+            <div className="relative flex-1 w-full min-h-[220px] sm:min-h-[300px] md:min-h-[400px] rounded-xl overflow-hidden bg-brand-deep-cream border-0 border-transparent shadow-inner">
               <ProductImage
                 src={product.image}
                 alt={product.name}
@@ -391,16 +391,16 @@ export function ProductCard({
 
   // ─── STANDARD STYLE ───────────────────────────────────────────────────────
   return (
-    <article className="w-full h-full">
+    <article className="w-full h-full max-w-[340px] mx-auto">
       <div
         className={cn(
-          'group flex flex-col w-full h-full rounded-2xl overflow-hidden',
+          'group flex flex-col w-full h-full rounded-3xl overflow-hidden border-0 border-transparent',
           themeClasses.card,
           themeClasses.cardHover,
           focusClasses,
         )}
       >
-        <div className="relative overflow-hidden bg-brand-deep-cream">
+        <div className="relative overflow-hidden bg-brand-deep-cream rounded-t-3xl">
           <ProductImage
             src={product.image}
             alt={product.name}
@@ -416,17 +416,17 @@ export function ProductCard({
           )}
         </div>
 
-        <div className="flex flex-col flex-1 p-4 bg-[#FDFADB]">
-          <h3 className="leading-tight text-xl font-serif font-bold mb-2 text-[#BC1D1A] group-hover:text-brand-brick-red transition-colors duration-300">
+        <div className="flex flex-col flex-1 p-4 bg-[#FDFADB] rounded-b-3xl">
+          <h3 className="leading-tight text-xl font-serif font-bold mb-1.5 text-[#BC1D1A] group-hover:text-brand-brick-red transition-colors duration-300">
             {product.name}
           </h3>
           {product.description && (
-            <p className="line-clamp-2 text-sm leading-relaxed text-[#BC1D1A]/70 mb-4">
+            <p className="line-clamp-2 text-sm leading-relaxed text-[#BC1D1A]/70 mb-3">
               {product.description}
             </p>
           )}
 
-          <div className="mt-auto pt-2.5 border-t border-black/10 flex items-center justify-between">
+          <div className="mt-auto pt-2 border-t border-black/10 flex items-center justify-between">
             {formattedPrice && (
               <span className="font-bold font-sans tracking-wide text-sm text-brand-dark">
                 {formattedPrice}

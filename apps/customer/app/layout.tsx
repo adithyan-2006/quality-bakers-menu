@@ -10,6 +10,8 @@ import '../styles/globals.css';
 import { ThemeProvider } from '../providers/theme-provider';
 import { QueryProvider } from '../providers/query-provider';
 import { AppShell } from '../components/layout/app-shell';
+import { WebsiteVisitTracker } from '../components/analytics/website-visit-tracker';
+import { ServiceWorkerRegister, OfflineDetector } from '../components/offline';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-serif' });
@@ -85,6 +87,9 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
+            <WebsiteVisitTracker />
+            <ServiceWorkerRegister />
+            <OfflineDetector />
             <AppShell>{children}</AppShell>
           </ThemeProvider>
         </QueryProvider>

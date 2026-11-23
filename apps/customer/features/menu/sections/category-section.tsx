@@ -49,12 +49,12 @@ export function CategorySection({ config, products }: CategorySectionProps) {
       id={config.slug}
       aria-labelledby={`category-${config.slug}`}
       className={cn(
-        'relative scroll-mt-[138px] md:scroll-mt-[158px] lg:scroll-mt-[168px]',
+        'relative scroll-mt-[145px] md:scroll-mt-[165px] lg:scroll-mt-[175px]',
         pacing === 'hero'
-          ? 'py-8 sm:py-10 md:py-12 lg:py-14'
+          ? 'py-6 sm:py-8 md:py-10 lg:py-12'
           : pacing === 'compact'
-            ? 'py-6 sm:py-8 md:py-8 lg:py-10'
-            : 'py-8 sm:py-10 md:py-10 lg:py-12', // standard
+            ? 'py-4 sm:py-6 md:py-6 lg:py-8'
+            : 'py-6 sm:py-8 md:py-8 lg:py-10', // standard
         themeClasses.section,
       )}
       style={sectionStyle}
@@ -66,18 +66,20 @@ export function CategorySection({ config, products }: CategorySectionProps) {
           animationConfig={animationConfig}
         />
 
-        {products.length > 0 ? (
-          <LayoutEngine
-            layoutType={config.layoutType}
-            products={products}
-            themeClasses={themeClasses}
-            animationConfig={animationConfig}
-          />
-        ) : (
-          <div className={cn('py-16 text-center text-sm', themeClasses.description)}>
-            Products coming soon.
-          </div>
-        )}
+        <div className="w-full px-6 min-[390px]:px-8 sm:px-0">
+          {products.length > 0 ? (
+            <LayoutEngine
+              layoutType={config.layoutType}
+              products={products}
+              themeClasses={themeClasses}
+              animationConfig={animationConfig}
+            />
+          ) : (
+            <div className={cn('py-16 text-center text-sm', themeClasses.description)}>
+              Products coming soon.
+            </div>
+          )}
+        </div>
       </ContentContainer>
 
       {/* Subtle Category Closing / Breathing Room — hidden on mobile */}

@@ -378,8 +378,8 @@ export function FeaturedCategories({ categories }: FeaturedCategoriesProps) {
                   className="explore-card group relative block w-[56vw] min-w-[200px] max-w-[240px] sm:w-[260px] sm:max-w-none md:w-[300px] lg:w-[360px] aspect-[4/5] flex-shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FDFADB] rounded-2xl sm:rounded-3xl"
                   style={{ transformStyle: 'preserve-3d' }}
                 >
-                  {/* Scalable Container for Center Focus with hardware-accelerated elevation shadow & delicate cream rim */}
-                  <div className="focus-scale w-full h-full relative overflow-hidden rounded-2xl sm:rounded-3xl border border-[#FDFADB]/20 will-change-transform shadow-[0_16px_40px_-8px_rgba(25,2,2,0.65),0_8px_18px_-4px_rgba(35,3,3,0.45),0_0_0_1px_rgba(253,250,219,0.18)] hover:shadow-[0_24px_55px_-6px_rgba(25,2,2,0.75),0_12px_24px_-4px_rgba(35,3,3,0.55),0_0_0_1.5px_rgba(253,250,219,0.35)] transition-shadow duration-500">
+                  {/* Scalable Container for Center Focus with hardware-accelerated elevation shadow */}
+                  <div className="focus-scale w-full h-full relative overflow-hidden rounded-2xl sm:rounded-3xl border-0 border-transparent will-change-transform shadow-[0_16px_40px_-8px_rgba(0,0,0,0.45),0_8px_18px_-4px_rgba(0,0,0,0.25)] hover:shadow-[0_24px_55px_-6px_rgba(0,0,0,0.55),0_12px_24px_-4px_rgba(0,0,0,0.35)] transition-shadow duration-500">
                     {/* Gradient Overlay */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent z-20 pointer-events-none" />
 
@@ -446,7 +446,7 @@ export function FeaturedCategories({ categories }: FeaturedCategoriesProps) {
           }
           .featured-categories-section .focus-scale {
             transform: none !important;
-            box-shadow: 0 16px 40px -8px rgba(25,2,2,0.65) !important;
+            box-shadow: 0 16px 40px -8px rgba(0,0,0,0.45) !important;
             opacity: 1 !important;
           }
         }

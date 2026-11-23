@@ -2,10 +2,21 @@
 
 import * as React from 'react';
 import { cn } from '@qbm/ui';
+import { useHomeLoading } from './home-loading-gate';
 
 interface ScrollRevealProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
-  animation?: 'fade-up' | 'fade-in' | 'scale-up' | 'card' | 'heading' | 'description';
+  animation?:
+    | 'fade-up'
+    | 'fade-in'
+    | 'scale-up'
+    | 'card'
+    | 'heading'
+    | 'description'
+    | 'text'
+    | 'hero-title'
+    | 'hero-subtitle'
+    | 'hero-cta';
   delayMs?: number;
 }
 
@@ -18,6 +29,7 @@ export function ScrollReveal({
   ...props
 }: ScrollRevealProps) {
   const ref = React.useRef<HTMLDivElement>(null);
+  const { isReady } = useHomeLoading();
 
   // Synchronously check prefers-reduced-motion to avoid flash of hidden content
   const prefersReduced =
@@ -28,7 +40,7 @@ export function ScrollReveal({
   const [isVisible, setIsVisible] = React.useState(prefersReduced);
 
   React.useEffect(() => {
-    if (isVisible) return;
+    if (isVisible || !isReady) return;
 
     const currentRef = ref.current;
     if (!currentRef) return;
@@ -41,7 +53,7 @@ export function ScrollReveal({
           observer.unobserve(currentRef);
         }
       },
-      { threshold: 0.1, rootMargin: '60px 0px' },
+      { threshold: 0.05, rootMargin: '60px 0px' },
     );
 
     observer.observe(currentRef);
@@ -49,7 +61,7 @@ export function ScrollReveal({
     return () => {
       observer.unobserve(currentRef);
     };
-  }, [isVisible]);
+  }, [isVisible, isReady]);
 
   const animationClass =
     animation === 'card'
@@ -58,11 +70,19 @@ export function ScrollReveal({
         ? 'reveal-heading'
         : animation === 'description'
           ? 'reveal-description'
-          : animation === 'fade-in'
-            ? 'reveal-fade-in'
-            : animation === 'scale-up'
-              ? 'reveal-scale-up'
-              : 'reveal-fade-up';
+          : animation === 'hero-title'
+            ? 'reveal-hero-title'
+            : animation === 'hero-subtitle'
+              ? 'reveal-hero-subtitle'
+              : animation === 'hero-cta'
+                ? 'reveal-hero-cta'
+                : animation === 'text'
+                  ? 'reveal-text'
+                  : animation === 'fade-in'
+                    ? 'reveal-fade-in'
+                    : animation === 'scale-up'
+                      ? 'reveal-scale-up'
+                      : 'reveal-fade-up';
 
   return (
     <div
