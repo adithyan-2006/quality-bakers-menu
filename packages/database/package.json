@@ -11,6 +11,7 @@
     "db:seed": "prisma db seed",
     "lint": "echo 'Not implemented'",
     "typecheck": "tsc --noEmit",
+    "test": "npx tsx __tests__/password.test.mjs",
     "clean": "git clean -xdf .turbo node_modules"
   },
   "prisma": {

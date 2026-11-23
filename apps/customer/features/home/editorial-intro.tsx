@@ -7,6 +7,7 @@ import { ContentContainer } from '../../components/layout/content-container';
 import { DrippingAnimation } from './dripping-animation';
 import { QualityYouCanTasteMark } from '../../components/brand/quality-you-can-taste-mark';
 import { QualityYouCanTasteMobileMark } from '../../components/brand/quality-you-can-taste-mobile-mark';
+import { ScrollCue } from '../../components/scroll-cue';
 import type { Prisma } from '@qbm/database';
 
 type HomepageWithRelations = Prisma.HomepageGetPayload<{
@@ -33,33 +34,39 @@ export function EditorialIntro({
       <DrippingAnimation />
 
       {/* Top Banner (Marquee) */}
-      <div className="w-full border-b border-[#FDFADB]/15 py-2.5 sm:py-3 md:py-3.5 flex items-center overflow-hidden flex-shrink-0 bg-[#BC1D1A] z-20 relative mt-5 sm:mt-6 md:mt-7">
-        <div className="flex whitespace-nowrap animate-marquee motion-reduce:animate-none w-max">
-          {[...Array(20)].map((_, i) => (
-            <span key={i} className="flex items-center">
-              <span className="text-[#FDFADB] uppercase text-[10px] sm:text-xs tracking-[0.25em] opacity-90 font-medium font-sans px-4">
-                USE COLD MACERATED SPICED SYRUPS
+      <ScrollReveal
+        animation="fade-in"
+        delayMs={50}
+        className="w-full z-20 relative mt-5 sm:mt-6 md:mt-7"
+      >
+        <div className="w-full border-b border-[#FDFADB]/15 py-2.5 sm:py-3 md:py-3.5 flex items-center overflow-hidden flex-shrink-0 bg-[#BC1D1A]">
+          <div className="flex whitespace-nowrap animate-marquee motion-reduce:animate-none w-max">
+            {[...Array(20)].map((_, i) => (
+              <span key={i} className="flex items-center">
+                <span className="text-[#FDFADB] uppercase text-[10px] sm:text-xs tracking-[0.25em] opacity-90 font-medium font-sans px-4">
+                  USE COLD MACERATED SPICED SYRUPS
+                </span>
+                <span className="text-[#FDFADB]/50 text-[10px] sm:text-xs px-2">✦</span>
+                <span className="text-[#FDFADB] uppercase text-[10px] sm:text-xs tracking-[0.25em] opacity-90 font-medium font-sans px-4">
+                  FRESHLY BAKED DAILY
+                </span>
+                <span className="text-[#FDFADB]/50 text-[10px] sm:text-xs px-2">✦</span>
+                <span className="text-[#FDFADB] uppercase text-[10px] sm:text-xs tracking-[0.25em] opacity-90 font-medium font-sans px-4">
+                  UNCOMPROMISING QUALITY
+                </span>
+                <span className="text-[#FDFADB]/50 text-[10px] sm:text-xs px-2">✦</span>
               </span>
-              <span className="text-[#FDFADB]/50 text-[10px] sm:text-xs px-2">✦</span>
-              <span className="text-[#FDFADB] uppercase text-[10px] sm:text-xs tracking-[0.25em] opacity-90 font-medium font-sans px-4">
-                FRESHLY BAKED DAILY
-              </span>
-              <span className="text-[#FDFADB]/50 text-[10px] sm:text-xs px-2">✦</span>
-              <span className="text-[#FDFADB] uppercase text-[10px] sm:text-xs tracking-[0.25em] opacity-90 font-medium font-sans px-4">
-                UNCOMPROMISING QUALITY
-              </span>
-              <span className="text-[#FDFADB]/50 text-[10px] sm:text-xs px-2">✦</span>
-            </span>
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
+      </ScrollReveal>
 
       {/* Main Hero Content - Responsive Layout */}
       <ContentContainer className="relative flex flex-col flex-1 pt-6 pb-12 sm:pt-10 sm:pb-16 md:pt-14 md:pb-20 lg:pt-16 lg:pb-24 justify-center">
         {/* MOBILE VIEW (< md): Everything left-aligned, stacked 3-line big typography */}
         <div className="flex md:hidden flex-col items-start text-left w-full max-w-sm sm:max-w-md mx-auto px-2">
           {/* Top Line: quality bakers - since 2020 */}
-          <ScrollReveal animation="fade-up" delayMs={100} className="w-full">
+          <ScrollReveal animation="hero-subtitle" delayMs={120} className="w-full">
             <div className="flex items-center gap-2 sm:gap-2.5 w-full mb-3 select-none min-w-0">
               <span className="text-[#FDFADB]/90 uppercase font-sans text-[9px] min-[360px]:text-[10px] sm:text-[11px] tracking-[0.14em] min-[360px]:tracking-[0.2em] sm:tracking-[0.24em] font-medium truncate">
                 QUALITY BAKERS - SINCE 2020
@@ -69,7 +76,7 @@ export function EditorialIntro({
           </ScrollReveal>
 
           {/* Main Title: Quality \n you \n can taste (Stacked 3-line display matching mobile arrangement) */}
-          <ScrollReveal animation="fade-up" delayMs={200} className="w-full">
+          <ScrollReveal animation="hero-title" delayMs={280} className="w-full">
             <h1 className="relative flex flex-col items-start w-full my-2">
               <span className="sr-only">Quality you can taste</span>
               <QualityYouCanTasteMobileMark className="w-full max-w-[340px] sm:max-w-[380px] h-auto text-[#FDFADB] select-none filter drop-shadow-[0_4px_22px_rgba(0,0,0,0.25)]" />
@@ -77,7 +84,7 @@ export function EditorialIntro({
           </ScrollReveal>
 
           {/* CTA: Explore Menu button (Simple flat pill with minimal shadow and red text, no arrow, stable colors) */}
-          <ScrollReveal animation="fade-up" delayMs={300} className="w-full flex justify-start">
+          <ScrollReveal animation="hero-cta" delayMs={480} className="w-full flex justify-start">
             <TopScrollLink
               href={homepage.heroCtaLink || '/categories'}
               className={cn(
@@ -100,7 +107,11 @@ export function EditorialIntro({
         {/* DESKTOP / TABLET VIEW (>= md): Centered, wide single-line display */}
         <div className="hidden md:flex flex-col items-center justify-center text-center relative z-10 w-full max-w-5xl mx-auto px-4">
           {/* Top Line: Quality Bakers - Since 2020 flanked by subtle horizontal rules */}
-          <ScrollReveal animation="fade-up" delayMs={100} className="w-full flex justify-center">
+          <ScrollReveal
+            animation="hero-subtitle"
+            delayMs={120}
+            className="w-full flex justify-center"
+          >
             <div className="flex items-center justify-center gap-3 sm:gap-4 md:gap-5 w-full max-w-md md:max-w-xl mx-auto mb-3 sm:mb-4 md:mb-5">
               <span className="h-[1px] flex-1 max-w-[60px] sm:max-w-[80px] md:max-w-[110px] bg-[#FDFADB]/35" />
               <span className="text-[#FDFADB]/90 uppercase font-sans text-[10px] sm:text-xs md:text-sm tracking-[0.22em] sm:tracking-[0.26em] md:tracking-[0.3em] font-medium whitespace-nowrap select-none">
@@ -111,7 +122,7 @@ export function EditorialIntro({
           </ScrollReveal>
 
           {/* Main Title: Quality you can taste (Display size with ornate flourishes) */}
-          <ScrollReveal animation="fade-up" delayMs={200} className="w-full flex justify-center">
+          <ScrollReveal animation="hero-title" delayMs={280} className="w-full flex justify-center">
             <h1 className="relative flex flex-col items-center justify-center w-full my-1 sm:my-2">
               <span className="sr-only">Quality you can taste</span>
               <QualityYouCanTasteMark className="w-[96%] sm:w-[92%] md:w-[88%] max-w-[540px] sm:max-w-[720px] md:max-w-[880px] lg:max-w-[980px] xl:max-w-[1040px] h-auto text-[#FDFADB] select-none filter drop-shadow-[0_4px_22px_rgba(0,0,0,0.22)]" />
@@ -119,7 +130,7 @@ export function EditorialIntro({
           </ScrollReveal>
 
           {/* CTA: Explore Menu button (Simple flat pill with minimal shadow and red text, no arrow, stable colors) */}
-          <ScrollReveal animation="fade-up" delayMs={300} className="w-full flex justify-center">
+          <ScrollReveal animation="hero-cta" delayMs={480} className="w-full flex justify-center">
             <TopScrollLink
               href={homepage.heroCtaLink || '/categories'}
               className={cn(
@@ -139,6 +150,15 @@ export function EditorialIntro({
           </ScrollReveal>
         </div>
       </ContentContainer>
+
+      {/* Bottom Scroll Cue Indicator with thin illuminated text & jump animation */}
+      <ScrollReveal
+        animation="fade-in"
+        delayMs={700}
+        className="absolute bottom-3 sm:bottom-4 md:bottom-6 left-1/2 -translate-x-1/2 z-20 pointer-events-auto"
+      >
+        <ScrollCue />
+      </ScrollReveal>
     </section>
   );
 }

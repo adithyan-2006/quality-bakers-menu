@@ -7,7 +7,7 @@ export function MenuViewport({
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) {
   return (
-    <main className={cn('flex-1', className)} {...props}>
+    <main className={cn('flex-1 bg-[#BC1D1A]', className)} {...props}>
       {children}
     </main>
   );

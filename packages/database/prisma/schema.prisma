@@ -318,6 +318,7 @@ model User {
   name          String?
   email         String    @unique
   emailVerified DateTime?
+  passwordHash  String?
   image         String?
   avatarId      String?
   avatar        Media?    @relation(fields: [avatarId], references: [id])
@@ -426,4 +427,28 @@ model ProductLikeCount {
   product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
   count     Int      @default(0)
   updatedAt DateTime @updatedAt
+}
+
+// -----------------------------------------------------------------------------
+// WEBSITE VISITS & ANALYTICS
+// -----------------------------------------------------------------------------
+
+model WebsiteVisit {
+  id         String   @id @default(cuid())
+  path       String   @default("/")
+  referrer   String?
+  visitorId  String
+  sessionId  String?
+  deviceType String?  // 'desktop', 'mobile', 'tablet'
+  deviceName String?  // 'Apple iPhone', 'Windows PC', 'Apple Mac', 'Android Phone', etc.
+  browser    String?  // 'Chrome', 'Safari', 'Firefox', 'Edge', etc.
+  os         String?  // 'Windows', 'Mac OS', 'iOS', 'Android', 'Linux'
+  ipHash     String?
+  country    String?
+  createdAt  DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([visitorId])
+  @@index([path])
+  @@index([createdAt, visitorId])
 }

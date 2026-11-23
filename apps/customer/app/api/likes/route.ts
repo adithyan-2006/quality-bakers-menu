@@ -67,21 +67,15 @@ export async function POST(request: NextRequest) {
           });
         }
 
-        // Authoritative count directly from unique like rows
-        const authoritativeCount = await tx.productLike.count({
+        // Read trigger-updated cached count from ProductLikeCount
+        const counterRow = await tx.productLikeCount.findUnique({
           where: { productId },
-        });
-
-        // Update cached counter table
-        await tx.productLikeCount.upsert({
-          where: { productId },
-          create: { productId, count: authoritativeCount },
-          update: { count: authoritativeCount },
+          select: { count: true },
         });
 
         return {
           isLiked: action === 'like',
-          globalLikeCount: authoritativeCount,
+          globalLikeCount: counterRow?.count ?? 0,
         };
       },
       {
@@ -114,30 +108,25 @@ export async function GET(request: NextRequest) {
 
     // Single product query
     if (productId) {
-      const [authoritativeCount, userLike] = await Promise.all([
-        prisma.productLike.count({
+      const [counterRow, isLikedRows] = await Promise.all([
+        prisma.productLikeCount.findUnique({
           where: { productId },
+          select: { count: true },
         }),
         anonymousUserId
-          ? prisma.productLike.findUnique({
-              where: {
-                productId_anonymousUserId: {
-                  productId,
-                  anonymousUserId,
-                },
-              },
-              select: { id: true },
-            })
-          : null,
+          ? prisma.$queryRaw<{ is_liked: boolean }[]>`
+              SELECT public.is_product_liked(${productId}, ${anonymousUserId}) AS is_liked
+            `
+          : Promise.resolve([]),
       ]);
 
-      const isLiked = !!userLike;
+      const isLiked = isLikedRows[0]?.is_liked ?? false;
 
       return NextResponse.json({
         success: true,
         productId,
         isLiked,
-        globalLikeCount: authoritativeCount,
+        globalLikeCount: counterRow?.count ?? 0,
       });
     }
 
@@ -147,25 +136,20 @@ export async function GET(request: NextRequest) {
         .split(',')
         .map((s) => s.trim())
         .filter(Boolean);
-      const [likeGroupCounts, userLikes] = await Promise.all([
-        prisma.productLike.groupBy({
-          by: ['productId'],
+      const [counterRows, likedProductRows] = await Promise.all([
+        prisma.productLikeCount.findMany({
           where: { productId: { in: productIds } },
-          _count: { _all: true },
+          select: { productId: true, count: true },
         }),
         anonymousUserId
-          ? prisma.productLike.findMany({
-              where: {
-                productId: { in: productIds },
-                anonymousUserId,
-              },
-              select: { productId: true },
-            })
-          : [],
+          ? prisma.$queryRaw<{ product_id: string }[]>`
+              SELECT product_id FROM public.get_user_liked_products(${productIds}::text[], ${anonymousUserId})
+            `
+          : Promise.resolve([]),
       ]);
 
-      const countMap = new Map(likeGroupCounts.map((c) => [c.productId, c._count._all]));
-      const userLikedSet = new Set(userLikes.map((l) => l.productId));
+      const countMap = new Map(counterRows.map((c) => [c.productId, c.count]));
+      const userLikedSet = new Set(likedProductRows.map((r) => r.product_id));
 
       const result: Record<string, { isLiked: boolean; globalLikeCount: number }> = {};
       for (const id of productIds) {

@@ -20,17 +20,19 @@ export function PopularPreview({ products }: PopularPreviewProps) {
         {/* Mobile-only Sticky Header:
             Pins at top-[64px] (below sticky 64px mobile header) with compact vertical footprint.
             Releases naturally at the end of the section. Static on desktop. */}
-        <div className="sticky top-[64px] z-20 md:static bg-[#BC1D1A]/95 backdrop-blur-md md:bg-transparent -mx-4 px-4 sm:-mx-6 sm:px-6 md:mx-0 md:px-0 pt-3 pb-3 md:pt-0 md:pb-0 mb-6 md:mb-16 transition-colors">
-          <ScrollReveal animation="heading">
-            <div className="flex flex-col items-center text-center md:items-start md:text-left">
+        <div className="sticky top-[64px] z-20 md:static bg-[#BC1D1A]/95 backdrop-blur-md md:bg-transparent -mx-4 px-4 sm:-mx-6 sm:px-6 md:mx-0 md:px-0 pt-9 sm:pt-10 pb-3 md:pt-0 md:pb-0 mb-6 md:mb-16 transition-colors">
+          <div className="flex flex-col items-center text-center md:items-start md:text-left">
+            <ScrollReveal animation="text" delayMs={50}>
               <span className="text-[#FDFADB]/70 uppercase tracking-[0.15em] text-[11px] sm:text-xs font-bold font-sans mb-1 md:mb-4 block">
                 Customer Favorites
               </span>
+            </ScrollReveal>
+            <ScrollReveal animation="heading" delayMs={150}>
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold tracking-tight text-[#FDFADB]">
                 Most Loved
               </h2>
-            </div>
-          </ScrollReveal>
+            </ScrollReveal>
+          </div>
         </div>
 
         <Grid cols={1} gap="lg" className="sm:grid-cols-2 lg:grid-cols-4">

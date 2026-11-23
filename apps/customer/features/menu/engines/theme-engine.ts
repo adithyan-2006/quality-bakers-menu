@@ -23,11 +23,11 @@ const SHARED_TOKENS = {
   heading: 'font-serif text-[#FDFADB] tracking-tight',
   subheading: 'font-sans text-brand-cream/60 font-bold uppercase tracking-[0.15em] text-xs',
   description: 'font-sans text-[#FDFADB]/90 leading-relaxed',
-  card: 'bg-[#FDFADB] border border-[#BC1D1A]/12 rounded-2xl sm:rounded-3xl shadow-[0_10px_28px_-8px_rgba(40,3,3,0.2),0_4px_10px_rgba(0,0,0,0.06)]',
+  card: 'bg-[#FDFADB] border-0 border-transparent rounded-3xl shadow-[0_4px_20px_rgba(0,0,0,0.06)]',
   cardHover:
-    'hover:shadow-[0_20px_42px_-10px_rgba(40,3,3,0.32),0_8px_18px_rgba(0,0,0,0.1)] hover:-translate-y-1.5 transition-all duration-500',
+    'hover:shadow-[0_8px_24px_rgba(0,0,0,0.1)] hover:-translate-y-1 transition-all duration-300',
   badge:
-    'bg-brand-cream/80 border border-brand-dark/10 text-brand-dark uppercase tracking-widest font-bold text-[10px] px-3 py-1 rounded-full backdrop-blur-md',
+    'bg-[#FDFADB] border border-[#BC1D1A]/10 text-[#BC1D1A] uppercase tracking-widest font-bold text-[10px] px-3 py-1 rounded-full',
   divider: 'border-black/10',
   price: 'font-sans text-brand-dark font-medium',
 };

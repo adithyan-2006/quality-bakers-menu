@@ -18,25 +18,25 @@ export function SignatureHighlight({ title, description }: SignatureHighlightPro
       className="relative w-full bg-[#BC1D1A] min-h-[calc(100vh-64px)] md:min-h-[calc(100vh-72px)] lg:min-h-[calc(100vh-76px)] min-h-[calc(100dvh-64px)] md:min-h-[calc(100dvh-72px)] lg:min-h-[calc(100dvh-76px)] flex items-center justify-center py-16 md:py-32 scroll-mt-[64px] md:scroll-mt-[72px] lg:scroll-mt-[76px]"
     >
       <div className="w-full px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto text-center flex flex-col items-center justify-center">
-        <ScrollReveal animation="fade-up">
+        <ScrollReveal animation="text" delayMs={50}>
           <span className="text-sm uppercase tracking-widest text-[#FDFADB]/70 font-medium mb-6 block">
             About Us
           </span>
         </ScrollReveal>
 
-        <ScrollReveal animation="fade-up" delayMs={150}>
+        <ScrollReveal animation="heading" delayMs={150}>
           <h2 className="text-3xl md:text-5xl font-serif font-bold tracking-tight text-[#FDFADB] mb-8 leading-tight max-w-2xl">
             {title || 'Our Story'}
           </h2>
         </ScrollReveal>
 
-        <ScrollReveal animation="fade-up" delayMs={300}>
+        <ScrollReveal animation="description" delayMs={250}>
           <p className="text-lg md:text-xl text-[#FDFADB]/80 font-light leading-relaxed mb-12 whitespace-pre-wrap max-w-3xl">
             {description || 'Experience the taste of quality baking.'}
           </p>
         </ScrollReveal>
 
-        <ScrollReveal animation="fade-up" delayMs={450}>
+        <ScrollReveal animation="hero-cta" delayMs={350}>
           <TopScrollLink
             href="/categories"
             className={cn(

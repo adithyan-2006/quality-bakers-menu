@@ -8,6 +8,7 @@ import type { MenuProduct } from '../types';
  * Connected to Prisma Database.
  */
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function mapProduct(p: any): MenuProduct {
   return {
     id: p.id,
@@ -18,7 +19,7 @@ function mapProduct(p: any): MenuProduct {
     badge: formatBadge(p.badge),
     price: p.price ? `₹${p.price}` : undefined,
     categorySlug: p.category?.slug || '',
-    likeCount: p._count?.likes ?? p.likeCountRel?.count ?? 0,
+    likeCount: p.likeCountRel?.count ?? 0,
   };
 }
 
@@ -38,7 +39,6 @@ export const ProductRepository = {
         image: true,
         category: true,
         likeCountRel: true,
-        _count: { select: { likes: true } },
       },
       orderBy: { displayOrder: 'asc' },
       ...(limit ? { take: limit } : {}),
@@ -62,7 +62,6 @@ export const ProductRepository = {
           image: true,
           category: true,
           likeCountRel: true,
-          _count: { select: { likes: true } },
         },
       });
       if (p && p.isVisible && p.status === 'PUBLISHED') {
@@ -93,7 +92,6 @@ export const ProductRepository = {
         image: true,
         category: true,
         likeCountRel: true,
-        _count: { select: { likes: true } },
       },
       orderBy: { displayOrder: 'asc' },
     });
@@ -139,7 +137,6 @@ export const ProductRepository = {
         image: true,
         category: true,
         likeCountRel: true,
-        _count: { select: { likes: true } },
       },
       orderBy: { displayOrder: 'asc' },
     });
