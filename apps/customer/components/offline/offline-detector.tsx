@@ -1,59 +1,41 @@
 'use client';
 
 import * as React from 'react';
+import { useSyncExternalStore } from 'react';
 import { OfflineFallbackScreen } from './offline-fallback-screen';
 
+function subscribe(callback: () => void) {
+  window.addEventListener('online', callback);
+  window.addEventListener('offline', callback);
+  return () => {
+    window.removeEventListener('online', callback);
+    window.removeEventListener('offline', callback);
+  };
+}
+
+function getSnapshot() {
+  return navigator.onLine;
+}
+
+function getServerSnapshot() {
+  return true;
+}
+
 export function OfflineDetector() {
-  const [isOffline, setIsOffline] = React.useState<boolean>(() => {
-    if (typeof navigator !== 'undefined') {
-      return !navigator.onLine;
-    }
-    return false;
-  });
+  const isOnline = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+  const [retryKey, setRetryKey] = React.useState(0);
 
-  React.useEffect(() => {
-    // Only run on client
-    if (typeof window === 'undefined') return;
-
-    const handleOffline = () => {
-      setIsOffline(true);
-    };
-
-    const handleOnline = async () => {
-      // Verify real connectivity with /api/ping before dismissing
-      try {
-        const res = await fetch(`/api/ping?t=${Date.now()}`, {
-          method: 'HEAD',
-          cache: 'no-store',
-        });
-        if (res.ok || res.status < 400) {
-          setIsOffline(false);
-          return;
-        }
-      } catch {
-        // Still unreachable
-      }
-      setIsOffline(false);
-    };
-
-    window.addEventListener('offline', handleOffline);
-    window.addEventListener('online', handleOnline);
-
-    return () => {
-      window.removeEventListener('offline', handleOffline);
-      window.removeEventListener('online', handleOnline);
-    };
-  }, []);
-
-  if (!isOffline) {
+  // When online, do not render any overlay
+  if (isOnline) {
     return null;
   }
 
   return (
     <OfflineFallbackScreen
+      key={retryKey}
       isOverlay
       onRetry={() => {
-        setIsOffline(false);
+        setRetryKey((prev) => prev + 1);
       }}
     />
   );
