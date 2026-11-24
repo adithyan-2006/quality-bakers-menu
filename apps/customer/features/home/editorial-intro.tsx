@@ -28,7 +28,7 @@ export function EditorialIntro({
   return (
     <section
       id="home"
-      className="relative w-full bg-[#BC1D1A] flex flex-col min-h-[calc(100vh-64px)] min-h-[calc(100svh-64px)] min-h-[calc(100dvh-64px)] md:min-h-[calc(100dvh-72px)] lg:min-h-[calc(100dvh-76px)] scroll-mt-[64px] md:scroll-mt-[72px] lg:scroll-mt-[76px]"
+      className="relative w-full bg-[#BC1D1A] flex flex-col justify-between min-h-[calc(100vh-64px)] min-h-[calc(100svh-64px)] min-h-[calc(100dvh-64px)] md:min-h-[calc(100dvh-72px)] lg:min-h-[calc(100dvh-76px)] scroll-mt-[64px] md:scroll-mt-[72px] lg:scroll-mt-[76px] overflow-hidden"
     >
       {/* Living Melted Header Dripping & Natural Splash Animation */}
       <DrippingAnimation />
@@ -37,9 +37,9 @@ export function EditorialIntro({
       <ScrollReveal
         animation="fade-in"
         delayMs={50}
-        className="w-full z-20 relative mt-4 sm:mt-5 md:mt-6"
+        className="w-full z-20 relative mt-1 min-[360px]:mt-2 sm:mt-3 md:mt-5 shrink-0"
       >
-        <div className="w-full border-b border-[#FDFADB]/15 py-2.5 sm:py-3 md:py-3.5 flex items-center overflow-hidden flex-shrink-0 bg-[#BC1D1A]">
+        <div className="w-full border-b border-[#FDFADB]/15 py-1.5 min-[360px]:py-2 sm:py-2.5 md:py-3.5 flex items-center overflow-hidden flex-shrink-0 bg-[#BC1D1A]">
           <div className="flex whitespace-nowrap animate-marquee motion-reduce:animate-none w-max">
             {[...Array(20)].map((_, i) => (
               <span key={i} className="flex items-center">
@@ -62,12 +62,12 @@ export function EditorialIntro({
       </ScrollReveal>
 
       {/* Main Hero Content - Responsive Layout */}
-      <ContentContainer className="relative flex flex-col flex-1 pt-2 pb-16 sm:pt-4 sm:pb-20 md:pt-10 md:pb-20 lg:pt-12 lg:pb-24 justify-center">
+      <ContentContainer className="relative flex flex-col flex-1 px-4 sm:px-6 md:px-8 py-1 min-[360px]:py-2 sm:py-4 md:py-6 justify-center min-h-0">
         {/* MOBILE VIEW (< md): Everything left-aligned, stacked 3-line big typography shifted comfortably upward */}
-        <div className="flex md:hidden flex-col items-start text-left w-full max-w-sm sm:max-w-md mx-auto px-2 -translate-y-6 sm:-translate-y-8 md:translate-y-0">
+        <div className="flex md:hidden flex-col items-start text-left w-full max-w-xs min-[360px]:max-w-sm sm:max-w-md mx-auto px-1 sm:px-2">
           {/* Top Line: quality bakers - since 2020 */}
           <ScrollReveal animation="hero-subtitle" delayMs={120} className="w-full">
-            <div className="flex items-center gap-2 sm:gap-2.5 w-full mb-2.5 sm:mb-3 select-none min-w-0">
+            <div className="flex items-center gap-2 sm:gap-2.5 w-full mb-1 min-[360px]:mb-1.5 sm:mb-2.5 select-none min-w-0">
               <span className="text-[#FDFADB]/90 uppercase font-sans text-[9px] min-[360px]:text-[10px] sm:text-[11px] tracking-[0.14em] min-[360px]:tracking-[0.2em] sm:tracking-[0.24em] font-medium truncate">
                 QUALITY BAKERS - SINCE 2020
               </span>
@@ -77,9 +77,9 @@ export function EditorialIntro({
 
           {/* Main Title: Quality \n you \n can taste (Stacked 3-line display matching mobile arrangement) */}
           <ScrollReveal animation="hero-title" delayMs={280} className="w-full">
-            <h1 className="relative flex flex-col items-start w-full my-1.5 sm:my-2">
+            <h1 className="relative flex flex-col items-start w-full my-0.5 min-[360px]:my-1 sm:my-1.5">
               <span className="sr-only">Quality you can taste</span>
-              <QualityYouCanTasteMobileMark className="w-full max-w-[340px] sm:max-w-[380px] h-auto text-[#FDFADB] select-none filter drop-shadow-[0_4px_22px_rgba(0,0,0,0.25)]" />
+              <QualityYouCanTasteMobileMark className="w-full max-w-[250px] min-[360px]:max-w-[280px] min-[390px]:max-w-[315px] sm:max-w-[360px] max-h-[25vh] min-[360px]:max-h-[29vh] sm:max-h-[35vh] w-auto h-auto object-contain text-[#FDFADB] select-none filter drop-shadow-[0_4px_22px_rgba(0,0,0,0.25)]" />
             </h1>
           </ScrollReveal>
 
@@ -88,8 +88,8 @@ export function EditorialIntro({
             <TopScrollLink
               href={homepage.heroCtaLink || '/categories'}
               className={cn(
-                'mt-5 sm:mt-6 inline-flex items-center justify-center',
-                'px-8 sm:px-10 py-3.5 sm:py-4 rounded-full',
+                'mt-2.5 min-[360px]:mt-3 sm:mt-5 inline-flex items-center justify-center',
+                'px-6 min-[360px]:px-8 sm:px-10 py-2.5 min-[360px]:py-3 sm:py-3.5 rounded-full',
                 'bg-[#FDFADB]',
                 'text-[#BC1D1A]',
                 'font-sans font-bold text-xs sm:text-sm uppercase tracking-[0.18em] sm:tracking-[0.2em]',
@@ -112,7 +112,7 @@ export function EditorialIntro({
             delayMs={120}
             className="w-full flex justify-center"
           >
-            <div className="flex items-center justify-center gap-3 sm:gap-4 md:gap-5 w-full max-w-md md:max-w-xl mx-auto mb-3 sm:mb-4 md:mb-5">
+            <div className="flex items-center justify-center gap-3 sm:gap-4 md:gap-5 w-full max-w-md md:max-w-xl mx-auto mb-2 sm:mb-3 md:mb-4">
               <span className="h-[1px] flex-1 max-w-[60px] sm:max-w-[80px] md:max-w-[110px] bg-[#FDFADB]/35" />
               <span className="text-[#FDFADB]/90 uppercase font-sans text-[10px] sm:text-xs md:text-sm tracking-[0.22em] sm:tracking-[0.26em] md:tracking-[0.3em] font-medium whitespace-nowrap select-none">
                 QUALITY BAKERS - SINCE 2020
@@ -123,9 +123,9 @@ export function EditorialIntro({
 
           {/* Main Title: Quality you can taste (Display size with ornate flourishes) */}
           <ScrollReveal animation="hero-title" delayMs={280} className="w-full flex justify-center">
-            <h1 className="relative flex flex-col items-center justify-center w-full my-1 sm:my-2">
+            <h1 className="relative flex flex-col items-center justify-center w-full my-0.5 sm:my-1">
               <span className="sr-only">Quality you can taste</span>
-              <QualityYouCanTasteMark className="w-[96%] sm:w-[92%] md:w-[88%] max-w-[540px] sm:max-w-[720px] md:max-w-[880px] lg:max-w-[980px] xl:max-w-[1040px] h-auto text-[#FDFADB] select-none filter drop-shadow-[0_4px_22px_rgba(0,0,0,0.22)]" />
+              <QualityYouCanTasteMark className="w-[96%] sm:w-[92%] md:w-[88%] max-w-[540px] sm:max-w-[720px] md:max-w-[880px] lg:max-w-[980px] xl:max-w-[1040px] max-h-[22vh] md:max-h-[26vh] lg:max-h-[34vh] w-auto h-auto object-contain text-[#FDFADB] select-none filter drop-shadow-[0_4px_22px_rgba(0,0,0,0.22)]" />
             </h1>
           </ScrollReveal>
 
@@ -134,8 +134,8 @@ export function EditorialIntro({
             <TopScrollLink
               href={homepage.heroCtaLink || '/categories'}
               className={cn(
-                'mt-6 sm:mt-7 md:mt-8 inline-flex items-center justify-center',
-                'px-8 sm:px-10 md:px-11 py-3.5 sm:py-4 rounded-full',
+                'mt-3.5 sm:mt-5 md:mt-6 inline-flex items-center justify-center',
+                'px-7 sm:px-9 md:px-10 py-2.5 sm:py-3.5 rounded-full',
                 'bg-[#FDFADB]',
                 'text-[#BC1D1A]',
                 'font-sans font-bold text-xs sm:text-sm uppercase tracking-[0.18em] sm:tracking-[0.2em]',
@@ -152,7 +152,7 @@ export function EditorialIntro({
       </ContentContainer>
 
       {/* Bottom Scroll Cue Indicator with clear illuminated text & jump animation */}
-      <div className="absolute bottom-4 sm:bottom-5 md:bottom-6 left-1/2 -translate-x-1/2 z-20 pointer-events-auto">
+      <div className="w-full flex justify-center shrink-0 pb-2 min-[360px]:pb-2.5 sm:pb-3.5 md:pb-5 z-20 pointer-events-auto">
         <ScrollCue />
       </div>
     </section>

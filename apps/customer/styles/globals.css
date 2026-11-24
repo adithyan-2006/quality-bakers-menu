@@ -1209,3 +1209,63 @@
     transform: none !important;
   }
 }
+
+/* Comprehensive short-viewport & mobile landscape responsive rules (height <= 480px) */
+@media (max-height: 480px) {
+  #home {
+    min-height: calc(100vh - 56px) !important;
+    min-height: calc(100svh - 56px) !important;
+    min-height: calc(100dvh - 56px) !important;
+  }
+
+  /* Compact cream header in landscape */
+  .cream-svg-mobile,
+  .cream-svg-desktop {
+    height: 72px !important;
+  }
+
+  /* Reduce vertical spacing in hero */
+  #hero-marquee {
+    margin-top: 0.25rem !important;
+  }
+
+  #hero-marquee > div {
+    padding-top: 0.25rem !important;
+    padding-bottom: 0.25rem !important;
+  }
+
+  #hero-content-container {
+    padding-top: 0.25rem !important;
+    padding-bottom: 0.25rem !important;
+  }
+
+  #hero-title-svg {
+    max-height: 22vh !important;
+    max-width: 220px !important;
+  }
+
+  #hero-cta-btn,
+  #desktop-hero-cta-btn {
+    margin-top: 0.35rem !important;
+    padding: 0.35rem 1.25rem !important;
+    font-size: 0.7rem !important;
+  }
+
+  #scroll-cue-wrapper {
+    padding-bottom: 0.25rem !important;
+  }
+}
+
+@media (max-height: 380px) {
+  #hero-title-svg {
+    max-height: 18vh !important;
+    max-width: 180px !important;
+  }
+
+  #hero-cta-btn,
+  #desktop-hero-cta-btn {
+    margin-top: 0.25rem !important;
+    padding: 0.25rem 1rem !important;
+    font-size: 0.65rem !important;
+  }
+}

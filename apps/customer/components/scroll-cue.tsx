@@ -9,11 +9,23 @@ export function ScrollCue() {
     let rafId: number | null = null;
     let lastOpacity = 1;
 
+    const getScrollY = (): number => {
+      if (typeof window === 'undefined') return 0;
+      return (
+        window.scrollY ||
+        window.pageYOffset ||
+        document.documentElement?.scrollTop ||
+        document.body?.scrollTop ||
+        0
+      );
+    };
+
     const update = () => {
       rafId = null;
-      const scrollY = window.scrollY;
+      const scrollY = getScrollY();
       const fadeDistance = 120;
-      const nextOpacity = Math.max(0, Math.min(1, 1 - scrollY / fadeDistance));
+      // When at or near the top (<= 15px), opacity is strictly 1
+      const nextOpacity = scrollY <= 15 ? 1 : Math.max(0, Math.min(1, 1 - scrollY / fadeDistance));
 
       // Avoid unnecessary re-renders when already fully faded or unchanged
       if (
@@ -32,11 +44,31 @@ export function ScrollCue() {
       }
     };
 
+    // Immediate check at mount
     update();
+
+    // Check multiple intervals to guarantee visibility after any loading gates,
+    // scroll-to-top resets, or browser scroll restoration adjustments.
+    const t1 = setTimeout(update, 100);
+    const t2 = setTimeout(update, 400);
+    const t3 = setTimeout(update, 1000);
+    const t4 = setTimeout(update, 2100); // After HomeLoadingGate mandatory 2000ms timer
+    const t5 = setTimeout(update, 2600); // After HomeLoadingGate 400ms fade transition finishes
+
     window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleScroll, { passive: true });
+    document.addEventListener('scroll', handleScroll, { passive: true });
+
     return () => {
       if (rafId !== null) window.cancelAnimationFrame(rafId);
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
+      clearTimeout(t4);
+      clearTimeout(t5);
       window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
+      document.removeEventListener('scroll', handleScroll);
     };
   }, []);
 
