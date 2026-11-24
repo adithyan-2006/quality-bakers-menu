@@ -1,0 +1,4196 @@
+{
+  "totalTests": 123,
+  "passed": 123,
+  "failed": 0,
+  "timestamp": "2026-11-24T15:20:34.734Z",
+  "results": [
+    {
+      "index": 1,
+      "device": "Samsung Galaxy Fold (Cover Closed 280w)",
+      "category": "Ultra-Compact",
+      "dimensions": "280x653",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 280,
+        "clientWidth": 280,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 36,
+          "height": 36
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "21.6px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 240,
+          "height": 206,
+          "top": 211,
+          "bottom": 417
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 107,
+        "noButtonCueCollision": true,
+        "cueBottom": 626,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 653
+      }
+    },
+    {
+      "index": 2,
+      "device": "Samsung Galaxy Fold (Cover Closed 320w)",
+      "category": "Ultra-Compact",
+      "dimensions": "320x653",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 320,
+        "clientWidth": 320,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 36,
+          "height": 36
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "21.6px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 280,
+          "height": 240,
+          "top": 194,
+          "bottom": 434
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 90,
+        "noButtonCueCollision": true,
+        "cueBottom": 626,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 653
+      }
+    },
+    {
+      "index": 3,
+      "device": "iPhone 4 / 4S",
+      "category": "Ultra-Compact",
+      "dimensions": "320x480",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 320,
+        "clientWidth": 320,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 36,
+          "height": 36
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "21.6px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 220,
+          "height": 106,
+          "top": 192,
+          "bottom": 297
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 91,
+        "noButtonCueCollision": true,
+        "cueBottom": 469,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 480
+      }
+    },
+    {
+      "index": 4,
+      "device": "iPhone 5 / 5S / 5C / SE 1st Gen",
+      "category": "Ultra-Compact",
+      "dimensions": "320x568",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 320,
+        "clientWidth": 320,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 36,
+          "height": 36
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "21.6px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 280,
+          "height": 240,
+          "top": 152,
+          "bottom": 392
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 45,
+        "noButtonCueCollision": true,
+        "cueBottom": 539,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 568
+      }
+    },
+    {
+      "index": 5,
+      "device": "JioPhone / KaiOS Smart Feature Phone",
+      "category": "Ultra-Compact",
+      "dimensions": "320x533",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 320,
+        "clientWidth": 320,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 36,
+          "height": 36
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "21.6px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 280,
+          "height": 240,
+          "top": 134,
+          "bottom": 374
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 24,
+        "noButtonCueCollision": true,
+        "cueBottom": 501,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 533
+      }
+    },
+    {
+      "index": 6,
+      "device": "Alcatel / Compact Android",
+      "category": "Ultra-Compact",
+      "dimensions": "320x600",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 320,
+        "clientWidth": 320,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 36,
+          "height": 36
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "21.6px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 280,
+          "height": 240,
+          "top": 168,
+          "bottom": 408
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 57,
+        "noButtonCueCollision": true,
+        "cueBottom": 567,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 600
+      }
+    },
+    {
+      "index": 7,
+      "device": "Unihertz Jelly / Ultra-mini phone",
+      "category": "Ultra-Compact",
+      "dimensions": "340x580",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 340,
+        "clientWidth": 340,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 36,
+          "height": 36
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "21.6px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 300,
+          "height": 257,
+          "top": 149,
+          "bottom": 406
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 38,
+        "noButtonCueCollision": true,
+        "cueBottom": 546,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 580
+      }
+    },
+    {
+      "index": 8,
+      "device": "Android Small Phone (340x640)",
+      "category": "Ultra-Compact",
+      "dimensions": "340x640",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 340,
+        "clientWidth": 340,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 36,
+          "height": 36
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "21.6px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 300,
+          "height": 257,
+          "top": 179,
+          "bottom": 436
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 68,
+        "noButtonCueCollision": true,
+        "cueBottom": 606,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 640
+      }
+    },
+    {
+      "index": 9,
+      "device": "Samsung Galaxy Pocket / Core",
+      "category": "Ultra-Compact",
+      "dimensions": "320x500",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 320,
+        "clientWidth": 320,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 36,
+          "height": 36
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "21.6px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 280,
+          "height": 240,
+          "top": 118,
+          "bottom": 358
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 7,
+        "noButtonCueCollision": true,
+        "cueBottom": 466,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 500
+      }
+    },
+    {
+      "index": 10,
+      "device": "LG K3 / Compact",
+      "category": "Ultra-Compact",
+      "dimensions": "320x570",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 320,
+        "clientWidth": 320,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 36,
+          "height": 36
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "21.6px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 280,
+          "height": 240,
+          "top": 153,
+          "bottom": 393
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 45,
+        "noButtonCueCollision": true,
+        "cueBottom": 540,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 570
+      }
+    },
+    {
+      "index": 11,
+      "device": "Samsung Galaxy S8 / S9 / J7",
+      "category": "Compact Mobile",
+      "dimensions": "360x740",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 360,
+        "clientWidth": 360,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 40,
+          "height": 40
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "24px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 320,
+          "height": 274,
+          "top": 225,
+          "bottom": 500
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 110,
+        "noButtonCueCollision": true,
+        "cueBottom": 712,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 740
+      }
+    },
+    {
+      "index": 12,
+      "device": "Samsung Galaxy A10 / A20 / A30 / A50",
+      "category": "Compact Mobile",
+      "dimensions": "360x800",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 360,
+        "clientWidth": 360,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 40,
+          "height": 40
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "24px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 320,
+          "height": 274,
+          "top": 255,
+          "bottom": 530
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 141,
+        "noButtonCueCollision": true,
+        "cueBottom": 773,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 800
+      }
+    },
+    {
+      "index": 13,
+      "device": "Samsung Galaxy S10e",
+      "category": "Compact Mobile",
+      "dimensions": "360x760",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 360,
+        "clientWidth": 360,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 40,
+          "height": 40
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "24px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 320,
+          "height": 274,
+          "top": 235,
+          "bottom": 510
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 121,
+        "noButtonCueCollision": true,
+        "cueBottom": 733,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 760
+      }
+    },
+    {
+      "index": 14,
+      "device": "Samsung Galaxy S20 / S21 (FHD)",
+      "category": "Compact Mobile",
+      "dimensions": "360x780",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 360,
+        "clientWidth": 360,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 40,
+          "height": 40
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "24px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 320,
+          "height": 274,
+          "top": 245,
+          "bottom": 520
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 131,
+        "noButtonCueCollision": true,
+        "cueBottom": 753,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 780
+      }
+    },
+    {
+      "index": 15,
+      "device": "Moto G4 / G5 / G6",
+      "category": "Compact Mobile",
+      "dimensions": "360x640",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 360,
+        "clientWidth": 360,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 40,
+          "height": 40
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "24px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 320,
+          "height": 274,
+          "top": 175,
+          "bottom": 450
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 61,
+        "noButtonCueCollision": true,
+        "cueBottom": 613,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 640
+      }
+    },
+    {
+      "index": 16,
+      "device": "Xiaomi Redmi 5 / 6 / Go",
+      "category": "Compact Mobile",
+      "dimensions": "360x640",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 360,
+        "clientWidth": 360,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 40,
+          "height": 40
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "24px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 320,
+          "height": 274,
+          "top": 175,
+          "bottom": 450
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 60,
+        "noButtonCueCollision": true,
+        "cueBottom": 612,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 640
+      }
+    },
+    {
+      "index": 17,
+      "device": "Oppo A3s / A5s",
+      "category": "Compact Mobile",
+      "dimensions": "360x760",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 360,
+        "clientWidth": 360,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 40,
+          "height": 40
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "24px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 320,
+          "height": 274,
+          "top": 235,
+          "bottom": 510
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 119,
+        "noButtonCueCollision": true,
+        "cueBottom": 731,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 760
+      }
+    },
+    {
+      "index": 18,
+      "device": "Vivo Y11 / Y12",
+      "category": "Compact Mobile",
+      "dimensions": "360x754",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 360,
+        "clientWidth": 360,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 40,
+          "height": 40
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "24px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 320,
+          "height": 274,
+          "top": 232,
+          "bottom": 507
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 116,
+        "noButtonCueCollision": true,
+        "cueBottom": 725,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 754
+      }
+    },
+    {
+      "index": 19,
+      "device": "Realme C2 / C3",
+      "category": "Compact Mobile",
+      "dimensions": "360x780",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 360,
+        "clientWidth": 360,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 40,
+          "height": 40
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "24px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 320,
+          "height": 274,
+          "top": 245,
+          "bottom": 520
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 130,
+        "noButtonCueCollision": true,
+        "cueBottom": 751,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 780
+      }
+    },
+    {
+      "index": 20,
+      "device": "Android Common Standard 360x640",
+      "category": "Compact Mobile",
+      "dimensions": "360x640",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 360,
+        "clientWidth": 360,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 40,
+          "height": 40
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "24px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 320,
+          "height": 274,
+          "top": 175,
+          "bottom": 450
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 61,
+        "noButtonCueCollision": true,
+        "cueBottom": 612,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 640
+      }
+    },
+    {
+      "index": 21,
+      "device": "Android Tall 360x820",
+      "category": "Compact Mobile",
+      "dimensions": "360x820",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 360,
+        "clientWidth": 360,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 40,
+          "height": 40
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "24px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 320,
+          "height": 274,
+          "top": 265,
+          "bottom": 540
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 151,
+        "noButtonCueCollision": true,
+        "cueBottom": 793,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 820
+      }
+    },
+    {
+      "index": 22,
+      "device": "Android Extra-Tall 360x880",
+      "category": "Compact Mobile",
+      "dimensions": "360x880",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 360,
+        "clientWidth": 360,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 40,
+          "height": 40
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "24px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 320,
+          "height": 274,
+          "top": 295,
+          "bottom": 570
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 181,
+        "noButtonCueCollision": true,
+        "cueBottom": 853,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 880
+      }
+    },
+    {
+      "index": 23,
+      "device": "iPhone 6 / 6S / 7 / 8 / SE 2020 / SE 2022",
+      "category": "iPhone Standard",
+      "dimensions": "375x667",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 375,
+        "clientWidth": 375,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 40,
+          "height": 40
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "24px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 335,
+          "height": 287,
+          "top": 183,
+          "bottom": 469
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 69,
+        "noButtonCueCollision": true,
+        "cueBottom": 640,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 667
+      }
+    },
+    {
+      "index": 24,
+      "device": "iPhone X / XS / 11 Pro",
+      "category": "iPhone Standard",
+      "dimensions": "375x812",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 375,
+        "clientWidth": 375,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 40,
+          "height": 40
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "24px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 335,
+          "height": 287,
+          "top": 255,
+          "bottom": 542
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 141,
+        "noButtonCueCollision": true,
+        "cueBottom": 785,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 812
+      }
+    },
+    {
+      "index": 25,
+      "device": "iPhone 12 mini / 13 mini",
+      "category": "iPhone Standard",
+      "dimensions": "375x812",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 375,
+        "clientWidth": 375,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 40,
+          "height": 40
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "24px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 335,
+          "height": 287,
+          "top": 255,
+          "bottom": 542
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 141,
+        "noButtonCueCollision": true,
+        "cueBottom": 785,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 812
+      }
+    },
+    {
+      "index": 26,
+      "device": "iPhone 6 Plus / 7 Plus / 8 Plus",
+      "category": "iPhone Plus",
+      "dimensions": "414x736",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 414,
+        "clientWidth": 414,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 40,
+          "height": 40
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "24px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 374,
+          "height": 320,
+          "top": 200,
+          "bottom": 521
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 86,
+        "noButtonCueCollision": true,
+        "cueBottom": 709,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 736
+      }
+    },
+    {
+      "index": 27,
+      "device": "iPhone XR / 11",
+      "category": "iPhone Plus",
+      "dimensions": "414x896",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 414,
+        "clientWidth": 414,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 40,
+          "height": 40
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "24px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 374,
+          "height": 320,
+          "top": 280,
+          "bottom": 601
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 166,
+        "noButtonCueCollision": true,
+        "cueBottom": 869,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 896
+      }
+    },
+    {
+      "index": 28,
+      "device": "iPhone XS Max / 11 Pro Max",
+      "category": "iPhone Plus",
+      "dimensions": "414x896",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 414,
+        "clientWidth": 414,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 40,
+          "height": 40
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "24px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 374,
+          "height": 320,
+          "top": 280,
+          "bottom": 601
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 166,
+        "noButtonCueCollision": true,
+        "cueBottom": 869,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 896
+      }
+    },
+    {
+      "index": 29,
+      "device": "iPhone 12 / 12 Pro / 13 / 13 Pro / 14",
+      "category": "iPhone Modern",
+      "dimensions": "390x844",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 390,
+        "clientWidth": 390,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 40,
+          "height": 40
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "24px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 350,
+          "height": 300,
+          "top": 265,
+          "bottom": 564
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 151,
+        "noButtonCueCollision": true,
+        "cueBottom": 817,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 844
+      }
+    },
+    {
+      "index": 30,
+      "device": "iPhone 14 Pro / 15 / 15 Pro / 16",
+      "category": "iPhone Modern",
+      "dimensions": "393x852",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 393,
+        "clientWidth": 393,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 40,
+          "height": 40
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "24px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 353,
+          "height": 302,
+          "top": 267,
+          "bottom": 570
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 153,
+        "noButtonCueCollision": true,
+        "cueBottom": 825,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 852
+      }
+    },
+    {
+      "index": 31,
+      "device": "iPhone 12 Pro Max / 13 Pro Max / 14 Plus",
+      "category": "iPhone Max",
+      "dimensions": "428x926",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 428,
+        "clientWidth": 428,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 40,
+          "height": 40
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "24px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 376,
+          "height": 322,
+          "top": 295,
+          "bottom": 616
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 181,
+        "noButtonCueCollision": true,
+        "cueBottom": 899,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 926
+      }
+    },
+    {
+      "index": 32,
+      "device": "iPhone 14 Pro Max / 15 Plus / 15 Pro Max",
+      "category": "iPhone Max",
+      "dimensions": "430x932",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 430,
+        "clientWidth": 430,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 40,
+          "height": 40
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "24px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 376,
+          "height": 322,
+          "top": 298,
+          "bottom": 619
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 184,
+        "noButtonCueCollision": true,
+        "cueBottom": 905,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 932
+      }
+    },
+    {
+      "index": 33,
+      "device": "iPhone 16 Plus / 16 Pro Max",
+      "category": "iPhone Max",
+      "dimensions": "430x932",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 430,
+        "clientWidth": 430,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 40,
+          "height": 40
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "24px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 376,
+          "height": 322,
+          "top": 298,
+          "bottom": 619
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 184,
+        "noButtonCueCollision": true,
+        "cueBottom": 905,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 932
+      }
+    },
+    {
+      "index": 34,
+      "device": "Google Pixel 4 / 4a / 5",
+      "category": "Android Flagship",
+      "dimensions": "393x851",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 393,
+        "clientWidth": 393,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 40,
+          "height": 40
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "24px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 353,
+          "height": 302,
+          "top": 267,
+          "bottom": 569
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 153,
+        "noButtonCueCollision": true,
+        "cueBottom": 824,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 851
+      }
+    },
+    {
+      "index": 35,
+      "device": "Google Pixel 6 / 6 Pro / 7 / 7 Pro",
+      "category": "Android Flagship",
+      "dimensions": "412x892",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 412,
+        "clientWidth": 412,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 40,
+          "height": 40
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "24px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 372,
+          "height": 319,
+          "top": 279,
+          "bottom": 598
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 165,
+        "noButtonCueCollision": true,
+        "cueBottom": 865,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 892
+      }
+    },
+    {
+      "index": 36,
+      "device": "Google Pixel 8 / 8 Pro / 9 / 9 Pro",
+      "category": "Android Flagship",
+      "dimensions": "412x915",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 412,
+        "clientWidth": 412,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 40,
+          "height": 40
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "24px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 372,
+          "height": 319,
+          "top": 291,
+          "bottom": 609
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 177,
+        "noButtonCueCollision": true,
+        "cueBottom": 888,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 915
+      }
+    },
+    {
+      "index": 37,
+      "device": "Samsung Galaxy S20+ / S21+ / S22+",
+      "category": "Android Flagship",
+      "dimensions": "384x832",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 384,
+        "clientWidth": 384,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 40,
+          "height": 40
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "24px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 344,
+          "height": 295,
+          "top": 261,
+          "bottom": 556
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 147,
+        "noButtonCueCollision": true,
+        "cueBottom": 805,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 832
+      }
+    },
+    {
+      "index": 38,
+      "device": "Samsung Galaxy S22 Ultra / S23 Ultra / S24 Ultra",
+      "category": "Android Flagship",
+      "dimensions": "412x915",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 412,
+        "clientWidth": 412,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 40,
+          "height": 40
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "24px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 372,
+          "height": 319,
+          "top": 291,
+          "bottom": 609
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 174,
+        "noButtonCueCollision": true,
+        "cueBottom": 885,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 915
+      }
+    },
+    {
+      "index": 39,
+      "device": "Samsung Galaxy Note 10 / Note 20",
+      "category": "Android Flagship",
+      "dimensions": "412x869",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 412,
+        "clientWidth": 412,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 40,
+          "height": 40
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "24px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 372,
+          "height": 319,
+          "top": 268,
+          "bottom": 586
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 149,
+        "noButtonCueCollision": true,
+        "cueBottom": 837,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 869
+      }
+    },
+    {
+      "index": 40,
+      "device": "OnePlus 7 / 8 / 9 / 10 Pro",
+      "category": "Android Flagship",
+      "dimensions": "412x919",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 412,
+        "clientWidth": 412,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 40,
+          "height": 40
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "24px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 372,
+          "height": 319,
+          "top": 293,
+          "bottom": 611
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 172,
+        "noButtonCueCollision": true,
+        "cueBottom": 886,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 919
+      }
+    },
+    {
+      "index": 41,
+      "device": "OnePlus 11 / 12",
+      "category": "Android Flagship",
+      "dimensions": "412x915",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 412,
+        "clientWidth": 412,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 40,
+          "height": 40
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "24px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 372,
+          "height": 319,
+          "top": 291,
+          "bottom": 609
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 170,
+        "noButtonCueCollision": true,
+        "cueBottom": 881,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 915
+      }
+    },
+    {
+      "index": 42,
+      "device": "Xiaomi Mi 11 / 12 / 13 / 14",
+      "category": "Android Flagship",
+      "dimensions": "393x873",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 393,
+        "clientWidth": 393,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 40,
+          "height": 40
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "24px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 353,
+          "height": 302,
+          "top": 278,
+          "bottom": 580
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 157,
+        "noButtonCueCollision": true,
+        "cueBottom": 839,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 873
+      }
+    },
+    {
+      "index": 43,
+      "device": "Redmi Note 10 / 11 / 12 / 13 Pro",
+      "category": "Android Mid-range",
+      "dimensions": "392x872",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 392,
+        "clientWidth": 392,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 40,
+          "height": 40
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "24px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 352,
+          "height": 301,
+          "top": 278,
+          "bottom": 579
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 157,
+        "noButtonCueCollision": true,
+        "cueBottom": 838,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 872
+      }
+    },
+    {
+      "index": 44,
+      "device": "Oppo Find X5 / Reno 8 / Reno 10",
+      "category": "Android Flagship",
+      "dimensions": "393x873",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 393,
+        "clientWidth": 393,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 40,
+          "height": 40
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "24px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 353,
+          "height": 302,
+          "top": 278,
+          "bottom": 580
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 157,
+        "noButtonCueCollision": true,
+        "cueBottom": 839,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 873
+      }
+    },
+    {
+      "index": 45,
+      "device": "Vivo X80 / X90 / V27",
+      "category": "Android Flagship",
+      "dimensions": "393x873",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 393,
+        "clientWidth": 393,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 40,
+          "height": 40
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "24px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 353,
+          "height": 302,
+          "top": 278,
+          "bottom": 580
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 160,
+        "noButtonCueCollision": true,
+        "cueBottom": 842,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 873
+      }
+    },
+    {
+      "index": 46,
+      "device": "Sony Xperia 1 III / IV / V (21:9 Ultra Tall)",
+      "category": "Android Ultra-Tall",
+      "dimensions": "384x960",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 384,
+        "clientWidth": 384,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 40,
+          "height": 40
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "24px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 344,
+          "height": 295,
+          "top": 325,
+          "bottom": 620
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 210,
+        "noButtonCueCollision": true,
+        "cueBottom": 932,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 960
+      }
+    },
+    {
+      "index": 47,
+      "device": "Sony Xperia 5 IV (21:9 Ultra Tall)",
+      "category": "Android Ultra-Tall",
+      "dimensions": "411x960",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 411,
+        "clientWidth": 411,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 40,
+          "height": 40
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "24px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 371,
+          "height": 318,
+          "top": 314,
+          "bottom": 631
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 199,
+        "noButtonCueCollision": true,
+        "cueBottom": 933,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 960
+      }
+    },
+    {
+      "index": 48,
+      "device": "Instagram / WhatsApp In-App Browser (360x520)",
+      "category": "In-App WebView",
+      "dimensions": "360x520",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 360,
+        "clientWidth": 360,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 40,
+          "height": 40
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "24px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 320,
+          "height": 274,
+          "top": 126,
+          "bottom": 400
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 12,
+        "noButtonCueCollision": true,
+        "cueBottom": 514,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 520
+      }
+    },
+    {
+      "index": 49,
+      "device": "Instagram In-App Browser (360x540)",
+      "category": "In-App WebView",
+      "dimensions": "360x540",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 360,
+        "clientWidth": 360,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 40,
+          "height": 40
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "24px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 320,
+          "height": 274,
+          "top": 126,
+          "bottom": 400
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 12,
+        "noButtonCueCollision": true,
+        "cueBottom": 514,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 540
+      }
+    },
+    {
+      "index": 50,
+      "device": "Chrome Mobile with Large Address Bar (360x560)",
+      "category": "In-App WebView",
+      "dimensions": "360x560",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 360,
+        "clientWidth": 360,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 40,
+          "height": 40
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "24px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 320,
+          "height": 274,
+          "top": 135,
+          "bottom": 410
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 21,
+        "noButtonCueCollision": true,
+        "cueBottom": 533,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 560
+      }
+    },
+    {
+      "index": 51,
+      "device": "Chrome Mobile with Top & Bottom Bars (375x540)",
+      "category": "In-App WebView",
+      "dimensions": "375x540",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 375,
+        "clientWidth": 375,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 40,
+          "height": 40
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "24px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 335,
+          "height": 287,
+          "top": 126,
+          "bottom": 413
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 10,
+        "noButtonCueCollision": true,
+        "cueBottom": 525,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 540
+      }
+    },
+    {
+      "index": 52,
+      "device": "Safari iOS with Tab Bar Active (375x580)",
+      "category": "In-App WebView",
+      "dimensions": "375x580",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 375,
+        "clientWidth": 375,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 40,
+          "height": 40
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "24px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 335,
+          "height": 287,
+          "top": 139,
+          "bottom": 426
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 23,
+        "noButtonCueCollision": true,
+        "cueBottom": 551,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 580
+      }
+    },
+    {
+      "index": 53,
+      "device": "Facebook In-App Browser (375x600)",
+      "category": "In-App WebView",
+      "dimensions": "375x600",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 375,
+        "clientWidth": 375,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 40,
+          "height": 40
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "24px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 335,
+          "height": 287,
+          "top": 149,
+          "bottom": 436
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 33,
+        "noButtonCueCollision": true,
+        "cueBottom": 571,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 600
+      }
+    },
+    {
+      "index": 54,
+      "device": "Twitter / X In-App Browser (390x650)",
+      "category": "In-App WebView",
+      "dimensions": "390x650",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 390,
+        "clientWidth": 390,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 40,
+          "height": 40
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "24px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 350,
+          "height": 300,
+          "top": 168,
+          "bottom": 467
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 51,
+        "noButtonCueCollision": true,
+        "cueBottom": 621,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 650
+      }
+    },
+    {
+      "index": 55,
+      "device": "LinkedIn In-App Browser (390x680)",
+      "category": "In-App WebView",
+      "dimensions": "390x680",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 390,
+        "clientWidth": 390,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 40,
+          "height": 40
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "24px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 350,
+          "height": 300,
+          "top": 183,
+          "bottom": 482
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 66,
+        "noButtonCueCollision": true,
+        "cueBottom": 651,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 680
+      }
+    },
+    {
+      "index": 56,
+      "device": "Telegram Webview (393x700)",
+      "category": "In-App WebView",
+      "dimensions": "393x700",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 393,
+        "clientWidth": 393,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 40,
+          "height": 40
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "24px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 353,
+          "height": 302,
+          "top": 191,
+          "bottom": 494
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 77,
+        "noButtonCueCollision": true,
+        "cueBottom": 672,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 700
+      }
+    },
+    {
+      "index": 57,
+      "device": "Android Chrome Multi-tab UI (412x720)",
+      "category": "In-App WebView",
+      "dimensions": "412x720",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 412,
+        "clientWidth": 412,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 40,
+          "height": 40
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "24px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 372,
+          "height": 319,
+          "top": 193,
+          "bottom": 512
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 79,
+        "noButtonCueCollision": true,
+        "cueBottom": 693,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 720
+      }
+    },
+    {
+      "index": 58,
+      "device": "Android Chrome Bottom Bar Mode (412x750)",
+      "category": "In-App WebView",
+      "dimensions": "412x750",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 412,
+        "clientWidth": 412,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 40,
+          "height": 40
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "24px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 372,
+          "height": 319,
+          "top": 208,
+          "bottom": 527
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 94,
+        "noButtonCueCollision": true,
+        "cueBottom": 723,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 750
+      }
+    },
+    {
+      "index": 59,
+      "device": "Safari iOS Tab Bar Mode (428x760)",
+      "category": "In-App WebView",
+      "dimensions": "428x760",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 428,
+        "clientWidth": 428,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 40,
+          "height": 40
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "24px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 376,
+          "height": 322,
+          "top": 212,
+          "bottom": 533
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 98,
+        "noButtonCueCollision": true,
+        "cueBottom": 733,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 760
+      }
+    },
+    {
+      "index": 60,
+      "device": "Safari iOS Tab Bar Mode (430x780)",
+      "category": "In-App WebView",
+      "dimensions": "430x780",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 430,
+        "clientWidth": 430,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 40,
+          "height": 40
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "24px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 376,
+          "height": 322,
+          "top": 222,
+          "bottom": 543
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 108,
+        "noButtonCueCollision": true,
+        "cueBottom": 753,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 780
+      }
+    },
+    {
+      "index": 61,
+      "device": "Android Display Zoom 150% on 1080p (320x533)",
+      "category": "Display Zoom",
+      "dimensions": "320x533",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 320,
+        "clientWidth": 320,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 36,
+          "height": 36
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "21.6px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 280,
+          "height": 240,
+          "top": 134,
+          "bottom": 374
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 30,
+        "noButtonCueCollision": true,
+        "cueBottom": 506,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 533
+      }
+    },
+    {
+      "index": 62,
+      "device": "Android Display Zoom 140% (340x600)",
+      "category": "Display Zoom",
+      "dimensions": "340x600",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 340,
+        "clientWidth": 340,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 36,
+          "height": 36
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "21.6px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 300,
+          "height": 257,
+          "top": 159,
+          "bottom": 416
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 55,
+        "noButtonCueCollision": true,
+        "cueBottom": 573,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 600
+      }
+    },
+    {
+      "index": 63,
+      "device": "Android Display Zoom 130% (360x580)",
+      "category": "Display Zoom",
+      "dimensions": "360x580",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 360,
+        "clientWidth": 360,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 40,
+          "height": 40
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "24px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 320,
+          "height": 274,
+          "top": 145,
+          "bottom": 420
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 32,
+        "noButtonCueCollision": true,
+        "cueBottom": 553,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 580
+      }
+    },
+    {
+      "index": 64,
+      "device": "Android Font Scale Large (380x620)",
+      "category": "Display Zoom",
+      "dimensions": "380x620",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 380,
+        "clientWidth": 380,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 40,
+          "height": 40
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "24px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 340,
+          "height": 291,
+          "top": 157,
+          "bottom": 448
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 43,
+        "noButtonCueCollision": true,
+        "cueBottom": 593,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 620
+      }
+    },
+    {
+      "index": 65,
+      "device": "Android Font Scale Largest (390x640)",
+      "category": "Display Zoom",
+      "dimensions": "390x640",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 390,
+        "clientWidth": 390,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 40,
+          "height": 40
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "24px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 350,
+          "height": 300,
+          "top": 163,
+          "bottom": 462
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 49,
+        "noButtonCueCollision": true,
+        "cueBottom": 613,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 640
+      }
+    },
+    {
+      "index": 66,
+      "device": "Android Display Zoom 125% (400x680)",
+      "category": "Display Zoom",
+      "dimensions": "400x680",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 400,
+        "clientWidth": 400,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 40,
+          "height": 40
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "24px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 360,
+          "height": 308,
+          "top": 178,
+          "bottom": 487
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 64,
+        "noButtonCueCollision": true,
+        "cueBottom": 653,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 680
+      }
+    },
+    {
+      "index": 67,
+      "device": "Samsung Galaxy Z Flip (Cover Screen)",
+      "category": "Foldable",
+      "dimensions": "300x512",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 300,
+        "clientWidth": 300,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 36,
+          "height": 36
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "21.6px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 260,
+          "height": 223,
+          "top": 132,
+          "bottom": 355
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 28,
+        "noButtonCueCollision": true,
+        "cueBottom": 485,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 512
+      }
+    },
+    {
+      "index": 68,
+      "device": "Samsung Galaxy Z Flip 3/4/5 (Inner Unfolded)",
+      "category": "Foldable",
+      "dimensions": "412x1004",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 412,
+        "clientWidth": 412,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 40,
+          "height": 40
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "24px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 372,
+          "height": 319,
+          "top": 335,
+          "bottom": 654
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 221,
+        "noButtonCueCollision": true,
+        "cueBottom": 977,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 1004
+      }
+    },
+    {
+      "index": 69,
+      "device": "Motorola Razr 40 (Inner Unfolded)",
+      "category": "Foldable",
+      "dimensions": "412x1056",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 412,
+        "clientWidth": 412,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 40,
+          "height": 40
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "24px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 372,
+          "height": 319,
+          "top": 361,
+          "bottom": 680
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 247,
+        "noButtonCueCollision": true,
+        "cueBottom": 1029,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 1056
+      }
+    },
+    {
+      "index": 70,
+      "device": "Samsung Galaxy Z Fold 3/4 (Inner Unfolded)",
+      "category": "Foldable",
+      "dimensions": "768x960",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 768,
+        "clientWidth": 768,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 48,
+          "height": 48
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "30px",
+        "subtitleVisible": true,
+        "titleSvgRect": null,
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 303,
+        "noButtonCueCollision": true,
+        "cueBottom": 935,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 960
+      }
+    },
+    {
+      "index": 71,
+      "device": "Samsung Galaxy Z Fold 5/6 (Inner Unfolded)",
+      "category": "Foldable",
+      "dimensions": "884x1104",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 884,
+        "clientWidth": 884,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 48,
+          "height": 48
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "30px",
+        "subtitleVisible": true,
+        "titleSvgRect": null,
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 375,
+        "noButtonCueCollision": true,
+        "cueBottom": 1079,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 1104
+      }
+    },
+    {
+      "index": 72,
+      "device": "Google Pixel Fold (Inner Screen)",
+      "category": "Foldable",
+      "dimensions": "840x700",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 840,
+        "clientWidth": 840,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 48,
+          "height": 48
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "30px",
+        "subtitleVisible": true,
+        "titleSvgRect": null,
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 173,
+        "noButtonCueCollision": true,
+        "cueBottom": 675,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 700
+      }
+    },
+    {
+      "index": 73,
+      "device": "OnePlus Open (Inner Screen)",
+      "category": "Foldable",
+      "dimensions": "884x1072",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 884,
+        "clientWidth": 884,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 48,
+          "height": 48
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "30px",
+        "subtitleVisible": true,
+        "titleSvgRect": null,
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 359,
+        "noButtonCueCollision": true,
+        "cueBottom": 1047,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 1072
+      }
+    },
+    {
+      "index": 74,
+      "device": "Microsoft Surface Duo (Single Screen)",
+      "category": "Foldable",
+      "dimensions": "540x720",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 540,
+        "clientWidth": 540,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 40,
+          "height": 40
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "24px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 376,
+          "height": 322,
+          "top": 192,
+          "bottom": 513
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 78,
+        "noButtonCueCollision": true,
+        "cueBottom": 693,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 720
+      }
+    },
+    {
+      "index": 75,
+      "device": "Microsoft Surface Duo (Dual Screen)",
+      "category": "Foldable",
+      "dimensions": "1114x705",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 1114,
+        "clientWidth": 1114,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 48,
+          "height": 48
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "30px",
+        "subtitleVisible": true,
+        "titleSvgRect": null,
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 173,
+        "noButtonCueCollision": true,
+        "cueBottom": 676,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 705
+      }
+    },
+    {
+      "index": 76,
+      "device": "iPad Mini (Portrait)",
+      "category": "Tablet Portrait",
+      "dimensions": "768x1024",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 768,
+        "clientWidth": 768,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 48,
+          "height": 48
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "30px",
+        "subtitleVisible": true,
+        "titleSvgRect": null,
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 331,
+        "noButtonCueCollision": true,
+        "cueBottom": 995,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 1024
+      }
+    },
+    {
+      "index": 77,
+      "device": "iPad Mini (Landscape)",
+      "category": "Tablet Landscape",
+      "dimensions": "1024x768",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 1024,
+        "clientWidth": 1024,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 48,
+          "height": 48
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "30px",
+        "subtitleVisible": true,
+        "titleSvgRect": null,
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 199,
+        "noButtonCueCollision": true,
+        "cueBottom": 733,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 768
+      }
+    },
+    {
+      "index": 78,
+      "device": "iPad 9th / 10th Gen (Portrait)",
+      "category": "Tablet Portrait",
+      "dimensions": "810x1080",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 810,
+        "clientWidth": 810,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 48,
+          "height": 48
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "30px",
+        "subtitleVisible": true,
+        "titleSvgRect": null,
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 356,
+        "noButtonCueCollision": true,
+        "cueBottom": 1048,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 1080
+      }
+    },
+    {
+      "index": 79,
+      "device": "iPad Air 10.9\" (Portrait)",
+      "category": "Tablet Portrait",
+      "dimensions": "820x1180",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 820,
+        "clientWidth": 820,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 48,
+          "height": 48
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "30px",
+        "subtitleVisible": true,
+        "titleSvgRect": null,
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 406,
+        "noButtonCueCollision": true,
+        "cueBottom": 1148,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 1180
+      }
+    },
+    {
+      "index": 80,
+      "device": "iPad Air 10.9\" (Landscape)",
+      "category": "Tablet Landscape",
+      "dimensions": "1180x820",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 1180,
+        "clientWidth": 1180,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 48,
+          "height": 48
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "30px",
+        "subtitleVisible": true,
+        "titleSvgRect": null,
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 224,
+        "noButtonCueCollision": true,
+        "cueBottom": 784,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 820
+      }
+    },
+    {
+      "index": 81,
+      "device": "iPad Pro 11\" (Portrait)",
+      "category": "Tablet Portrait",
+      "dimensions": "834x1194",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 834,
+        "clientWidth": 834,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 48,
+          "height": 48
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "30px",
+        "subtitleVisible": true,
+        "titleSvgRect": null,
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 415,
+        "noButtonCueCollision": true,
+        "cueBottom": 1164,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 1194
+      }
+    },
+    {
+      "index": 82,
+      "device": "iPad Pro 11\" (Landscape)",
+      "category": "Tablet Landscape",
+      "dimensions": "1194x834",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 1194,
+        "clientWidth": 1194,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 48,
+          "height": 48
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "30px",
+        "subtitleVisible": true,
+        "titleSvgRect": null,
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 236,
+        "noButtonCueCollision": true,
+        "cueBottom": 803,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 834
+      }
+    },
+    {
+      "index": 83,
+      "device": "iPad Pro 12.9\" (Portrait)",
+      "category": "Tablet Portrait",
+      "dimensions": "1024x1366",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 1024,
+        "clientWidth": 1024,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 48,
+          "height": 48
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "30px",
+        "subtitleVisible": true,
+        "titleSvgRect": null,
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 503,
+        "noButtonCueCollision": true,
+        "cueBottom": 1336,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 1366
+      }
+    },
+    {
+      "index": 84,
+      "device": "iPad Pro 12.9\" (Landscape)",
+      "category": "Tablet Landscape",
+      "dimensions": "1366x1024",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 1366,
+        "clientWidth": 1366,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 48,
+          "height": 48
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "30px",
+        "subtitleVisible": true,
+        "titleSvgRect": null,
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 333,
+        "noButtonCueCollision": true,
+        "cueBottom": 995,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 1024
+      }
+    },
+    {
+      "index": 85,
+      "device": "Samsung Galaxy Tab S7 / S8 (Portrait)",
+      "category": "Tablet Portrait",
+      "dimensions": "800x1280",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 800,
+        "clientWidth": 800,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 48,
+          "height": 48
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "30px",
+        "subtitleVisible": true,
+        "titleSvgRect": null,
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 463,
+        "noButtonCueCollision": true,
+        "cueBottom": 1255,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 1280
+      }
+    },
+    {
+      "index": 86,
+      "device": "Samsung Galaxy Tab S7 / S8 (Landscape)",
+      "category": "Tablet Landscape",
+      "dimensions": "1280x800",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 1280,
+        "clientWidth": 1280,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 48,
+          "height": 48
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "30px",
+        "subtitleVisible": true,
+        "titleSvgRect": null,
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 221,
+        "noButtonCueCollision": true,
+        "cueBottom": 771,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 800
+      }
+    },
+    {
+      "index": 87,
+      "device": "Google Pixel Tablet (Landscape)",
+      "category": "Tablet Landscape",
+      "dimensions": "1280x800",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 1280,
+        "clientWidth": 1280,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 48,
+          "height": 48
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "30px",
+        "subtitleVisible": true,
+        "titleSvgRect": null,
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 219,
+        "noButtonCueCollision": true,
+        "cueBottom": 769,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 800
+      }
+    },
+    {
+      "index": 88,
+      "device": "Amazon Fire HD 8 (Portrait)",
+      "category": "Tablet Portrait",
+      "dimensions": "600x960",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 600,
+        "clientWidth": 600,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 40,
+          "height": 40
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "24px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 376,
+          "height": 322,
+          "top": 312,
+          "bottom": 633
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 195,
+        "noButtonCueCollision": true,
+        "cueBottom": 931,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 960
+      }
+    },
+    {
+      "index": 89,
+      "device": "Amazon Fire HD 10 (Portrait)",
+      "category": "Tablet Portrait",
+      "dimensions": "800x1280",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 800,
+        "clientWidth": 800,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 48,
+          "height": 48
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "30px",
+        "subtitleVisible": true,
+        "titleSvgRect": null,
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 461,
+        "noButtonCueCollision": true,
+        "cueBottom": 1253,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 1280
+      }
+    },
+    {
+      "index": 90,
+      "device": "Microsoft Surface Pro 8/9 (Portrait)",
+      "category": "Tablet Portrait",
+      "dimensions": "912x1368",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 912,
+        "clientWidth": 912,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 48,
+          "height": 48
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "30px",
+        "subtitleVisible": true,
+        "titleSvgRect": null,
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 505,
+        "noButtonCueCollision": true,
+        "cueBottom": 1341,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 1368
+      }
+    },
+    {
+      "index": 91,
+      "device": "Microsoft Surface Pro 8/9 (Landscape)",
+      "category": "Tablet Landscape",
+      "dimensions": "1368x912",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 1368,
+        "clientWidth": 1368,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 48,
+          "height": 48
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "30px",
+        "subtitleVisible": true,
+        "titleSvgRect": null,
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 276,
+        "noButtonCueCollision": true,
+        "cueBottom": 882,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 912
+      }
+    },
+    {
+      "index": 92,
+      "device": "Netbook Display (1024x600)",
+      "category": "Desktop/Laptop",
+      "dimensions": "1024x600",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 1024,
+        "clientWidth": 1024,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 48,
+          "height": 48
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "30px",
+        "subtitleVisible": true,
+        "titleSvgRect": null,
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 121,
+        "noButtonCueCollision": true,
+        "cueBottom": 571,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 600
+      }
+    },
+    {
+      "index": 93,
+      "device": "Standard XGA Monitor (1024x768)",
+      "category": "Desktop/Laptop",
+      "dimensions": "1024x768",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 1024,
+        "clientWidth": 1024,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 48,
+          "height": 48
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "30px",
+        "subtitleVisible": true,
+        "titleSvgRect": null,
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 205,
+        "noButtonCueCollision": true,
+        "cueBottom": 739,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 768
+      }
+    },
+    {
+      "index": 94,
+      "device": "11\" MacBook Air / Chromebook (1366x768)",
+      "category": "Desktop/Laptop",
+      "dimensions": "1366x768",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 1366,
+        "clientWidth": 1366,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 48,
+          "height": 48
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "30px",
+        "subtitleVisible": true,
+        "titleSvgRect": null,
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 205,
+        "noButtonCueCollision": true,
+        "cueBottom": 739,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 768
+      }
+    },
+    {
+      "index": 95,
+      "device": "13\" MacBook Air (1440x900)",
+      "category": "Desktop/Laptop",
+      "dimensions": "1440x900",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 1440,
+        "clientWidth": 1440,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 48,
+          "height": 48
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "30px",
+        "subtitleVisible": true,
+        "titleSvgRect": null,
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 271,
+        "noButtonCueCollision": true,
+        "cueBottom": 871,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 900
+      }
+    },
+    {
+      "index": 96,
+      "device": "HD 720p Display (1280x720)",
+      "category": "Desktop/Laptop",
+      "dimensions": "1280x720",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 1280,
+        "clientWidth": 1280,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 48,
+          "height": 48
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "30px",
+        "subtitleVisible": true,
+        "titleSvgRect": null,
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 181,
+        "noButtonCueCollision": true,
+        "cueBottom": 691,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 720
+      }
+    },
+    {
+      "index": 97,
+      "device": "WXGA Standard Display (1280x800)",
+      "category": "Desktop/Laptop",
+      "dimensions": "1280x800",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 1280,
+        "clientWidth": 1280,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 48,
+          "height": 48
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "30px",
+        "subtitleVisible": true,
+        "titleSvgRect": null,
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 221,
+        "noButtonCueCollision": true,
+        "cueBottom": 771,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 800
+      }
+    },
+    {
+      "index": 98,
+      "device": "SXGA Desktop Monitor (1280x1024)",
+      "category": "Desktop/Laptop",
+      "dimensions": "1280x1024",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 1280,
+        "clientWidth": 1280,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 48,
+          "height": 48
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "30px",
+        "subtitleVisible": true,
+        "titleSvgRect": null,
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 333,
+        "noButtonCueCollision": true,
+        "cueBottom": 995,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 1024
+      }
+    },
+    {
+      "index": 99,
+      "device": "Windows 1080p at 125% DPI Scale (1536x864)",
+      "category": "Desktop/Laptop",
+      "dimensions": "1536x864",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 1536,
+        "clientWidth": 1536,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 48,
+          "height": 48
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "30px",
+        "subtitleVisible": true,
+        "titleSvgRect": null,
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 253,
+        "noButtonCueCollision": true,
+        "cueBottom": 835,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 864
+      }
+    },
+    {
+      "index": 100,
+      "device": "HD+ Monitor (1600x900)",
+      "category": "Desktop/Laptop",
+      "dimensions": "1600x900",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 1600,
+        "clientWidth": 1600,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 48,
+          "height": 48
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "30px",
+        "subtitleVisible": true,
+        "titleSvgRect": null,
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 271,
+        "noButtonCueCollision": true,
+        "cueBottom": 871,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 900
+      }
+    },
+    {
+      "index": 101,
+      "device": "WSXGA+ Display (1680x1050)",
+      "category": "Desktop/Laptop",
+      "dimensions": "1680x1050",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 1680,
+        "clientWidth": 1680,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 48,
+          "height": 48
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "30px",
+        "subtitleVisible": true,
+        "titleSvgRect": null,
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 346,
+        "noButtonCueCollision": true,
+        "cueBottom": 1021,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 1050
+      }
+    },
+    {
+      "index": 102,
+      "device": "16\" MacBook Pro Retina Scaled (1728x1117)",
+      "category": "Desktop/Laptop",
+      "dimensions": "1728x1117",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 1728,
+        "clientWidth": 1728,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 48,
+          "height": 48
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "30px",
+        "subtitleVisible": true,
+        "titleSvgRect": null,
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 380,
+        "noButtonCueCollision": true,
+        "cueBottom": 1088,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 1117
+      }
+    },
+    {
+      "index": 103,
+      "device": "Full HD 1080p Monitor (1920x1080)",
+      "category": "Desktop/Laptop",
+      "dimensions": "1920x1080",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 1920,
+        "clientWidth": 1920,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 48,
+          "height": 48
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "30px",
+        "subtitleVisible": true,
+        "titleSvgRect": null,
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 361,
+        "noButtonCueCollision": true,
+        "cueBottom": 1051,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 1080
+      }
+    },
+    {
+      "index": 104,
+      "device": "QWXGA Monitor (2048x1152)",
+      "category": "Desktop/Laptop",
+      "dimensions": "2048x1152",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 2048,
+        "clientWidth": 2048,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 48,
+          "height": 48
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "30px",
+        "subtitleVisible": true,
+        "titleSvgRect": null,
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 397,
+        "noButtonCueCollision": true,
+        "cueBottom": 1123,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 1152
+      }
+    },
+    {
+      "index": 105,
+      "device": "Surface Laptop 3:2 Ratio (2256x1504)",
+      "category": "Desktop/Laptop",
+      "dimensions": "2256x1504",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 2256,
+        "clientWidth": 2256,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 48,
+          "height": 48
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "30px",
+        "subtitleVisible": true,
+        "titleSvgRect": null,
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 573,
+        "noButtonCueCollision": true,
+        "cueBottom": 1475,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 1504
+      }
+    },
+    {
+      "index": 106,
+      "device": "2K QHD 1440p Monitor (2560x1440)",
+      "category": "Desktop/Laptop",
+      "dimensions": "2560x1440",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 2560,
+        "clientWidth": 2560,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 48,
+          "height": 48
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "30px",
+        "subtitleVisible": true,
+        "titleSvgRect": null,
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 541,
+        "noButtonCueCollision": true,
+        "cueBottom": 1411,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 1440
+      }
+    },
+    {
+      "index": 107,
+      "device": "13\" MacBook Pro Retina (2560x1600)",
+      "category": "Desktop/Laptop",
+      "dimensions": "2560x1600",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 2560,
+        "clientWidth": 2560,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 48,
+          "height": 48
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "30px",
+        "subtitleVisible": true,
+        "titleSvgRect": null,
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 621,
+        "noButtonCueCollision": true,
+        "cueBottom": 1571,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 1600
+      }
+    },
+    {
+      "index": 108,
+      "device": "14\" MacBook Pro Liquid Retina (3024x1964)",
+      "category": "Desktop/Laptop",
+      "dimensions": "3024x1964",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 3024,
+        "clientWidth": 3024,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 48,
+          "height": 48
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "30px",
+        "subtitleVisible": true,
+        "titleSvgRect": null,
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 803,
+        "noButtonCueCollision": true,
+        "cueBottom": 1935,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 1964
+      }
+    },
+    {
+      "index": 109,
+      "device": "16\" MacBook Pro Liquid Retina (3456x2234)",
+      "category": "Desktop/Laptop",
+      "dimensions": "3456x2234",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 3456,
+        "clientWidth": 3456,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 48,
+          "height": 48
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "30px",
+        "subtitleVisible": true,
+        "titleSvgRect": null,
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 938,
+        "noButtonCueCollision": true,
+        "cueBottom": 2205,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 2234
+      }
+    },
+    {
+      "index": 110,
+      "device": "4K Ultra HD Display (3840x2160)",
+      "category": "Desktop/Laptop",
+      "dimensions": "3840x2160",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 3840,
+        "clientWidth": 3840,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 48,
+          "height": 48
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "30px",
+        "subtitleVisible": true,
+        "titleSvgRect": null,
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 898,
+        "noButtonCueCollision": true,
+        "cueBottom": 2128,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 2160
+      }
+    },
+    {
+      "index": 111,
+      "device": "iPhone 5/SE 1st Gen (Landscape)",
+      "category": "Mobile Landscape",
+      "dimensions": "568x320",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 568,
+        "clientWidth": 568,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 40,
+          "height": 40
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "24px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 180,
+          "height": 58,
+          "top": 139,
+          "bottom": 196
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 31,
+        "noButtonCueCollision": true,
+        "cueBottom": 304,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 320
+      }
+    },
+    {
+      "index": 112,
+      "device": "Galaxy S8 / S9 (Landscape)",
+      "category": "Mobile Landscape",
+      "dimensions": "740x360",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 740,
+        "clientWidth": 740,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 44,
+          "height": 44
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "28px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 180,
+          "height": 65,
+          "top": 161,
+          "bottom": 226
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 40,
+        "noButtonCueCollision": true,
+        "cueBottom": 347,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 360
+      }
+    },
+    {
+      "index": 113,
+      "device": "Galaxy S20 / S21 (Landscape)",
+      "category": "Mobile Landscape",
+      "dimensions": "780x360",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 780,
+        "clientWidth": 780,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 48,
+          "height": 48
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "30px",
+        "subtitleVisible": true,
+        "titleSvgRect": null,
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 54,
+        "noButtonCueCollision": true,
+        "cueBottom": 352,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 360
+      }
+    },
+    {
+      "index": 114,
+      "device": "Galaxy A-series (Landscape)",
+      "category": "Mobile Landscape",
+      "dimensions": "800x360",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 800,
+        "clientWidth": 800,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 48,
+          "height": 48
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "30px",
+        "subtitleVisible": true,
+        "titleSvgRect": null,
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 54,
+        "noButtonCueCollision": true,
+        "cueBottom": 352,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 360
+      }
+    },
+    {
+      "index": 115,
+      "device": "iPhone 6/7/8/SE (Landscape)",
+      "category": "Mobile Landscape",
+      "dimensions": "667x375",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 667,
+        "clientWidth": 667,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 44,
+          "height": 44
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "28px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 180,
+          "height": 68,
+          "top": 167,
+          "bottom": 235
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 46,
+        "noButtonCueCollision": true,
+        "cueBottom": 361,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 375
+      }
+    },
+    {
+      "index": 116,
+      "device": "iPhone X / XS / 11 Pro (Landscape)",
+      "category": "Mobile Landscape",
+      "dimensions": "812x375",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 812,
+        "clientWidth": 812,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 48,
+          "height": 48
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "30px",
+        "subtitleVisible": true,
+        "titleSvgRect": null,
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 63,
+        "noButtonCueCollision": true,
+        "cueBottom": 368,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 375
+      }
+    },
+    {
+      "index": 117,
+      "device": "iPhone 12 / 13 / 14 (Landscape)",
+      "category": "Mobile Landscape",
+      "dimensions": "844x390",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 844,
+        "clientWidth": 844,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 48,
+          "height": 48
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "30px",
+        "subtitleVisible": true,
+        "titleSvgRect": null,
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 71,
+        "noButtonCueCollision": true,
+        "cueBottom": 386,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 390
+      }
+    },
+    {
+      "index": 118,
+      "device": "iPhone 14 Pro / 15 / 16 (Landscape)",
+      "category": "Mobile Landscape",
+      "dimensions": "852x393",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 852,
+        "clientWidth": 852,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 48,
+          "height": 48
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "30px",
+        "subtitleVisible": true,
+        "titleSvgRect": null,
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 74,
+        "noButtonCueCollision": true,
+        "cueBottom": 391,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 393
+      }
+    },
+    {
+      "index": 119,
+      "device": "iPhone 8 Plus (Landscape)",
+      "category": "Mobile Landscape",
+      "dimensions": "736x414",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 736,
+        "clientWidth": 736,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 44,
+          "height": 44
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "28px",
+        "subtitleVisible": true,
+        "titleSvgRect": {
+          "width": 220,
+          "height": 91,
+          "top": 172,
+          "bottom": 263
+        },
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 57,
+        "noButtonCueCollision": true,
+        "cueBottom": 407,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 414
+      }
+    },
+    {
+      "index": 120,
+      "device": "iPhone 11 / XR (Landscape)",
+      "category": "Mobile Landscape",
+      "dimensions": "896x414",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 896,
+        "clientWidth": 896,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 48,
+          "height": 48
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "30px",
+        "subtitleVisible": true,
+        "titleSvgRect": null,
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 85,
+        "noButtonCueCollision": true,
+        "cueBottom": 413,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 414
+      }
+    },
+    {
+      "index": 121,
+      "device": "Google Pixel 7 / 8 / 9 (Landscape)",
+      "category": "Mobile Landscape",
+      "dimensions": "915x412",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 915,
+        "clientWidth": 915,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 48,
+          "height": 48
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "30px",
+        "subtitleVisible": true,
+        "titleSvgRect": null,
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 85,
+        "noButtonCueCollision": true,
+        "cueBottom": 411,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 412
+      }
+    },
+    {
+      "index": 122,
+      "device": "iPhone 13 Pro Max (Landscape)",
+      "category": "Mobile Landscape",
+      "dimensions": "926x428",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 926,
+        "clientWidth": 926,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 48,
+          "height": 48
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "30px",
+        "subtitleVisible": true,
+        "titleSvgRect": null,
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 93,
+        "noButtonCueCollision": true,
+        "cueBottom": 427,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 428
+      }
+    },
+    {
+      "index": 123,
+      "device": "iPhone 15/16 Pro Max (Landscape)",
+      "category": "Mobile Landscape",
+      "dimensions": "932x430",
+      "passed": true,
+      "issues": [],
+      "metrics": {
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 932,
+        "clientWidth": 932,
+        "logoVisible": true,
+        "logoSize": {
+          "width": 48,
+          "height": 48
+        },
+        "titleVisible": true,
+        "titleText": "Quality Bakers",
+        "titleFontSize": "30px",
+        "subtitleVisible": true,
+        "titleSvgRect": null,
+        "ctaVisible": true,
+        "isCueInViewport": true,
+        "gapBetweenButtonAndCue": 92,
+        "noButtonCueCollision": true,
+        "cueBottom": 428,
+        "cueText": "SCROLL",
+        "cueIconPresent": true,
+        "windowHeight": 430
+      }
+    }
+  ]
+}
