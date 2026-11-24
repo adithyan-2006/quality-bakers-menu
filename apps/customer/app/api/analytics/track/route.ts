@@ -276,6 +276,14 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    // Never persist dummy test visitors into the production database
+    if (visitorId.startsWith('test_') || visitorId.startsWith('mock_')) {
+      return NextResponse.json(
+        { success: true, skipped: 'test' },
+        { headers: { 'Access-Control-Allow-Origin': '*' } },
+      );
+    }
+
     const id = `cmv_${Date.now().toString(36)}_${crypto.randomBytes(6).toString('hex')}`;
 
     try {

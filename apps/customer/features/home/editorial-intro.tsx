@@ -28,7 +28,7 @@ export function EditorialIntro({
   return (
     <section
       id="home"
-      className="relative w-full bg-[#BC1D1A] flex flex-col min-h-[calc(100vh-64px)] md:min-h-[calc(100vh-72px)] lg:min-h-[calc(100vh-76px)] min-h-[calc(100dvh-64px)] md:min-h-[calc(100dvh-72px)] lg:min-h-[calc(100dvh-76px)] scroll-mt-[64px] md:scroll-mt-[72px] lg:scroll-mt-[76px]"
+      className="relative w-full bg-[#BC1D1A] flex flex-col min-h-[calc(100vh-64px)] min-h-[calc(100svh-64px)] min-h-[calc(100dvh-64px)] md:min-h-[calc(100dvh-72px)] lg:min-h-[calc(100dvh-76px)] scroll-mt-[64px] md:scroll-mt-[72px] lg:scroll-mt-[76px]"
     >
       {/* Living Melted Header Dripping & Natural Splash Animation */}
       <DrippingAnimation />
@@ -37,7 +37,7 @@ export function EditorialIntro({
       <ScrollReveal
         animation="fade-in"
         delayMs={50}
-        className="w-full z-20 relative mt-5 sm:mt-6 md:mt-7"
+        className="w-full z-20 relative mt-4 sm:mt-5 md:mt-6"
       >
         <div className="w-full border-b border-[#FDFADB]/15 py-2.5 sm:py-3 md:py-3.5 flex items-center overflow-hidden flex-shrink-0 bg-[#BC1D1A]">
           <div className="flex whitespace-nowrap animate-marquee motion-reduce:animate-none w-max">
@@ -62,12 +62,12 @@ export function EditorialIntro({
       </ScrollReveal>
 
       {/* Main Hero Content - Responsive Layout */}
-      <ContentContainer className="relative flex flex-col flex-1 pt-6 pb-12 sm:pt-10 sm:pb-16 md:pt-14 md:pb-20 lg:pt-16 lg:pb-24 justify-center">
-        {/* MOBILE VIEW (< md): Everything left-aligned, stacked 3-line big typography */}
-        <div className="flex md:hidden flex-col items-start text-left w-full max-w-sm sm:max-w-md mx-auto px-2">
+      <ContentContainer className="relative flex flex-col flex-1 pt-2 pb-16 sm:pt-4 sm:pb-20 md:pt-10 md:pb-20 lg:pt-12 lg:pb-24 justify-center">
+        {/* MOBILE VIEW (< md): Everything left-aligned, stacked 3-line big typography shifted comfortably upward */}
+        <div className="flex md:hidden flex-col items-start text-left w-full max-w-sm sm:max-w-md mx-auto px-2 -translate-y-6 sm:-translate-y-8 md:translate-y-0">
           {/* Top Line: quality bakers - since 2020 */}
           <ScrollReveal animation="hero-subtitle" delayMs={120} className="w-full">
-            <div className="flex items-center gap-2 sm:gap-2.5 w-full mb-3 select-none min-w-0">
+            <div className="flex items-center gap-2 sm:gap-2.5 w-full mb-2.5 sm:mb-3 select-none min-w-0">
               <span className="text-[#FDFADB]/90 uppercase font-sans text-[9px] min-[360px]:text-[10px] sm:text-[11px] tracking-[0.14em] min-[360px]:tracking-[0.2em] sm:tracking-[0.24em] font-medium truncate">
                 QUALITY BAKERS - SINCE 2020
               </span>
@@ -77,7 +77,7 @@ export function EditorialIntro({
 
           {/* Main Title: Quality \n you \n can taste (Stacked 3-line display matching mobile arrangement) */}
           <ScrollReveal animation="hero-title" delayMs={280} className="w-full">
-            <h1 className="relative flex flex-col items-start w-full my-2">
+            <h1 className="relative flex flex-col items-start w-full my-1.5 sm:my-2">
               <span className="sr-only">Quality you can taste</span>
               <QualityYouCanTasteMobileMark className="w-full max-w-[340px] sm:max-w-[380px] h-auto text-[#FDFADB] select-none filter drop-shadow-[0_4px_22px_rgba(0,0,0,0.25)]" />
             </h1>
@@ -88,7 +88,7 @@ export function EditorialIntro({
             <TopScrollLink
               href={homepage.heroCtaLink || '/categories'}
               className={cn(
-                'mt-6 sm:mt-7 inline-flex items-center justify-center',
+                'mt-5 sm:mt-6 inline-flex items-center justify-center',
                 'px-8 sm:px-10 py-3.5 sm:py-4 rounded-full',
                 'bg-[#FDFADB]',
                 'text-[#BC1D1A]',
@@ -151,14 +151,10 @@ export function EditorialIntro({
         </div>
       </ContentContainer>
 
-      {/* Bottom Scroll Cue Indicator with thin illuminated text & jump animation */}
-      <ScrollReveal
-        animation="fade-in"
-        delayMs={700}
-        className="absolute bottom-3 sm:bottom-4 md:bottom-6 left-1/2 -translate-x-1/2 z-20 pointer-events-auto"
-      >
+      {/* Bottom Scroll Cue Indicator with clear illuminated text & jump animation */}
+      <div className="absolute bottom-4 sm:bottom-5 md:bottom-6 left-1/2 -translate-x-1/2 z-20 pointer-events-auto">
         <ScrollCue />
-      </ScrollReveal>
+      </div>
     </section>
   );
 }

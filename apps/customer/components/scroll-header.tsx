@@ -338,19 +338,19 @@ export function ScrollHeader({
         <Link
           href="/"
           onClick={handleLogoClick}
-          className="flex items-center gap-2 sm:gap-2.5 md:gap-3 min-w-0 outline-none focus-visible:ring-2 focus-visible:ring-[#BC1D1A] rounded-sm select-none"
+          className="flex items-center gap-2.5 sm:gap-3 md:gap-3.5 min-w-0 outline-none focus-visible:ring-2 focus-visible:ring-[#BC1D1A] rounded-sm select-none"
         >
           {logoSrc && (
             <Image
               src={logoSrc}
               alt={businessName}
-              width={40}
-              height={40}
+              width={48}
+              height={48}
               priority
-              className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full object-contain shrink-0"
+              className="w-9 h-9 min-[360px]:w-10 min-[360px]:h-10 sm:w-11 sm:h-11 md:w-12 md:h-12 rounded-full object-contain shrink-0"
             />
           )}
-          <span className="font-serif font-bold tracking-tight text-[#BC1D1A] text-xl sm:text-2xl md:text-3xl leading-none transition-colors truncate">
+          <span className="font-serif font-bold tracking-tight text-[#BC1D1A] text-[1.35rem] min-[360px]:text-2xl sm:text-[1.75rem] md:text-3xl leading-none transition-colors truncate">
             {businessName}
           </span>
         </Link>
