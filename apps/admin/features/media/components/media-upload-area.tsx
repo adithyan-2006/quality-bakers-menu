@@ -64,18 +64,16 @@ export function MediaUploadArea() {
   };
 
   return (
-    <div className="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 rounded-xl p-8 shadow-sm">
+    <div className="bg-white/80 backdrop-blur-md border border-black/[0.08] rounded-2xl p-8 shadow-glass">
       <div className="max-w-2xl mx-auto">
         {/* Banner */}
-        <div className="mb-8 p-4 bg-stone-50 dark:bg-stone-950 border border-stone-200 dark:border-stone-800 rounded-lg flex items-start gap-4">
-          <div className="p-2 bg-white dark:bg-stone-900 rounded-md shadow-sm border border-stone-200 dark:border-stone-800">
-            <CheckCircle2 className="w-5 h-5 text-stone-900 dark:text-stone-50" />
+        <div className="mb-8 p-4 bg-black/[0.02] border border-black/[0.06] rounded-xl flex items-start gap-4">
+          <div className="p-2 bg-white rounded-lg shadow-sm border border-black/[0.08]">
+            <CheckCircle2 className="w-5 h-5 text-black" />
           </div>
           <div>
-            <h4 className="font-medium text-stone-900 dark:text-stone-50">
-              Cloudinary Integration Ready for Sprint 4
-            </h4>
-            <p className="text-sm text-stone-500 mt-1">
+            <h4 className="font-semibold text-black">Cloudinary Integration Ready for Sprint 4</h4>
+            <p className="text-sm text-stone-600 mt-1">
               The architecture is prepared. Uploading a file here will perform a Cloudinary upload
               and redirect you to the Media Library.
             </p>
@@ -88,25 +86,25 @@ export function MediaUploadArea() {
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
           className={`
-            border-2 border-dashed rounded-xl p-12 flex flex-col items-center justify-center text-center transition-all duration-200
+            border-2 border-dashed rounded-2xl p-12 flex flex-col items-center justify-center text-center transition-all duration-200
             ${
               isDragging
-                ? 'border-stone-900 dark:border-stone-50 bg-stone-50 dark:bg-stone-800'
-                : 'border-stone-300 dark:border-stone-700 hover:border-stone-400 dark:hover:border-stone-600 bg-white dark:bg-stone-900/50'
+                ? 'border-black bg-black/[0.03] shadow-glass'
+                : 'border-black/[0.12] hover:border-black/30 bg-white/60 hover:bg-white/90'
             }
             ${isUploading ? 'opacity-50 cursor-wait pointer-events-none' : 'cursor-pointer'}
           `}
           onClick={() => !isUploading && document.getElementById('file-upload')?.click()}
         >
           <UploadCloud
-            className={`w-12 h-12 mb-4 ${isDragging ? 'text-stone-900 dark:text-stone-50' : 'text-stone-400'}`}
+            className={`w-12 h-12 mb-4 ${isDragging ? 'text-black' : 'text-stone-500'}`}
           />
 
-          <h3 className="text-lg font-medium text-stone-900 dark:text-stone-50 mb-2">
+          <h3 className="text-lg font-bold text-black mb-2">
             {isUploading ? 'Uploading to Cloudinary...' : 'Click or drag image to upload'}
           </h3>
 
-          <p className="text-sm text-stone-500 max-w-sm">
+          <p className="text-sm text-stone-600 max-w-sm">
             SVG, PNG, JPG or GIF (max. 10MB). High resolution recommended for Hero placements.
           </p>
 
@@ -119,7 +117,7 @@ export function MediaUploadArea() {
           />
 
           {!isUploading && (
-            <button className="mt-8 px-6 py-2 bg-stone-900 dark:bg-stone-50 text-stone-50 dark:text-stone-900 rounded-md font-medium text-sm hover:bg-stone-800 dark:hover:bg-stone-200 transition-colors shadow-sm pointer-events-none">
+            <button className="mt-8 px-6 py-2.5 bg-black hover:bg-neutral-800 text-white rounded-xl font-semibold text-sm transition-all shadow-sm pointer-events-none">
               Browse Files
             </button>
           )}

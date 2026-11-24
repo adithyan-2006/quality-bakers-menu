@@ -47,7 +47,7 @@ export function DeleteMediaButton({ mediaId }: DeleteMediaButtonProps) {
       <button
         onClick={() => setIsOpen(true)}
         disabled={isDeleting}
-        className="flex items-center gap-2 px-4 py-2 bg-rose-500 hover:bg-rose-600 text-white rounded-lg shadow-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium"
+        className="flex items-center gap-2 px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl shadow-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium"
       >
         <Trash2 className="w-4 h-4" />
         {isDeleting ? 'Deleting...' : 'Delete Image'}
@@ -58,13 +58,13 @@ export function DeleteMediaButton({ mediaId }: DeleteMediaButtonProps) {
           <Dialog.Header>
             <Dialog.Title>Delete Image?</Dialog.Title>
             <Dialog.Description>This image will be permanently removed from:</Dialog.Description>
-            <div className="space-y-4 mt-4 text-sm text-muted-foreground">
+            <div className="space-y-4 mt-4 text-sm text-stone-700">
               <ul className="list-disc pl-4 space-y-1">
                 <li>Cloudinary</li>
                 <li>PostgreSQL</li>
                 <li>Media Library</li>
               </ul>
-              <p className="font-semibold text-rose-500">This action cannot be undone.</p>
+              <p className="font-semibold text-rose-600">This action cannot be undone.</p>
             </div>
           </Dialog.Header>
 
@@ -72,14 +72,14 @@ export function DeleteMediaButton({ mediaId }: DeleteMediaButtonProps) {
             <button
               onClick={() => setIsOpen(false)}
               disabled={isDeleting}
-              className="px-4 py-2 text-sm font-medium text-stone-700 bg-stone-100 hover:bg-stone-200 dark:text-stone-300 dark:bg-stone-800 dark:hover:bg-stone-700 rounded-lg transition-colors disabled:opacity-50"
+              className="px-4 py-2 text-sm font-semibold text-black bg-white hover:bg-stone-50 border border-black/10 rounded-xl transition-colors disabled:opacity-50"
             >
               Cancel
             </button>
             <button
               onClick={handleDelete}
               disabled={isDeleting}
-              className="px-4 py-2 text-sm font-medium text-white bg-rose-500 hover:bg-rose-600 rounded-lg transition-colors disabled:opacity-50 flex items-center gap-2"
+              className="px-4 py-2 text-sm font-medium text-white bg-rose-600 hover:bg-rose-700 rounded-xl transition-colors disabled:opacity-50 flex items-center gap-2"
             >
               {isDeleting ? 'Deleting...' : 'Delete Permanently'}
             </button>

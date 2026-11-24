@@ -80,20 +80,20 @@ export function MediaGrid({
   return (
     <div className="space-y-6">
       {/* Controls Bar */}
-      <div className="flex flex-col md:flex-row gap-4 bg-white dark:bg-stone-900 p-4 rounded-xl border border-stone-200 dark:border-stone-800 shadow-sm">
+      <div className="flex flex-col md:flex-row gap-4 bg-white/85 backdrop-blur-md p-4 rounded-2xl border border-black/[0.08] shadow-glass">
         <div className="flex-1 relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-stone-400 w-5 h-5" />
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-400 w-4 h-4" />
           <input
             type="text"
             placeholder="Search by filename, display name, tags, or alt text..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 rounded-lg border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-stone-950 text-sm focus:outline-none focus:ring-2 focus:ring-stone-500"
+            className="w-full pl-10 pr-4 py-2 rounded-xl border border-black/[0.08] bg-white/80 text-black text-sm focus:outline-none focus:ring-2 focus:ring-black transition-all"
           />
         </div>
         <div className="flex flex-wrap gap-3">
           <select
-            className="px-3 py-2 text-sm rounded-lg border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-stone-950 text-stone-700 dark:text-stone-300 focus:outline-none focus:ring-2 focus:ring-stone-500"
+            className="px-3.5 py-2 text-sm font-semibold rounded-xl border border-black/[0.08] bg-white/80 text-black focus:outline-none focus:ring-2 focus:ring-black transition-all"
             value={filterUsage}
             onChange={(e) => setFilterUsage(e.target.value)}
           >
@@ -102,7 +102,7 @@ export function MediaGrid({
             <option value="unused">Unused Images</option>
           </select>
           <select
-            className="px-3 py-2 text-sm rounded-lg border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-stone-950 text-stone-700 dark:text-stone-300 focus:outline-none focus:ring-2 focus:ring-stone-500"
+            className="px-3.5 py-2 text-sm font-semibold rounded-xl border border-black/[0.08] bg-white/80 text-black focus:outline-none focus:ring-2 focus:ring-black transition-all"
             value={filterType}
             onChange={(e) => setFilterType(e.target.value)}
           >
@@ -111,7 +111,7 @@ export function MediaGrid({
             <option value="category">Category Images</option>
           </select>
           <select
-            className="px-3 py-2 text-sm rounded-lg border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-stone-950 text-stone-700 dark:text-stone-300 focus:outline-none focus:ring-2 focus:ring-stone-500"
+            className="px-3.5 py-2 text-sm font-semibold rounded-xl border border-black/[0.08] bg-white/80 text-black focus:outline-none focus:ring-2 focus:ring-black transition-all"
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value as any)}
           >
@@ -122,22 +122,22 @@ export function MediaGrid({
       </div>
 
       {filteredAndSortedMedia.length === 0 ? (
-        <div className="text-center py-16 bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 rounded-xl shadow-sm">
-          <p className="text-stone-500">No media found matching your criteria.</p>
+        <div className="text-center py-16 bg-white/85 backdrop-blur-md border border-black/[0.08] rounded-2xl shadow-glass">
+          <p className="text-stone-500 font-medium">No media found matching your criteria.</p>
         </div>
       ) : (
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
           {filteredAndSortedMedia.map((media) => (
             <div
               key={media.id}
-              className="group flex flex-col bg-white dark:bg-stone-900 rounded-xl border border-stone-200 dark:border-stone-800 overflow-hidden shadow-sm hover:shadow-md hover:border-stone-300 dark:hover:border-stone-700 transition-all"
+              className="group flex flex-col bg-white/90 backdrop-blur-md rounded-2xl border border-black/[0.08] overflow-hidden shadow-glass hover:shadow-glass-hover hover:border-black/25 transition-all"
             >
               {/* Thumbnail Container */}
               <div
                 className={cn(
-                  'relative aspect-square bg-stone-100 dark:bg-stone-950 overflow-hidden',
+                  'relative aspect-square bg-black/[0.03] overflow-hidden',
                   isPickerMode && 'cursor-pointer',
-                  selectedIds.has(media.id) && 'ring-4 ring-stone-500 ring-inset',
+                  selectedIds.has(media.id) && 'ring-4 ring-black ring-inset',
                 )}
                 onClick={() => {
                   if (isPickerMode && onSelect) onSelect(media);
@@ -151,7 +151,7 @@ export function MediaGrid({
                 />
 
                 {media.isUsed && (
-                  <div className="absolute top-2 left-2 bg-stone-900/80 backdrop-blur-sm text-stone-50 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md">
+                  <div className="absolute top-2 left-2 bg-black text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full shadow-sm">
                     In Use
                   </div>
                 )}
@@ -160,7 +160,7 @@ export function MediaGrid({
                   <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
                     <Link
                       href={`/media/${media.id}`}
-                      className="p-2 bg-white/10 hover:bg-white/20 text-white rounded-full backdrop-blur-md transition-colors"
+                      className="p-2.5 bg-white/20 hover:bg-white/30 text-white rounded-full backdrop-blur-md transition-colors"
                       title="Preview"
                     >
                       <Eye className="w-5 h-5" />
@@ -172,12 +172,10 @@ export function MediaGrid({
                   <div
                     className={cn(
                       'absolute inset-0 transition-colors flex items-center justify-center',
-                      selectedIds.has(media.id)
-                        ? 'bg-stone-500/20'
-                        : 'bg-stone-900/0 hover:bg-stone-900/10',
+                      selectedIds.has(media.id) ? 'bg-black/20' : 'bg-black/0 hover:bg-black/10',
                     )}
                   >
-                    <div className="opacity-0 group-hover:opacity-100 bg-white text-stone-900 px-4 py-2 rounded-lg font-medium text-sm shadow-lg transform translate-y-2 group-hover:translate-y-0 transition-all duration-200">
+                    <div className="opacity-0 group-hover:opacity-100 bg-black text-white px-4 py-2 rounded-xl font-bold text-sm shadow-glass transform translate-y-2 group-hover:translate-y-0 transition-all duration-200">
                       {selectedIds.has(media.id) ? 'Deselect' : 'Select'}
                     </div>
                   </div>
@@ -185,14 +183,11 @@ export function MediaGrid({
               </div>
 
               {/* Metadata */}
-              <div className="p-3 md:p-4 flex flex-col gap-1 border-t border-stone-100 dark:border-stone-800">
-                <h4
-                  className="font-medium text-sm text-stone-900 dark:text-stone-50 truncate"
-                  title={media.displayName}
-                >
+              <div className="p-3.5 md:p-4 flex flex-col gap-1 border-t border-black/[0.06]">
+                <h4 className="font-bold text-sm text-black truncate" title={media.displayName}>
                   {media.displayName}
                 </h4>
-                <div className="flex items-center justify-between text-xs text-stone-500">
+                <div className="flex items-center justify-between text-xs text-stone-500 font-medium">
                   <span>{formatBytes(media.size)}</span>
                   <span>
                     {media.width}x{media.height}
@@ -202,10 +197,10 @@ export function MediaGrid({
 
               {/* Actions (Only in Dam Mode) */}
               {!isPickerMode && (
-                <div className="px-3 md:px-4 py-3 bg-stone-50 dark:bg-stone-950 border-t border-stone-100 dark:border-stone-800 flex items-center justify-between mt-auto">
+                <div className="px-3.5 md:px-4 py-3 bg-black/[0.02] border-t border-black/[0.06] flex items-center justify-between mt-auto">
                   <div className="flex items-center gap-2">
                     <button
-                      className="text-stone-400 hover:text-stone-900 dark:hover:text-stone-50 transition-colors"
+                      className="text-stone-400 hover:text-black transition-colors"
                       title="Copy URL (Future)"
                     >
                       <LinkIcon className="w-4 h-4" />
@@ -215,7 +210,7 @@ export function MediaGrid({
                   {media.isUsed && (
                     <Link
                       href={`/media/${media.id}`}
-                      className="text-stone-400 hover:text-amber-600 transition-colors"
+                      className="text-stone-400 hover:text-black transition-colors"
                       title={`Used in ${media.usedBy.length} items. View usage to delete.`}
                     >
                       <ShieldAlert className="w-4 h-4" />

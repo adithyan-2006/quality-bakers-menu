@@ -54,31 +54,33 @@ export default async function PreviewProductPage({ params }: PreviewProductPageP
         <div className="flex items-center gap-4">
           <Link
             href="/products"
-            className="p-2 text-stone-500 hover:text-stone-900 dark:hover:text-stone-50 bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 rounded-md shadow-sm transition-colors"
+            className="p-2 text-stone-600 hover:text-black bg-white/80 backdrop-blur-md border border-black/[0.08] rounded-xl shadow-glass transition-all"
           >
             <ArrowLeft className="w-4 h-4" />
           </Link>
           <div>
-            <h2 className="text-2xl font-semibold tracking-tight">Preview: {product.name}</h2>
-            <p className="text-stone-500">
+            <h2 className="text-2xl font-bold tracking-tight text-black">
+              Preview: {product.name}
+            </h2>
+            <p className="text-stone-600 text-sm">
               This is how your product will appear on the customer website.
             </p>
           </div>
         </div>
         <Link
           href={`/products/${product.id}/edit`}
-          className="inline-flex items-center gap-2 px-4 py-2 bg-stone-900 text-stone-50 rounded-md font-medium text-sm hover:bg-stone-800 transition-colors shadow-sm"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-black hover:bg-neutral-800 text-white rounded-xl font-medium text-sm transition-all shadow-glass"
         >
           <Edit2 className="w-4 h-4" />
           Edit Product
         </Link>
       </div>
 
-      <div className="bg-stone-100 dark:bg-stone-900 border border-stone-200 dark:border-stone-800 rounded-xl overflow-hidden shadow-inner p-8 md:p-12 min-h-[600px] flex items-center justify-center relative">
+      <div className="bg-white/70 backdrop-blur-md border border-black/[0.08] rounded-2xl overflow-hidden shadow-glass p-8 md:p-12 min-h-[600px] flex items-center justify-center relative">
         {/* Mock Customer Interface displaying the actual ProductCard */}
         <div className="w-full max-w-sm mx-auto">
           <div className="mb-6 text-center">
-            <h3 className="text-sm font-semibold uppercase tracking-wider text-stone-500 mb-2">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-stone-600 mb-2">
               Live Component Preview
             </h3>
           </div>
@@ -89,34 +91,28 @@ export default async function PreviewProductPage({ params }: PreviewProductPageP
             presentationStyle="standard"
           />
 
-          <div className="mt-12 bg-white dark:bg-stone-950 p-6 rounded-xl border border-stone-200 dark:border-stone-800 shadow-sm">
-            <h3 className="text-sm font-semibold uppercase tracking-wider text-stone-500 mb-4">
+          <div className="mt-12 bg-white/80 backdrop-blur-md p-6 rounded-2xl border border-black/[0.08] shadow-glass">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-stone-600 mb-4">
               Metadata
             </h3>
             <dl className="grid grid-cols-2 gap-x-4 gap-y-4 text-sm">
               <div>
-                <dt className="text-stone-500 dark:text-stone-400">Category</dt>
-                <dd className="font-medium text-stone-900 dark:text-stone-50">
-                  {category?.name || 'Uncategorized'}
-                </dd>
+                <dt className="text-stone-600 font-medium">Category</dt>
+                <dd className="font-bold text-black">{category?.name || 'Uncategorized'}</dd>
               </div>
               <div>
-                <dt className="text-stone-500 dark:text-stone-400">Availability</dt>
-                <dd className="font-medium text-stone-900 dark:text-stone-50 capitalize">
+                <dt className="text-stone-600 font-medium">Availability</dt>
+                <dd className="font-bold text-black capitalize">
                   {product.availabilityStatus.replace('-', ' ')}
                 </dd>
               </div>
               <div>
-                <dt className="text-stone-500 dark:text-stone-400">Status</dt>
-                <dd className="font-medium text-stone-900 dark:text-stone-50 capitalize">
-                  {product.status}
-                </dd>
+                <dt className="text-stone-600 font-medium">Status</dt>
+                <dd className="font-bold text-black capitalize">{product.status}</dd>
               </div>
               <div>
-                <dt className="text-stone-500 dark:text-stone-400">Featured</dt>
-                <dd className="font-medium text-stone-900 dark:text-stone-50">
-                  {product.isFeatured ? 'Yes' : 'No'}
-                </dd>
+                <dt className="text-stone-600 font-medium">Featured</dt>
+                <dd className="font-bold text-black">{product.isFeatured ? 'Yes' : 'No'}</dd>
               </div>
             </dl>
           </div>

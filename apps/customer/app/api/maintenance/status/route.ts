@@ -4,7 +4,7 @@ import { getMaintenanceStatus } from '@/lib/maintenance-store';
 export const dynamic = 'force-dynamic';
 
 export async function GET() {
-  const status = getMaintenanceStatus();
+  const status = await getMaintenanceStatus();
   return NextResponse.json(status, {
     headers: {
       'Cache-Control': 'no-store, no-cache, must-revalidate',
@@ -13,7 +13,7 @@ export async function GET() {
 }
 
 export async function HEAD() {
-  const status = getMaintenanceStatus();
+  const status = await getMaintenanceStatus();
   if (status.enabled) {
     return new NextResponse(null, {
       status: 503,

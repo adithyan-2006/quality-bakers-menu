@@ -72,7 +72,7 @@ export default function EditUserPage() {
       <div className="mb-6">
         <Link
           href="/users"
-          className="inline-flex items-center text-sm font-medium text-stone-500 hover:text-stone-900 dark:hover:text-stone-300 mb-4 transition-colors"
+          className="inline-flex items-center text-sm font-semibold text-stone-600 hover:text-black mb-4 transition-colors"
         >
           <ArrowLeft className="w-4 h-4 mr-1" />
           Back to Users
@@ -81,7 +81,7 @@ export default function EditUserPage() {
         <p className="text-sm text-stone-500">Update access and details for {user.email}</p>
       </div>
 
-      <div className="bg-white dark:bg-stone-900 rounded-xl border border-stone-200 dark:border-stone-800 shadow-sm overflow-hidden p-6">
+      <div className="bg-white/80 backdrop-blur-md rounded-xl border border-black/[0.07] shadow-[0_8px_30px_rgb(0,0,0,0.03),inset_0_1px_0_0_rgba(255,255,255,0.9)] overflow-hidden p-6">
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-2">
             <label className="text-sm font-medium">Full Name</label>
@@ -89,7 +89,7 @@ export default function EditUserPage() {
               required
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full rounded-md border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-950 px-3 py-2 text-sm"
+              className="w-full rounded-lg border border-black/10 bg-white/70 backdrop-blur-sm px-3 py-2 text-sm text-stone-900 focus:outline-none focus:ring-2 focus:ring-black"
             />
           </div>
 
@@ -99,7 +99,7 @@ export default function EditUserPage() {
               value={role}
               onChange={(e) => setRole(e.target.value as AdminRole)}
               disabled={user.role === 'Owner'}
-              className="w-full rounded-md border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-950 px-3 py-2 text-sm disabled:opacity-50"
+              className="w-full rounded-lg border border-black/10 bg-white/70 backdrop-blur-sm px-3 py-2 text-sm text-stone-900 disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-black"
             >
               <option value="Staff">Staff (Products, Categories, Media)</option>
               <option value="Manager">Manager (All content, no user management)</option>
@@ -116,7 +116,7 @@ export default function EditUserPage() {
               value={status}
               onChange={(e) => setStatus(e.target.value as UserStatus)}
               disabled={user.role === 'Owner'}
-              className="w-full rounded-md border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-950 px-3 py-2 text-sm disabled:opacity-50"
+              className="w-full rounded-lg border border-black/10 bg-white/70 backdrop-blur-sm px-3 py-2 text-sm text-stone-900 disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-black"
             >
               <option value="Active">Active</option>
               <option value="Disabled">Disabled</option>
@@ -126,17 +126,17 @@ export default function EditUserPage() {
             )}
           </div>
 
-          <div className="pt-4 flex justify-end gap-3 border-t border-stone-100 dark:border-stone-800">
+          <div className="pt-4 flex justify-end gap-3 border-t border-black/[0.06]">
             <Link
               href="/users"
-              className="px-4 py-2 border border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900 text-stone-700 dark:text-stone-300 rounded-md font-medium text-sm hover:bg-stone-50 dark:hover:bg-stone-800 transition-colors"
+              className="px-4 py-2 border border-black/10 bg-white/80 text-stone-700 hover:text-black hover:bg-white rounded-lg font-medium text-sm transition-colors shadow-sm"
             >
               Cancel
             </Link>
             <button
               type="submit"
               disabled={isSaving}
-              className="px-4 py-2 bg-stone-900 dark:bg-stone-50 text-stone-50 dark:text-stone-900 rounded-md font-medium text-sm hover:bg-stone-800 dark:hover:bg-stone-200 transition-colors flex items-center gap-2"
+              className="px-4 py-2 bg-black text-white rounded-lg font-medium text-sm hover:bg-stone-800 transition-all shadow-sm flex items-center gap-2"
             >
               {isSaving && <Loader2 className="w-4 h-4 animate-spin" />}
               Save Changes

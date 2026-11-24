@@ -5,6 +5,10 @@ import {
   DEFAULT_MAINTENANCE_MESSAGE,
   DEFAULT_RETRY_AFTER_SECONDS,
 } from '@qbm/config';
+import { prisma } from '@qbm/database';
+
+let cachedStatus: { config: MaintenanceConfig; expiresAt: number } | null = null;
+const CACHE_TTL_MS = 2000; // 2-second in-memory cache for near real-time updates without DB hammering
 
 function getCandidateDirectories(): string[] {
   const dirs = new Set<string>();
@@ -23,7 +27,10 @@ function getCandidateDirectories(): string[] {
   return Array.from(dirs);
 }
 
-export function getMaintenanceStatus(): MaintenanceConfig {
+/**
+ * Reads fallback maintenance state from local disk (used during build or offline dev).
+ */
+function readLocalFileStatus(): MaintenanceConfig {
   const dirs = getCandidateDirectories();
 
   if (process.env.MAINTENANCE_FLAG_PATH && fs.existsSync(process.env.MAINTENANCE_FLAG_PATH)) {
@@ -82,27 +89,132 @@ export function getMaintenanceStatus(): MaintenanceConfig {
   };
 }
 
-export function setMaintenanceStatus(
+/**
+ * Returns the current maintenance status.
+ * Priority:
+ * 1. Environment variable override (process.env.MAINTENANCE_MODE === 'true')
+ * 2. In-memory cache (2s TTL)
+ * 3. PostgreSQL SystemSetting table (cross-instance state sharing)
+ * 4. Local maintenance.json / maintenance.flag fallback
+ */
+export async function getMaintenanceStatus(): Promise<MaintenanceConfig> {
+  // 1. Environment variable immediate kill-switch (for Vercel dashboard toggling)
+  if (process.env.MAINTENANCE_MODE === 'true' || process.env.MAINTENANCE_MODE === '1') {
+    return {
+      enabled: true,
+      activatedAt: null,
+      deactivatedAt: null,
+      activatedBy: 'Environment Variable (MAINTENANCE_MODE)',
+      message: process.env.MAINTENANCE_MESSAGE || DEFAULT_MAINTENANCE_MESSAGE,
+      retryAfter: DEFAULT_RETRY_AFTER_SECONDS,
+    };
+  }
+
+  // 2. In-memory cache
+  const now = Date.now();
+  if (cachedStatus && now < cachedStatus.expiresAt) {
+    return cachedStatus.config;
+  }
+
+  // 3. PostgreSQL SystemSetting table query
+  try {
+    const record = await prisma.systemSetting.findUnique({
+      where: { key: 'maintenance' },
+    });
+
+    if (record?.value) {
+      const parsed = JSON.parse(record.value);
+      const config: MaintenanceConfig = {
+        enabled: Boolean(parsed.enabled),
+        activatedAt: parsed.activatedAt || null,
+        deactivatedAt: parsed.deactivatedAt || null,
+        activatedBy: parsed.activatedBy || null,
+        message: parsed.message || DEFAULT_MAINTENANCE_MESSAGE,
+        retryAfter:
+          typeof parsed.retryAfter === 'number' ? parsed.retryAfter : DEFAULT_RETRY_AFTER_SECONDS,
+      };
+
+      cachedStatus = { config, expiresAt: now + CACHE_TTL_MS };
+      return config;
+    }
+  } catch (dbErr) {
+    console.warn('[MaintenanceStore] Database query fallback:', dbErr);
+  }
+
+  // 4. Fallback to local files
+  const fileStatus = readLocalFileStatus();
+  cachedStatus = { config: fileStatus, expiresAt: now + CACHE_TTL_MS };
+  return fileStatus;
+}
+
+/**
+ * Synchronous getter using cached state or local file fallback.
+ */
+export function getMaintenanceStatusSync(): MaintenanceConfig {
+  if (process.env.MAINTENANCE_MODE === 'true' || process.env.MAINTENANCE_MODE === '1') {
+    return {
+      enabled: true,
+      message: process.env.MAINTENANCE_MESSAGE || DEFAULT_MAINTENANCE_MESSAGE,
+      retryAfter: DEFAULT_RETRY_AFTER_SECONDS,
+    };
+  }
+
+  if (cachedStatus && Date.now() < cachedStatus.expiresAt) {
+    return cachedStatus.config;
+  }
+
+  return readLocalFileStatus();
+}
+
+/**
+ * Persists updated maintenance status to PostgreSQL and local files.
+ */
+export async function setMaintenanceStatus(
   input: Partial<MaintenanceConfig> & { enabled: boolean },
   actorEmail?: string,
-): MaintenanceConfig {
-  const now = new Date().toISOString();
-  const current = getMaintenanceStatus();
+): Promise<MaintenanceConfig> {
+  const nowIso = new Date().toISOString();
+  const current = await getMaintenanceStatus();
 
   const updated: MaintenanceConfig = {
     enabled: input.enabled,
-    activatedAt: input.enabled ? current.activatedAt || now : null,
-    deactivatedAt: input.enabled ? null : now,
+    activatedAt: input.enabled ? current.activatedAt || nowIso : null,
+    deactivatedAt: input.enabled ? null : nowIso,
     activatedBy: actorEmail || input.activatedBy || current.activatedBy || 'Administrator',
     message: input.message || current.message || DEFAULT_MAINTENANCE_MESSAGE,
     retryAfter: input.retryAfter || current.retryAfter || DEFAULT_RETRY_AFTER_SECONDS,
   };
 
-  const dirs = getCandidateDirectories();
-  const jsonContent = JSON.stringify(updated, null, 2);
+  // 1. Update in-memory cache immediately
+  cachedStatus = { config: updated, expiresAt: Date.now() + CACHE_TTL_MS };
 
-  for (const dir of dirs) {
-    try {
+  // 2. Persist to PostgreSQL SystemSetting table
+  try {
+    const valueJson = JSON.stringify(updated);
+    await prisma.systemSetting.upsert({
+      where: { key: 'maintenance' },
+      update: {
+        value: valueJson,
+        updatedAt: new Date(),
+        updatedBy: updated.activatedBy ?? null,
+      },
+      create: {
+        key: 'maintenance',
+        value: valueJson,
+        updatedAt: new Date(),
+        updatedBy: updated.activatedBy ?? null,
+      },
+    });
+  } catch (dbErr) {
+    console.warn('[MaintenanceStore] Failed to update SystemSetting in DB:', dbErr);
+  }
+
+  // 3. Best-effort local file write (silently ignores read-only filesystems on serverless)
+  try {
+    const dirs = getCandidateDirectories();
+    const jsonContent = JSON.stringify(updated, null, 2);
+
+    for (const dir of dirs) {
       if (!fs.existsSync(dir)) continue;
 
       const jsonPath = path.join(dir, 'maintenance.json');
@@ -110,13 +222,13 @@ export function setMaintenanceStatus(
 
       const flagPath = path.join(dir, 'maintenance.flag');
       if (updated.enabled) {
-        fs.writeFileSync(flagPath, `${now}\n${updated.activatedBy}\n`, 'utf-8');
+        fs.writeFileSync(flagPath, `${nowIso}\n${updated.activatedBy}\n`, 'utf-8');
       } else if (fs.existsSync(flagPath)) {
         fs.unlinkSync(flagPath);
       }
-    } catch (err) {
-      console.warn(`[MaintenanceStore] Error persisting flag in ${dir}:`, err);
     }
+  } catch {
+    // Read-only filesystem in serverless environments is expected
   }
 
   return updated;

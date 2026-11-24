@@ -15,25 +15,28 @@ export default async function HomepagePreviewPage() {
     ) as import('../../../../features/categories/repositories/category-repo').AdminCategory[];
 
   return (
-    <div className="min-h-screen bg-stone-50 dark:bg-stone-950 pb-20">
+    <div className="min-h-screen bg-[#F8F9FA] pb-20">
       {/* Admin Preview Header */}
-      <div className="sticky top-0 z-50 bg-stone-900 text-stone-50 px-4 py-3 flex items-center justify-between shadow-md">
+      <div className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-black/[0.08] px-4 py-3 flex items-center justify-between shadow-glass">
         <div className="flex items-center gap-4">
-          <Link href="/homepage" className="p-2 hover:bg-stone-800 rounded-md transition-colors">
+          <Link
+            href="/homepage"
+            className="p-2 hover:bg-black/5 rounded-xl transition-colors text-black"
+          >
             <ArrowLeft className="w-5 h-5" />
           </Link>
           <div>
-            <h1 className="font-semibold text-sm">Live Preview Mode</h1>
-            <p className="text-xs text-stone-400">Viewing '{homepage.status}' state</p>
+            <h1 className="font-bold text-sm text-black">Live Preview Mode</h1>
+            <p className="text-xs text-stone-600">Viewing '{homepage.status}' state</p>
           </div>
         </div>
-        <div className="text-xs font-medium bg-emerald-500/20 text-emerald-400 px-3 py-1 rounded-full border border-emerald-500/30">
+        <div className="text-xs font-semibold bg-black text-white px-3 py-1 rounded-full shadow-sm">
           Preview Active
         </div>
       </div>
 
       {/* Customer UI Assembly */}
-      <div className="w-full bg-white dark:bg-black font-sans">
+      <div className="w-full bg-white font-sans">
         {/* Promotion Banner */}
         {homepage.promotionBanner.enabled && (
           <div
@@ -73,7 +76,7 @@ export default async function HomepagePreviewPage() {
             <h1
               className={cn(
                 'text-5xl md:text-7xl font-bold tracking-tight mb-6 leading-[1.1]',
-                homepage.hero.image ? 'text-white' : 'text-stone-900 dark:text-stone-50',
+                homepage.hero.image ? 'text-white' : 'text-black',
               )}
             >
               {homepage.hero.title}
@@ -81,7 +84,7 @@ export default async function HomepagePreviewPage() {
             <p
               className={cn(
                 'text-lg md:text-xl font-light mb-10 max-w-2xl mx-auto leading-relaxed',
-                homepage.hero.image ? 'text-stone-200' : 'text-stone-600 dark:text-stone-400',
+                homepage.hero.image ? 'text-stone-200' : 'text-stone-700',
               )}
             >
               {homepage.hero.subtitle}
@@ -96,11 +99,9 @@ export default async function HomepagePreviewPage() {
 
         {/* Featured Categories (Grid) */}
         {featuredCategories.length > 0 && (
-          <section className="py-24 px-4 bg-stone-50 dark:bg-stone-900/20">
+          <section className="py-24 px-4 bg-[#F8F9FA]">
             <div className="max-w-7xl mx-auto">
-              <h2 className="text-2xl font-bold text-center mb-12 text-stone-900 dark:text-stone-50">
-                Quick Browse
-              </h2>
+              <h2 className="text-2xl font-bold text-center mb-12 text-black">Quick Browse</h2>
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
                 {featuredCategories.map(
                   (
@@ -114,7 +115,7 @@ export default async function HomepagePreviewPage() {
                           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                         />
                       </div>
-                      <h4 className="font-medium text-stone-900 dark:text-stone-50">{cat.name}</h4>
+                      <h4 className="font-semibold text-black">{cat.name}</h4>
                     </div>
                   ),
                 )}
@@ -137,10 +138,10 @@ export default async function HomepagePreviewPage() {
                 )}
               </div>
               <div className="space-y-6">
-                <h2 className="text-3xl md:text-5xl font-bold text-stone-900 dark:text-stone-50 tracking-tight">
+                <h2 className="text-3xl md:text-5xl font-bold text-black tracking-tight">
                   {homepage.about.title}
                 </h2>
-                <p className="text-lg text-stone-600 dark:text-stone-400 leading-relaxed whitespace-pre-wrap">
+                <p className="text-lg text-stone-700 leading-relaxed whitespace-pre-wrap">
                   {homepage.about.description}
                 </p>
               </div>

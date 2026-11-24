@@ -2,8 +2,8 @@
 
 import * as React from 'react';
 import { useSyncExternalStore } from 'react';
-import { ErrorState } from '@qbm/ui';
 import { OfflineFallbackScreen } from '@/components/offline';
+import { MaintenanceFallbackScreen } from '@/components/maintenance';
 
 function subscribe(callback: () => void) {
   window.addEventListener('online', callback);
@@ -31,23 +31,29 @@ export default function Error({
 }) {
   const isOnline = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
+  const errorMsg = (error?.message || '').toLowerCase();
   const isNetworkError = Boolean(
-    error?.message?.toLowerCase().includes('failed to fetch') ||
-    error?.message?.toLowerCase().includes('network') ||
-    error?.message?.toLowerCase().includes('offline'),
+    errorMsg.includes('failed to fetch') ||
+    errorMsg.includes('network') ||
+    errorMsg.includes('offline'),
   );
 
+  // 1. Offline fallback when client device has no connection
   if (!isOnline && isNetworkError) {
     return <OfflineFallbackScreen onRetry={reset} />;
   }
 
+  // 2. Server, database, 503, or maintenance fallback
+  // Renders the branded "Oops! System Baked" screen with auto-retry and oven illustration
   return (
-    <div className="flex h-[50vh] items-center justify-center">
-      <ErrorState
-        title="Something went wrong"
-        message={error.message || 'An unexpected error occurred while loading this page.'}
-        onRetry={reset}
-      />
-    </div>
+    <MaintenanceFallbackScreen
+      onRetry={reset}
+      message={
+        errorMsg.includes('maintenance') || errorMsg.includes('503')
+          ? undefined
+          : "Our ovens are currently taking a quick breather. We're tuning things up and will be right back!"
+      }
+      fullScreen={true}
+    />
   );
 }

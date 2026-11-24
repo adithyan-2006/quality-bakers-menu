@@ -182,16 +182,16 @@ export function MediaPicker({ value, multiple = false, onChange, trigger }: Medi
       )}
 
       {isOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 md:p-6 lg:p-8">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-md p-4 md:p-6 lg:p-8">
           <div
-            className="bg-stone-50 dark:bg-stone-950 w-full max-w-7xl h-[90vh] rounded-2xl shadow-2xl flex flex-col border border-stone-200 dark:border-stone-800"
+            className="bg-white/85 backdrop-blur-2xl w-full max-w-7xl h-[90vh] rounded-2xl shadow-[0_25px_70px_rgba(0,0,0,0.15)] flex flex-col border border-black/[0.08]"
             role="dialog"
             aria-modal="true"
           >
             {/* Header */}
-            <div className="flex items-center justify-between p-6 border-b border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900 rounded-t-2xl">
+            <div className="flex items-center justify-between p-6 border-b border-black/[0.06] bg-white/60 backdrop-blur-md rounded-t-2xl">
               <div>
-                <h2 className="text-xl font-semibold text-stone-900 dark:text-stone-50 tracking-tight">
+                <h2 className="text-xl font-semibold text-stone-900 tracking-tight">
                   Media Library
                 </h2>
                 <p className="text-sm text-stone-500 mt-1">
@@ -206,7 +206,7 @@ export function MediaPicker({ value, multiple = false, onChange, trigger }: Medi
                 )}
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="p-2 text-stone-400 hover:text-stone-900 dark:hover:text-stone-50 hover:bg-stone-100 dark:hover:bg-stone-800 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-stone-500"
+                  className="p-2 text-stone-400 hover:text-stone-900 hover:bg-black/5 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-black"
                   aria-label="Close modal"
                 >
                   <X className="w-5 h-5" />

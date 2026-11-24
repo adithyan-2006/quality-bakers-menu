@@ -49,24 +49,23 @@ export function CategoryListItem({
       ref={setNodeRef}
       style={style}
       className={cn(
-        'relative flex items-center gap-4 bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 rounded-xl p-4 shadow-sm group transition-all',
-        isDragging &&
-          'opacity-50 shadow-md ring-2 ring-stone-900/10 dark:ring-stone-50/10 scale-[1.01] z-10',
-        !category.isVisible && 'bg-stone-50/50 dark:bg-stone-900/50 grayscale-[0.5] opacity-80',
+        'relative flex items-center gap-4 bg-white/85 backdrop-blur-md border border-black/[0.08] rounded-2xl p-4 shadow-glass group transition-all',
+        isDragging && 'opacity-50 shadow-md ring-2 ring-black/10 scale-[1.01] z-10',
+        !category.isVisible && 'grayscale-[0.5] opacity-75',
       )}
     >
       {/* Drag Handle */}
       <div
         {...attributes}
         {...listeners}
-        className="cursor-grab active:cursor-grabbing p-2 -ml-2 text-stone-400 hover:text-stone-900 dark:hover:text-stone-50 transition-colors focus:outline-none focus:ring-2 focus:ring-stone-400 rounded"
+        className="cursor-grab active:cursor-grabbing p-2 -ml-2 text-stone-400 hover:text-black transition-colors focus:outline-none focus:ring-2 focus:ring-black rounded-lg"
         aria-label={`Reorder ${category.name}`}
       >
         <GripVertical className="w-5 h-5" />
       </div>
 
       {/* Cover Image */}
-      <div className="hidden sm:block flex-shrink-0 w-24 h-24 bg-stone-100 dark:bg-stone-800 rounded-lg overflow-hidden border border-stone-200 dark:border-stone-700 relative">
+      <div className="hidden sm:block flex-shrink-0 w-24 h-24 bg-black/[0.04] rounded-xl overflow-hidden border border-black/[0.08] relative">
         {category.coverImage ? (
           // Use regular img tag here to avoid strict next/image domain checks during prototype
           <img
@@ -84,57 +83,53 @@ export function CategoryListItem({
       {/* Main Content */}
       <div className="flex-1 min-w-0 flex flex-col justify-center">
         <div className="flex items-center gap-3 mb-1">
-          <h3 className="text-base font-semibold text-stone-900 dark:text-stone-50 truncate">
-            {category.name}
-          </h3>
+          <h3 className="text-base font-bold text-black truncate">{category.name}</h3>
           {category.isFeatured && (
-            <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-800 dark:bg-amber-500/10 dark:text-amber-400">
+            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-black text-white">
               Featured
             </span>
           )}
           <span
             className={cn(
-              'inline-flex items-center px-2 py-0.5 rounded text-xs font-medium',
+              'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold',
               category.status === 'published'
-                ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-500/10 dark:text-emerald-400'
+                ? 'bg-black text-white'
                 : category.status === 'draft'
-                  ? 'bg-stone-100 text-stone-800 dark:bg-stone-500/10 dark:text-stone-400'
-                  : 'bg-rose-100 text-rose-800 dark:bg-rose-500/10 dark:text-rose-400',
+                  ? 'bg-black/[0.05] text-stone-800 border border-black/[0.08]'
+                  : 'bg-rose-100 text-rose-800',
             )}
           >
             {category.status.charAt(0).toUpperCase() + category.status.slice(1)}
           </span>
         </div>
 
-        <p className="text-sm text-stone-500 dark:text-stone-400 truncate mb-2">
+        <p className="text-xs text-stone-600 font-medium truncate mb-2">
           {category.description || 'No description provided.'}
         </p>
 
-        <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-stone-500 dark:text-stone-400">
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-stone-500">
           <span className="flex items-center">
-            <span className="font-medium mr-1 text-stone-700 dark:text-stone-300">Layout:</span>{' '}
-            {layoutName}
+            <span className="font-semibold mr-1 text-stone-800">Layout:</span> {layoutName}
           </span>
           <span className="hidden md:flex items-center">
-            <span className="font-medium mr-1 text-stone-700 dark:text-stone-300">Theme:</span>{' '}
+            <span className="font-semibold mr-1 text-stone-800">Theme:</span>{' '}
             <span className="capitalize">{category.theme}</span>
           </span>
           <span className="flex items-center">
-            <span className="font-medium mr-1 text-stone-700 dark:text-stone-300">Products:</span>{' '}
+            <span className="font-semibold mr-1 text-stone-800">Products:</span>{' '}
             {category.productCount}
           </span>
           <span className="hidden lg:flex items-center">
-            <span className="font-medium mr-1 text-stone-700 dark:text-stone-300">Updated:</span>{' '}
-            {updatedDate}
+            <span className="font-semibold mr-1 text-stone-800">Updated:</span> {updatedDate}
           </span>
         </div>
       </div>
 
       {/* Actions */}
-      <div className="flex items-center gap-2 pl-4 border-l border-stone-200 dark:border-stone-800">
+      <div className="flex items-center gap-2 pl-4 border-l border-black/[0.06]">
         <button
           onClick={() => onToggleVisibility(category.id)}
-          className="p-2 text-stone-500 hover:text-stone-900 dark:hover:text-stone-50 transition-colors focus:outline-none focus:ring-2 focus:ring-stone-400 rounded-md bg-stone-50 dark:bg-stone-800 hover:bg-stone-100 dark:hover:bg-stone-700"
+          className="p-2 text-stone-600 hover:text-black hover:bg-black/5 rounded-xl border border-black/[0.06] transition-all"
           aria-label={category.isVisible ? 'Hide Category' : 'Show Category'}
           title={category.isVisible ? 'Hide Category' : 'Show Category'}
         >
@@ -143,7 +138,7 @@ export function CategoryListItem({
 
         <Link
           href={`/categories/${category.id}/preview`}
-          className="p-2 text-stone-500 hover:text-stone-900 dark:hover:text-stone-50 transition-colors focus:outline-none focus:ring-2 focus:ring-stone-400 rounded-md bg-stone-50 dark:bg-stone-800 hover:bg-stone-100 dark:hover:bg-stone-700"
+          className="p-2 text-stone-600 hover:text-black hover:bg-black/5 rounded-xl border border-black/[0.06] transition-all"
           aria-label={`Preview ${category.name}`}
           title="Preview Category"
         >
@@ -152,7 +147,7 @@ export function CategoryListItem({
 
         <Link
           href={`/categories/${category.id}/edit`}
-          className="p-2 text-stone-500 hover:text-stone-900 dark:hover:text-stone-50 transition-colors focus:outline-none focus:ring-2 focus:ring-stone-400 rounded-md bg-stone-50 dark:bg-stone-800 hover:bg-stone-100 dark:hover:bg-stone-700"
+          className="p-2 text-stone-600 hover:text-black hover:bg-black/5 rounded-xl border border-black/[0.06] transition-all"
           aria-label={`Edit ${category.name}`}
           title="Edit Category"
         >
@@ -162,7 +157,7 @@ export function CategoryListItem({
         {onDelete && (
           <button
             onClick={onDelete}
-            className="p-2 text-rose-500 hover:text-rose-600 transition-colors focus:outline-none focus:ring-2 focus:ring-rose-400 rounded-md bg-rose-50 dark:bg-rose-500/10 hover:bg-rose-100 dark:hover:bg-rose-500/20"
+            className="p-2 text-rose-600 hover:text-rose-700 bg-rose-50 hover:bg-rose-100 rounded-xl border border-rose-200 transition-all"
             aria-label={`Delete ${category.name}`}
             title="Delete Category"
           >

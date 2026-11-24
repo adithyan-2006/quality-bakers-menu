@@ -102,17 +102,14 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-8 max-w-4xl">
-      <div className="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 rounded-xl p-6 md:p-8 shadow-sm">
-        <h3 className="text-lg font-medium text-stone-900 dark:text-stone-50 mb-6 border-b border-stone-200 dark:border-stone-800 pb-4">
+      <div className="bg-white/85 backdrop-blur-md border border-black/[0.08] rounded-2xl p-6 md:p-8 shadow-glass">
+        <h3 className="text-lg font-bold text-black mb-6 border-b border-black/[0.06] pb-4">
           Basic Information
         </h3>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-2">
-            <label
-              htmlFor="name"
-              className="block text-sm font-medium text-stone-700 dark:text-stone-300"
-            >
+            <label htmlFor="name" className="block text-sm font-semibold text-stone-800">
               Product Name *
             </label>
             <input
@@ -121,20 +118,19 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
               required
               value={name}
               onChange={handleNameChange}
-              className="w-full rounded-md border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-950 px-3 py-2 text-sm placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-stone-500"
+              className="w-full rounded-xl border border-black/[0.08] bg-white/80 text-black px-3.5 py-2 text-sm placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-black transition-all"
               placeholder="e.g. Vanilla Scoop"
             />
           </div>
 
           <div className="space-y-2">
-            <label
-              htmlFor="price"
-              className="block text-sm font-medium text-stone-700 dark:text-stone-300"
-            >
+            <label htmlFor="price" className="block text-sm font-semibold text-stone-800">
               Price (₹) *
             </label>
             <div className="relative">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-stone-500">₹</span>
+              <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-500 font-medium">
+                ₹
+              </span>
               <input
                 id="price"
                 type="number"
@@ -143,7 +139,7 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
                 required
                 value={priceDisplay}
                 onChange={handlePriceChange}
-                className="w-full pl-8 rounded-md border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-950 px-3 py-2 text-sm placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-stone-500"
+                className="w-full pl-9 rounded-xl border border-black/[0.08] bg-white/80 text-black px-3.5 py-2 text-sm placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-black transition-all"
                 placeholder="180.00"
               />
             </div>
@@ -152,7 +148,7 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
           <div className="md:col-span-2 space-y-2">
             <label
               htmlFor="shortDescription"
-              className="block text-sm font-medium text-stone-700 dark:text-stone-300"
+              className="block text-sm font-semibold text-stone-800"
             >
               Short Description *
             </label>
@@ -162,16 +158,13 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
               rows={2}
               value={shortDescription}
               onChange={(e) => setShortDescription(e.target.value)}
-              className="w-full rounded-md border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-950 px-3 py-2 text-sm placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-stone-500 resize-none"
+              className="w-full rounded-xl border border-black/[0.08] bg-white/80 text-black px-3.5 py-2 text-sm placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-black transition-all resize-none"
               placeholder="A brief description for the product card..."
             />
           </div>
 
           <div className="md:col-span-2 space-y-2">
-            <label
-              htmlFor="categoryId"
-              className="block text-sm font-medium text-stone-700 dark:text-stone-300"
-            >
+            <label htmlFor="categoryId" className="block text-sm font-semibold text-stone-800">
               Category *
             </label>
             <select
@@ -179,7 +172,7 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
               required
               value={categoryId}
               onChange={(e) => setCategoryId(e.target.value)}
-              className="w-full rounded-md border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-950 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-stone-500"
+              className="w-full rounded-xl border border-black/[0.08] bg-white/80 text-black px-3.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black transition-all font-medium"
             >
               <option value="" disabled>
                 Select a Category...
@@ -194,11 +187,9 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
         </div>
       </div>
 
-      <div className="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 rounded-xl p-6 md:p-8 shadow-sm">
-        <div className="flex items-center justify-between mb-6 border-b border-stone-200 dark:border-stone-800 pb-4">
-          <h3 className="text-lg font-medium text-stone-900 dark:text-stone-50 flex items-center gap-2">
-            Hero Image
-          </h3>
+      <div className="bg-white/85 backdrop-blur-md border border-black/[0.08] rounded-2xl p-6 md:p-8 shadow-glass">
+        <div className="flex items-center justify-between mb-6 border-b border-black/[0.06] pb-4">
+          <h3 className="text-lg font-bold text-black flex items-center gap-2">Hero Image</h3>
         </div>
 
         <MediaPicker
@@ -208,11 +199,9 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
         />
       </div>
 
-      <div className="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 rounded-xl p-6 md:p-8 shadow-sm">
-        <div className="flex items-center justify-between mb-6 border-b border-stone-200 dark:border-stone-800 pb-4">
-          <h3 className="text-lg font-medium text-stone-900 dark:text-stone-50 flex items-center gap-2">
-            Gallery Images
-          </h3>
+      <div className="bg-white/85 backdrop-blur-md border border-black/[0.08] rounded-2xl p-6 md:p-8 shadow-glass">
+        <div className="flex items-center justify-between mb-6 border-b border-black/[0.06] pb-4">
+          <h3 className="text-lg font-bold text-black flex items-center gap-2">Gallery Images</h3>
         </div>
 
         <MediaPicker
@@ -222,24 +211,21 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
         />
       </div>
 
-      <div className="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 rounded-xl p-6 md:p-8 shadow-sm">
-        <h3 className="text-lg font-medium text-stone-900 dark:text-stone-50 mb-6 border-b border-stone-200 dark:border-stone-800 pb-4">
+      <div className="bg-white/85 backdrop-blur-md border border-black/[0.08] rounded-2xl p-6 md:p-8 shadow-glass">
+        <h3 className="text-lg font-bold text-black mb-6 border-b border-black/[0.06] pb-4">
           Presentation & Availability
         </h3>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-2">
-            <label
-              htmlFor="badge"
-              className="block text-sm font-medium text-stone-700 dark:text-stone-300"
-            >
+            <label htmlFor="badge" className="block text-sm font-semibold text-stone-800">
               Badge
             </label>
             <select
               id="badge"
               value={badge}
               onChange={(e) => setBadge(e.target.value as BadgeType)}
-              className="w-full rounded-md border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-950 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-stone-500"
+              className="w-full rounded-xl border border-black/[0.08] bg-white/80 text-black px-3.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black transition-all font-medium"
             >
               <option value="none">No Badge</option>
               <option value="signature">Signature</option>
@@ -253,7 +239,7 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
           <div className="space-y-2">
             <label
               htmlFor="availabilityStatus"
-              className="block text-sm font-medium text-stone-700 dark:text-stone-300"
+              className="block text-sm font-semibold text-stone-800"
             >
               Availability
             </label>
@@ -261,7 +247,7 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
               id="availabilityStatus"
               value={availabilityStatus}
               onChange={(e) => setAvailabilityStatus(e.target.value as AvailabilityStatus)}
-              className="w-full rounded-md border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-950 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-stone-500"
+              className="w-full rounded-xl border border-black/[0.08] bg-white/80 text-black px-3.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black transition-all font-medium"
             >
               <option value="available">Available</option>
               <option value="out-of-stock">Out of Stock</option>
@@ -270,17 +256,14 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
           </div>
 
           <div className="space-y-2">
-            <label
-              htmlFor="status"
-              className="block text-sm font-medium text-stone-700 dark:text-stone-300"
-            >
+            <label htmlFor="status" className="block text-sm font-semibold text-stone-800">
               Publishing Status
             </label>
             <select
               id="status"
               value={status}
               onChange={(e) => setStatus(e.target.value as ProductStatus)}
-              className="w-full rounded-md border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-950 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-stone-500"
+              className="w-full rounded-xl border border-black/[0.08] bg-white/80 text-black px-3.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black transition-all font-medium"
             >
               <option value="published">Published</option>
               <option value="draft">Draft</option>
@@ -289,68 +272,62 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
           </div>
         </div>
 
-        <div className="mt-6 space-y-4 pt-6 border-t border-stone-100 dark:border-stone-800">
-          <label className="flex items-start gap-3 p-4 border border-stone-200 dark:border-stone-800 rounded-lg cursor-pointer hover:bg-stone-50 dark:hover:bg-stone-800/50 transition-colors">
+        <div className="mt-6 space-y-4 pt-6 border-t border-black/[0.06]">
+          <label className="flex items-start gap-3 p-4 border border-black/[0.08] rounded-xl cursor-pointer hover:bg-black/[0.02] transition-colors">
             <div className="flex items-center h-5">
               <input
                 type="checkbox"
                 checked={isVisible}
                 onChange={(e) => setIsVisible(e.target.checked)}
-                className="w-4 h-4 rounded border-stone-300 text-stone-900 focus:ring-stone-900"
+                className="w-4 h-4 rounded border-stone-300 text-black focus:ring-black"
               />
             </div>
             <div className="flex flex-col">
-              <span className="text-sm font-medium text-stone-900 dark:text-stone-50">
-                Visible on Website
-              </span>
-              <span className="text-sm text-stone-500">
+              <span className="text-sm font-bold text-black">Visible on Website</span>
+              <span className="text-xs text-stone-500 mt-0.5">
                 Uncheck to hide this product globally regardless of availability.
               </span>
             </div>
           </label>
 
-          <label className="flex items-start gap-3 p-4 border border-stone-200 dark:border-stone-800 rounded-lg cursor-pointer hover:bg-stone-50 dark:hover:bg-stone-800/50 transition-colors">
+          <label className="flex items-start gap-3 p-4 border border-black/[0.08] rounded-xl cursor-pointer hover:bg-black/[0.02] transition-colors">
             <div className="flex items-center h-5">
               <input
                 type="checkbox"
                 checked={isFeatured}
                 onChange={(e) => setIsFeatured(e.target.checked)}
-                className="w-4 h-4 rounded border-stone-300 text-stone-900 focus:ring-stone-900"
+                className="w-4 h-4 rounded border-stone-300 text-black focus:ring-black"
               />
             </div>
             <div className="flex flex-col">
-              <span className="text-sm font-medium text-stone-900 dark:text-stone-50">
-                Featured Product
-              </span>
-              <span className="text-sm text-stone-500">
+              <span className="text-sm font-bold text-black">Featured Product</span>
+              <span className="text-xs text-stone-500 mt-0.5">
                 Highlight this product in the featured category grid.
               </span>
             </div>
           </label>
 
-          <div className="flex flex-col gap-4 p-4 border border-stone-200 dark:border-stone-800 rounded-lg">
+          <div className="flex flex-col gap-4 p-4 border border-black/[0.08] rounded-xl">
             <label className="flex items-start gap-3 cursor-pointer">
               <div className="flex items-center h-5">
                 <input
                   type="checkbox"
                   checked={isSignature}
                   onChange={(e) => setIsSignature(e.target.checked)}
-                  className="w-4 h-4 rounded border-stone-300 text-stone-900 focus:ring-stone-900"
+                  className="w-4 h-4 rounded border-stone-300 text-black focus:ring-black"
                 />
               </div>
               <div className="flex flex-col">
-                <span className="text-sm font-medium text-stone-900 dark:text-stone-50">
-                  Is Signature Product
-                </span>
-                <span className="text-sm text-stone-500">
+                <span className="text-sm font-bold text-black">Is Signature Product</span>
+                <span className="text-xs text-stone-500 mt-0.5">
                   Feature this product in the homepage Signature Showcase.
                 </span>
               </div>
             </label>
 
             {isSignature && (
-              <div className="ml-7 pt-2 border-t border-stone-100 dark:border-stone-800">
-                <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-2">
+              <div className="ml-7 pt-3 border-t border-black/[0.06]">
+                <label className="block text-xs font-semibold text-stone-700 mb-2">
                   Signature Display Order
                 </label>
                 <input
@@ -360,7 +337,7 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
                   required
                   value={signatureOrder}
                   onChange={(e) => setSignatureOrder(parseInt(e.target.value) || 1)}
-                  className="w-32 rounded-md border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-950 px-3 py-2 text-sm placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-stone-500"
+                  className="w-32 rounded-xl border border-black/[0.08] bg-white/80 text-black px-3 py-1.5 text-sm placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-black transition-all"
                 />
               </div>
             )}
@@ -372,14 +349,14 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
         <button
           type="button"
           onClick={() => router.push('/products')}
-          className="px-4 py-2 text-sm font-medium text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 rounded-md transition-colors"
+          className="px-4 py-2 text-sm font-medium text-stone-700 hover:text-black hover:bg-black/5 rounded-lg transition-colors"
         >
           Cancel
         </button>
         <button
           type="submit"
           disabled={isSubmitting}
-          className="px-6 py-2 bg-stone-900 dark:bg-stone-50 text-stone-50 dark:text-stone-900 rounded-md font-medium text-sm hover:bg-stone-800 dark:hover:bg-stone-200 transition-colors disabled:opacity-50"
+          className="px-6 py-2 bg-black text-white rounded-lg font-medium text-sm hover:bg-stone-800 transition-all shadow-sm disabled:opacity-50"
         >
           {isSubmitting ? 'Saving...' : isEditing ? 'Save Changes' : 'Create Product'}
         </button>

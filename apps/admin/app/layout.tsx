@@ -4,6 +4,9 @@ import '../styles/globals.css';
 import { ThemeProvider } from '../providers/theme-provider';
 import { QueryProvider } from '../providers/query-provider';
 import { AuthProvider } from '../components/providers/auth-provider';
+// NOTE: WebsiteVisitTracker intentionally removed from the admin layout.
+// Admin page views must NOT be mixed into customer analytics.
+// Customer tracking is handled exclusively in apps/customer/app/layout.tsx.
 
 const inter = localFont({
   src: '../public/fonts/inter-variable.woff2',
@@ -13,10 +16,7 @@ const inter = localFont({
 });
 
 export const viewport: Viewport = {
-  themeColor: [
-    { media: '(prefers-color-scheme: light)', color: 'white' },
-    { media: '(prefers-color-scheme: dark)', color: 'black' },
-  ],
+  themeColor: '#ffffff',
   width: 'device-width',
   initialScale: 1,
   maximumScale: 1,
@@ -38,13 +38,14 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${inter.variable} min-h-screen bg-stone-50 dark:bg-stone-950 font-sans text-stone-900 dark:text-stone-50 antialiased selection:bg-stone-200 dark:selection:bg-stone-800`}
+        className={`${inter.variable} min-h-screen font-sans text-stone-900 antialiased selection:bg-black selection:text-white glass-canvas-bg`}
       >
         <QueryProvider>
           <ThemeProvider
             attribute="class"
-            defaultTheme="system"
-            enableSystem
+            defaultTheme="light"
+            forcedTheme="light"
+            enableSystem={false}
             disableTransitionOnChange
           >
             <AuthProvider>{children}</AuthProvider>

@@ -16,27 +16,25 @@ export function StatCard({ title, value, icon: Icon, trend, className }: StatCar
   return (
     <div
       className={cn(
-        'bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 rounded-xl p-6 shadow-sm',
+        'bg-white/85 backdrop-blur-md border border-black/[0.08] rounded-2xl p-6 shadow-glass hover:shadow-glass-hover hover:bg-white/95 transition-all',
         className,
       )}
     >
       <div className="flex items-center justify-between">
-        <h3 className="text-sm font-medium text-stone-500 dark:text-stone-400">{title}</h3>
-        <div className="p-2 bg-stone-50 dark:bg-stone-800 rounded-lg">
-          <Icon className="w-4 h-4 text-stone-600 dark:text-stone-300" />
+        <h3 className="text-xs font-bold uppercase tracking-wider text-stone-500">{title}</h3>
+        <div className="p-2.5 bg-black/[0.04] text-black border border-black/[0.06] rounded-xl">
+          <Icon className="w-4 h-4 text-black" />
         </div>
       </div>
 
       <div className="mt-4 flex items-baseline gap-4">
-        <p className="text-3xl font-semibold text-stone-900 dark:text-stone-50">{value}</p>
+        <p className="text-3xl font-extrabold tracking-tight text-black">{value}</p>
 
         {trend && (
           <span
             className={cn(
               'text-sm font-medium',
-              trend.isPositive
-                ? 'text-emerald-600 dark:text-emerald-500'
-                : 'text-rose-600 dark:text-rose-500',
+              trend.isPositive ? 'text-emerald-600' : 'text-rose-600',
             )}
           >
             {trend.isPositive ? '+' : '-'}

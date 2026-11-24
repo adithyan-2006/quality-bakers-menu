@@ -3,6 +3,7 @@ import {
   logoutAction,
   getCurrentUserAction,
   requestPasswordResetAction,
+  changePasswordAction,
 } from '../actions/auth-actions';
 import { AdminUser, AdminRole } from '../../users/repositories/user-repository';
 
@@ -21,6 +22,10 @@ export const AuthService = {
 
   requestPasswordReset: async (email: string) => {
     return requestPasswordResetAction(email);
+  },
+
+  changePassword: async (userId: string, newPassword: string) => {
+    return changePasswordAction(userId, newPassword);
   },
 
   hasPermission: (user: AdminUser | null, requiredRoles: AdminRole[]) => {

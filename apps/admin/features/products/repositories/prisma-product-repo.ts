@@ -12,11 +12,13 @@ function mapPrismaProduct(prod: any): AdminProduct {
     longDescription: prod.longDescription || '',
     price: prod.price,
     categoryId: prod.categoryId,
-    image: prod.image?.optimizedUrl || prod.image?.originalUrl || '',
+    image: prod.image?.secureUrl || prod.image?.optimizedUrl || prod.image?.originalUrl || '',
     imageId: prod.imageId || undefined,
     galleryIds: prod.gallery?.map((g: any) => g.mediaId) || [],
     galleryImages:
-      prod.gallery?.map((g: any) => g.media?.optimizedUrl || g.media?.originalUrl || '') || [],
+      prod.gallery?.map(
+        (g: any) => g.media?.secureUrl || g.media?.optimizedUrl || g.media?.originalUrl || '',
+      ) || [],
     badge: (prod.badge === 'NONE'
       ? 'none'
       : prod.badge === 'SIGNATURE'
@@ -56,10 +58,6 @@ export const PrismaProductRepository = {
     limit?: number;
   }): Promise<AdminProduct[]> => {
     try {
-      const page = options?.page ?? 1;
-      const limit = options?.limit ?? 50;
-      const skip = (page - 1) * limit;
-
       const where: any = {};
       if (options?.search) {
         where.name = { contains: options.search, mode: 'insensitive' };
@@ -68,16 +66,22 @@ export const PrismaProductRepository = {
         where.categoryId = options.categoryId;
       }
 
-      const products = await prisma.product.findMany({
+      const findArgs: any = {
         where,
-        skip,
-        take: limit,
         orderBy: { displayOrder: 'asc' },
         include: {
           image: true,
           gallery: { include: { media: true }, orderBy: { displayOrder: 'asc' } },
         },
-      });
+      };
+
+      if (typeof options?.limit === 'number') {
+        const page = options?.page ?? 1;
+        findArgs.take = options.limit;
+        findArgs.skip = (page - 1) * options.limit;
+      }
+
+      const products = await prisma.product.findMany(findArgs);
       return products.map(mapPrismaProduct);
     } catch (error: any) {
       throw new RepositoryError('Failed to fetch products', error);

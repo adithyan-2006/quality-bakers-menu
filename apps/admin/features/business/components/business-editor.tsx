@@ -54,7 +54,7 @@ export function BusinessEditor() {
   return (
     <div className="max-w-4xl mx-auto space-y-8 pb-24">
       {/* Header Actions */}
-      <div className="flex items-center justify-between sticky top-0 bg-stone-50/80 dark:bg-stone-950/80 backdrop-blur-md z-20 py-4 border-b border-stone-200 dark:border-stone-800 -mx-4 px-4 sm:mx-0 sm:px-0">
+      <div className="flex items-center justify-between sticky top-0 bg-white/70 backdrop-blur-xl z-20 py-4 border-b border-black/[0.06] -mx-4 px-4 sm:mx-0 sm:px-0">
         <div>
           <h2 className="text-2xl font-semibold tracking-tight">Business Settings</h2>
           <p className="text-sm text-stone-500">Manage all global bakery information.</p>
@@ -62,21 +62,21 @@ export function BusinessEditor() {
         <div className="flex items-center gap-3">
           <button
             onClick={() => router.push('/business/preview')}
-            className="px-4 py-2 text-sm font-medium text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 rounded-md transition-colors"
+            className="px-4 py-2 text-sm font-medium text-stone-700 hover:text-black hover:bg-black/5 rounded-lg transition-colors"
           >
             Preview
           </button>
           <button
             onClick={() => handleSave('draft')}
             disabled={isSaving}
-            className="px-4 py-2 text-sm font-medium text-stone-700 dark:text-stone-300 bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 hover:bg-stone-50 dark:hover:bg-stone-800 rounded-md transition-colors"
+            className="px-4 py-2 text-sm font-medium text-stone-700 bg-white/80 backdrop-blur-sm border border-black/10 hover:bg-white rounded-lg transition-colors shadow-sm"
           >
             Save Draft
           </button>
           <button
             onClick={() => handleSave('published')}
             disabled={isSaving}
-            className="px-4 py-2 bg-stone-900 dark:bg-stone-50 text-stone-50 dark:text-stone-900 rounded-md font-medium text-sm hover:bg-stone-800 dark:hover:bg-stone-200 transition-colors"
+            className="px-4 py-2 bg-black text-white rounded-lg font-medium text-sm hover:bg-stone-800 transition-all shadow-sm"
           >
             {isSaving ? 'Publishing...' : 'Publish Live'}
           </button>
@@ -91,7 +91,7 @@ export function BusinessEditor() {
             <input
               value={data.name}
               onChange={(e) => setData({ ...data, name: e.target.value })}
-              className="w-full rounded-md border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-950 px-3 py-2 text-sm"
+              className="w-full rounded-xl border border-black/[0.08] bg-white/80 text-black px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black shadow-sm transition-all"
             />
           </div>
           <div className="space-y-2">
@@ -99,7 +99,7 @@ export function BusinessEditor() {
             <input
               value={data.tagline}
               onChange={(e) => setData({ ...data, tagline: e.target.value })}
-              className="w-full rounded-md border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-950 px-3 py-2 text-sm"
+              className="w-full rounded-xl border border-black/[0.08] bg-white/80 text-black px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black shadow-sm transition-all"
             />
           </div>
           <div className="space-y-2">
@@ -108,7 +108,7 @@ export function BusinessEditor() {
               value={data.description}
               onChange={(e) => setData({ ...data, description: e.target.value })}
               rows={4}
-              className="w-full rounded-md border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-950 px-3 py-2 text-sm resize-none"
+              className="w-full rounded-xl border border-black/[0.08] bg-white/80 text-black px-3.5 py-2.5 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-black shadow-sm transition-all"
             />
           </div>
           <div className="space-y-2">
@@ -118,7 +118,7 @@ export function BusinessEditor() {
               onChange={(e) =>
                 setData({ ...data, businessStatus: e.target.value as BusinessStatus })
               }
-              className="w-full rounded-md border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-950 px-3 py-2 text-sm"
+              className="w-full rounded-xl border border-black/[0.08] bg-white/80 text-black px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black shadow-sm transition-all"
             >
               <option value="Open">Open</option>
               <option value="Closed">Closed</option>
@@ -148,7 +148,7 @@ export function BusinessEditor() {
               multiple={false}
             />
           </div>
-          <div className="md:col-span-2 space-y-2 pt-4 border-t border-stone-100 dark:border-stone-800">
+          <div className="md:col-span-2 space-y-2 pt-4 border-t border-black/[0.06]">
             <label className="text-sm font-medium">Cover Image</label>
             <p className="text-xs text-stone-500 mb-2">
               Used for generic social media previews when no other image is available.
@@ -171,7 +171,7 @@ export function BusinessEditor() {
               type="tel"
               value={data.phone}
               onChange={(e) => setData({ ...data, phone: e.target.value })}
-              className="w-full rounded-md border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-950 px-3 py-2 text-sm"
+              className="w-full rounded-xl border border-black/[0.08] bg-white/80 text-black px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black shadow-sm transition-all"
             />
           </div>
           <div className="space-y-2">
@@ -180,7 +180,7 @@ export function BusinessEditor() {
               type="tel"
               value={data.whatsapp}
               onChange={(e) => setData({ ...data, whatsapp: e.target.value })}
-              className="w-full rounded-md border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-950 px-3 py-2 text-sm"
+              className="w-full rounded-xl border border-black/[0.08] bg-white/80 text-black px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black shadow-sm transition-all"
             />
           </div>
           <div className="space-y-2">
@@ -189,7 +189,7 @@ export function BusinessEditor() {
               type="email"
               value={data.email}
               onChange={(e) => setData({ ...data, email: e.target.value })}
-              className="w-full rounded-md border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-950 px-3 py-2 text-sm"
+              className="w-full rounded-xl border border-black/[0.08] bg-white/80 text-black px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black shadow-sm transition-all"
             />
           </div>
           <div className="space-y-2">
@@ -199,7 +199,7 @@ export function BusinessEditor() {
               placeholder="https://"
               value={data.website}
               onChange={(e) => setData({ ...data, website: e.target.value })}
-              className="w-full rounded-md border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-950 px-3 py-2 text-sm"
+              className="w-full rounded-xl border border-black/[0.08] bg-white/80 text-black px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black shadow-sm transition-all"
             />
           </div>
         </div>
@@ -213,7 +213,7 @@ export function BusinessEditor() {
             <input
               value={data.street}
               onChange={(e) => setData({ ...data, street: e.target.value })}
-              className="w-full rounded-md border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-950 px-3 py-2 text-sm"
+              className="w-full rounded-xl border border-black/[0.08] bg-white/80 text-black px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black shadow-sm transition-all"
             />
           </div>
           <div className="grid grid-cols-2 gap-4">
@@ -222,7 +222,7 @@ export function BusinessEditor() {
               <input
                 value={data.city}
                 onChange={(e) => setData({ ...data, city: e.target.value })}
-                className="w-full rounded-md border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-950 px-3 py-2 text-sm"
+                className="w-full rounded-xl border border-black/[0.08] bg-white/80 text-black px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black shadow-sm transition-all"
               />
             </div>
             <div className="space-y-2">
@@ -230,7 +230,7 @@ export function BusinessEditor() {
               <input
                 value={data.state}
                 onChange={(e) => setData({ ...data, state: e.target.value })}
-                className="w-full rounded-md border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-950 px-3 py-2 text-sm"
+                className="w-full rounded-xl border border-black/[0.08] bg-white/80 text-black px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black shadow-sm transition-all"
               />
             </div>
             <div className="space-y-2">
@@ -238,7 +238,7 @@ export function BusinessEditor() {
               <input
                 value={data.postalCode}
                 onChange={(e) => setData({ ...data, postalCode: e.target.value })}
-                className="w-full rounded-md border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-950 px-3 py-2 text-sm"
+                className="w-full rounded-xl border border-black/[0.08] bg-white/80 text-black px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black shadow-sm transition-all"
               />
             </div>
             <div className="space-y-2">
@@ -246,11 +246,11 @@ export function BusinessEditor() {
               <input
                 value={data.country}
                 onChange={(e) => setData({ ...data, country: e.target.value })}
-                className="w-full rounded-md border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-950 px-3 py-2 text-sm"
+                className="w-full rounded-xl border border-black/[0.08] bg-white/80 text-black px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black shadow-sm transition-all"
               />
             </div>
           </div>
-          <div className="pt-4 border-t border-stone-100 dark:border-stone-800 space-y-4">
+          <div className="pt-4 border-t border-black/[0.06] space-y-4">
             <div className="space-y-2">
               <label className="text-sm font-medium">Google Maps URL</label>
               <input
@@ -258,7 +258,7 @@ export function BusinessEditor() {
                 value={data.googleMapsUrl}
                 onChange={(e) => setData({ ...data, googleMapsUrl: e.target.value })}
                 placeholder="https://maps.google.com/..."
-                className="w-full rounded-md border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-950 px-3 py-2 text-sm"
+                className="w-full rounded-xl border border-black/[0.08] bg-white/80 text-black px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black shadow-sm transition-all"
               />
             </div>
             <div className="grid grid-cols-2 gap-4">
@@ -274,7 +274,7 @@ export function BusinessEditor() {
                       latitude: e.target.value ? parseFloat(e.target.value) : null,
                     })
                   }
-                  className="w-full rounded-md border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-950 px-3 py-2 text-sm"
+                  className="w-full rounded-xl border border-black/[0.08] bg-white/80 text-black px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black shadow-sm transition-all"
                 />
               </div>
               <div className="space-y-2">
@@ -289,7 +289,7 @@ export function BusinessEditor() {
                       longitude: e.target.value ? parseFloat(e.target.value) : null,
                     })
                   }
-                  className="w-full rounded-md border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-950 px-3 py-2 text-sm"
+                  className="w-full rounded-xl border border-black/[0.08] bg-white/80 text-black px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black shadow-sm transition-all"
                 />
               </div>
             </div>
@@ -316,7 +316,7 @@ export function BusinessEditor() {
                   placeholder={`https://${platform === 'x' ? 'twitter' : platform}.com/...`}
                   value={data[platform]}
                   onChange={(e) => setData({ ...data, [platform]: e.target.value })}
-                  className="w-full rounded-md border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-950 px-3 py-2 text-sm"
+                  className="w-full rounded-xl border border-black/[0.08] bg-white/80 text-black px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black shadow-sm transition-all"
                 />
               </div>
             ),
@@ -339,7 +339,7 @@ export function BusinessEditor() {
             <input
               value={data.seoTitle}
               onChange={(e) => setData({ ...data, seoTitle: e.target.value })}
-              className="w-full rounded-md border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-950 px-3 py-2 text-sm"
+              className="w-full rounded-xl border border-black/[0.08] bg-white/80 text-black px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black shadow-sm transition-all"
             />
             <p className="text-xs text-stone-500">
               The title that appears in search engine results.
@@ -358,7 +358,7 @@ export function BusinessEditor() {
               value={data.seoDescription}
               onChange={(e) => setData({ ...data, seoDescription: e.target.value })}
               rows={3}
-              className="w-full rounded-md border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-950 px-3 py-2 text-sm resize-none"
+              className="w-full rounded-xl border border-black/[0.08] bg-white/80 text-black px-3.5 py-2.5 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-black shadow-sm transition-all"
             />
             <p className="text-xs text-stone-500">
               The description snippet that appears below the title.
@@ -370,7 +370,7 @@ export function BusinessEditor() {
               value={data.keywords}
               onChange={(e) => setData({ ...data, keywords: e.target.value })}
               placeholder="bakery, artisan, bread, comma separated"
-              className="w-full rounded-md border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-950 px-3 py-2 text-sm"
+              className="w-full rounded-xl border border-black/[0.08] bg-white/80 text-black px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black shadow-sm transition-all"
             />
           </div>
         </div>

@@ -452,3 +452,15 @@ model WebsiteVisit {
   @@index([path])
   @@index([createdAt, visitorId])
 }
+
+// -----------------------------------------------------------------------------
+// SYSTEM SETTINGS (Cross-Instance Configuration & Maintenance)
+// -----------------------------------------------------------------------------
+
+model SystemSetting {
+  key       String   @id
+  value     String
+  updatedAt DateTime @default(now()) @updatedAt
+  updatedBy String?
+}
+

@@ -16,7 +16,7 @@ export function Breadcrumb() {
         <li className="inline-flex items-center">
           <Link
             href="/dashboard"
-            className="inline-flex items-center hover:text-stone-900 dark:hover:text-stone-50 transition-colors"
+            className="inline-flex items-center hover:text-stone-900 transition-colors"
           >
             <Home className="w-4 h-4 mr-2" />
             Admin
@@ -32,14 +32,11 @@ export function Breadcrumb() {
               <div className="flex items-center">
                 <ChevronRight className="w-4 h-4 text-stone-400 mx-1" />
                 {isLast ? (
-                  <span className="text-stone-900 dark:text-stone-50" aria-current="page">
+                  <span className="text-stone-900 font-semibold" aria-current="page">
                     {label}
                   </span>
                 ) : (
-                  <Link
-                    href={href}
-                    className="hover:text-stone-900 dark:hover:text-stone-50 transition-colors"
-                  >
+                  <Link href={href} className="hover:text-stone-900 transition-colors">
                     {label}
                   </Link>
                 )}
