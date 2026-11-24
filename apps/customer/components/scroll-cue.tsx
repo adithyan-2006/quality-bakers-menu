@@ -61,17 +61,17 @@ export function ScrollCue() {
         opacity,
         pointerEvents: opacity <= 0.05 ? 'none' : 'auto',
       }}
-      className="group flex flex-col items-center justify-center cursor-pointer outline-none focus-visible:ring-1 focus-visible:ring-[#FDFADB]/60 rounded-full py-1 px-3 select-none animate-scroll-jump transition-opacity duration-150 will-change-[opacity]"
+      className="group flex flex-col items-center justify-center cursor-pointer outline-none focus-visible:ring-1 focus-visible:ring-[#FDFADB]/60 rounded-full py-1.5 px-3.5 select-none animate-scroll-jump transition-opacity duration-150 will-change-[opacity]"
     >
-      <span className="font-sans font-[200] text-[10px] sm:text-[11px] tracking-[0.25em] pl-[0.25em] uppercase text-[#FDFADB] leading-none select-none block text-center">
+      <span className="font-sans font-semibold text-xs sm:text-[13px] tracking-[0.25em] pl-[0.25em] uppercase text-[#FDFADB] leading-none select-none block text-center drop-shadow-[0_1px_2px_rgba(0,0,0,0.35)]">
         SCROLL
       </span>
       <svg
-        className="w-3.5 h-3.5 text-[#FDFADB] mt-1 shrink-0"
+        className="w-4 h-4 text-[#FDFADB] mt-1 shrink-0 drop-shadow-[0_1px_2px_rgba(0,0,0,0.35)] transition-transform group-hover:translate-y-0.5"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        strokeWidth="1.5"
+        strokeWidth="2.5"
         strokeLinecap="round"
         strokeLinejoin="round"
         aria-hidden="true"
