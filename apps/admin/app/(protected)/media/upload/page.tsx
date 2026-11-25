@@ -8,7 +8,7 @@ export default function MediaUploadPage() {
       <div className="flex items-center gap-4">
         <Link
           href="/media"
-          className="p-2 text-stone-500 hover:text-stone-900 dark:hover:text-stone-50 bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 rounded-md shadow-sm transition-colors"
+          className="p-2 text-stone-500 hover:text-stone-900 bg-white/80 backdrop-blur-sm border border-black/10 rounded-lg shadow-sm transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
         </Link>

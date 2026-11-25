@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { AdminProduct } from '../repositories/product-repo';
 import {
   duplicateProductAction,
@@ -32,7 +32,14 @@ export function ProductList({ initialProducts, categories }: ProductListProps) {
   const [filterHighlight, setFilterHighlight] = useState<string>('all');
 
   // Sort
-  const [sortBy, setSortBy] = useState<'newest' | 'oldest' | 'price' | 'alphabetical'>('newest');
+  const [sortBy, setSortBy] = useState<
+    'newest' | 'oldest' | 'price' | 'alphabetical' | 'menu-order'
+  >('newest');
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setProducts(initialProducts);
+  }, [initialProducts]);
 
   const categoryMap = useMemo(() => {
     return categories.reduce(
@@ -87,6 +94,8 @@ export function ProductList({ initialProducts, categories }: ProductListProps) {
           return a.price - b.price;
         case 'alphabetical':
           return a.name.localeCompare(b.name);
+        case 'menu-order':
+          return a.displayOrder - b.displayOrder;
         default:
           return 0;
       }
@@ -151,7 +160,7 @@ export function ProductList({ initialProducts, categories }: ProductListProps) {
   return (
     <div className="space-y-6">
       {/* Controls Bar */}
-      <div className="flex flex-col md:flex-row gap-4 bg-white dark:bg-stone-900 p-4 rounded-xl border border-stone-200 dark:border-stone-800 shadow-sm">
+      <div className="flex flex-col md:flex-row gap-4 bg-white/80 backdrop-blur-md p-4 rounded-xl border border-black/[0.07] shadow-[0_8px_30px_rgb(0,0,0,0.03),inset_0_1px_0_0_rgba(255,255,255,0.9)]">
         <div className="flex-1 relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-stone-400 w-5 h-5" />
           <input
@@ -159,12 +168,12 @@ export function ProductList({ initialProducts, categories }: ProductListProps) {
             placeholder="Search products, descriptions, or categories..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 rounded-lg border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-stone-950 text-sm focus:outline-none focus:ring-2 focus:ring-stone-500 dark:focus:ring-stone-400"
+            className="w-full pl-10 pr-4 py-2 rounded-lg border border-black/10 bg-white/70 backdrop-blur-sm text-sm text-stone-900 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
           />
         </div>
         <div className="flex flex-wrap gap-3">
           <select
-            className="px-3 py-2 text-sm rounded-lg border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-stone-950 text-stone-700 dark:text-stone-300 focus:outline-none focus:ring-2 focus:ring-stone-500"
+            className="px-3 py-2 text-sm rounded-lg border border-black/10 bg-white/70 backdrop-blur-sm text-stone-900 focus:outline-none focus:ring-2 focus:ring-black"
             value={filterCategory}
             onChange={(e) => setFilterCategory(e.target.value)}
           >
@@ -176,7 +185,7 @@ export function ProductList({ initialProducts, categories }: ProductListProps) {
             ))}
           </select>
           <select
-            className="px-3 py-2 text-sm rounded-lg border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-stone-950 text-stone-700 dark:text-stone-300 focus:outline-none focus:ring-2 focus:ring-stone-500"
+            className="px-3 py-2 text-sm rounded-lg border border-black/10 bg-white/70 backdrop-blur-sm text-stone-900 focus:outline-none focus:ring-2 focus:ring-black"
             value={filterStatus}
             onChange={(e) => setFilterStatus(e.target.value)}
           >
@@ -186,7 +195,7 @@ export function ProductList({ initialProducts, categories }: ProductListProps) {
             <option value="hidden">Hidden</option>
           </select>
           <select
-            className="px-3 py-2 text-sm rounded-lg border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-stone-950 text-stone-700 dark:text-stone-300 focus:outline-none focus:ring-2 focus:ring-stone-500"
+            className="px-3 py-2 text-sm rounded-lg border border-black/10 bg-white/70 backdrop-blur-sm text-stone-900 focus:outline-none focus:ring-2 focus:ring-black"
             value={filterAvailability}
             onChange={(e) => setFilterAvailability(e.target.value)}
           >
@@ -196,7 +205,7 @@ export function ProductList({ initialProducts, categories }: ProductListProps) {
             <option value="seasonal">Seasonal</option>
           </select>
           <select
-            className="px-3 py-2 text-sm rounded-lg border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-stone-950 text-stone-700 dark:text-stone-300 focus:outline-none focus:ring-2 focus:ring-stone-500"
+            className="px-3 py-2 text-sm rounded-lg border border-black/10 bg-white/70 backdrop-blur-sm text-stone-900 focus:outline-none focus:ring-2 focus:ring-black"
             value={filterHighlight}
             onChange={(e) => setFilterHighlight(e.target.value)}
           >
@@ -205,7 +214,7 @@ export function ProductList({ initialProducts, categories }: ProductListProps) {
             <option value="signature">Signature</option>
           </select>
           <select
-            className="px-3 py-2 text-sm rounded-lg border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-stone-950 text-stone-700 dark:text-stone-300 focus:outline-none focus:ring-2 focus:ring-stone-500"
+            className="px-3 py-2 text-sm rounded-lg border border-black/10 bg-white/70 backdrop-blur-sm text-stone-900 focus:outline-none focus:ring-2 focus:ring-black"
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value as any)}
           >
@@ -213,49 +222,55 @@ export function ProductList({ initialProducts, categories }: ProductListProps) {
             <option value="oldest">Sort: Oldest</option>
             <option value="price">Sort: Price</option>
             <option value="alphabetical">Sort: A-Z</option>
+            <option value="menu-order">Sort: Menu Order</option>
           </select>
+        </div>
+        <div className="flex items-center justify-between text-xs text-stone-500 px-1 pt-1">
+          <span>
+            Showing {filteredAndSortedProducts.length} of {products.length} products
+          </span>
         </div>
       </div>
 
       {filteredAndSortedProducts.length === 0 ? (
-        <div className="text-center py-12 bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 rounded-xl shadow-sm">
-          <p className="text-stone-500">No products found matching your criteria.</p>
+        <div className="text-center py-12 bg-white/85 backdrop-blur-md border border-black/[0.08] rounded-2xl shadow-glass">
+          <p className="text-stone-500 font-medium">No products found matching your criteria.</p>
         </div>
       ) : (
-        <div className="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 rounded-xl shadow-sm overflow-hidden">
+        <div className="bg-white/85 backdrop-blur-md border border-black/[0.08] rounded-2xl shadow-glass overflow-hidden">
           {/* Desktop Table View */}
           <div className="hidden md:block overflow-x-auto">
             <table className="w-full text-left text-sm whitespace-nowrap">
-              <thead className="bg-stone-50 dark:bg-stone-950 border-b border-stone-200 dark:border-stone-800">
+              <thead className="bg-black/[0.02] border-b border-black/[0.06]">
                 <tr>
-                  <th className="px-6 py-4 font-medium text-stone-500 dark:text-stone-400">
+                  <th className="px-6 py-3.5 font-bold text-xs uppercase tracking-wider text-stone-600">
                     Product
                   </th>
-                  <th className="px-6 py-4 font-medium text-stone-500 dark:text-stone-400">
+                  <th className="px-6 py-3.5 font-bold text-xs uppercase tracking-wider text-stone-600">
                     Category
                   </th>
-                  <th className="px-6 py-4 font-medium text-stone-500 dark:text-stone-400">
+                  <th className="px-6 py-3.5 font-bold text-xs uppercase tracking-wider text-stone-600">
                     Price
                   </th>
-                  <th className="px-6 py-4 font-medium text-stone-500 dark:text-stone-400">
+                  <th className="px-6 py-3.5 font-bold text-xs uppercase tracking-wider text-stone-600">
                     Status
                   </th>
-                  <th className="px-6 py-4 font-medium text-stone-500 dark:text-stone-400 text-right">
+                  <th className="px-6 py-3.5 font-bold text-xs uppercase tracking-wider text-stone-600 text-right">
                     Actions
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-stone-200 dark:divide-stone-800">
+              <tbody className="divide-y divide-black/[0.04]">
                 {filteredAndSortedProducts.map((product) => (
                   <tr
                     key={product.id}
                     className={cn(
-                      'hover:bg-stone-50 dark:hover:bg-stone-800/50 transition-colors',
+                      'hover:bg-black/[0.02] transition-colors',
                       !product.isVisible && 'opacity-60',
                     )}
                   >
                     <td className="px-6 py-4 flex items-center gap-4">
-                      <div className="w-12 h-12 bg-stone-100 dark:bg-stone-800 rounded-md overflow-hidden flex-shrink-0 border border-stone-200 dark:border-stone-700">
+                      <div className="w-12 h-12 bg-black/[0.04] rounded-xl overflow-hidden flex-shrink-0 border border-black/[0.08]">
                         {product.image ? (
                           /* eslint-disable-next-line */
                           <img
@@ -270,9 +285,7 @@ export function ProductList({ initialProducts, categories }: ProductListProps) {
                         )}
                       </div>
                       <div>
-                        <div className="font-medium text-stone-900 dark:text-stone-50">
-                          {product.name}
-                        </div>
+                        <div className="font-bold text-black text-sm">{product.name}</div>
                         {product.badge !== 'none' && (
                           <div className="text-xs text-stone-500 capitalize">
                             {product.badge.replace('-', ' ')}
@@ -280,21 +293,19 @@ export function ProductList({ initialProducts, categories }: ProductListProps) {
                         )}
                       </div>
                     </td>
-                    <td className="px-6 py-4 text-stone-600 dark:text-stone-300">
+                    <td className="px-6 py-4 text-stone-700 font-semibold text-xs">
                       {categoryMap[product.categoryId] || 'Uncategorized'}
                     </td>
-                    <td className="px-6 py-4 font-medium text-stone-900 dark:text-stone-50">
-                      {formatPrice(product.price)}
-                    </td>
+                    <td className="px-6 py-4 font-bold text-black">{formatPrice(product.price)}</td>
                     <td className="px-6 py-4">
                       <div className="flex flex-col gap-1">
                         <span
                           className={cn(
-                            'inline-flex w-fit items-center px-2 py-0.5 rounded text-xs font-medium',
+                            'inline-flex w-fit items-center px-2.5 py-0.5 rounded-full text-xs font-semibold',
                             product.status === 'published'
-                              ? 'bg-emerald-100 text-emerald-800'
+                              ? 'bg-black text-white'
                               : product.status === 'draft'
-                                ? 'bg-stone-100 text-stone-800'
+                                ? 'bg-black/[0.05] text-stone-800 border border-black/[0.08]'
                                 : 'bg-rose-100 text-rose-800',
                           )}
                         >
@@ -302,23 +313,23 @@ export function ProductList({ initialProducts, categories }: ProductListProps) {
                         </span>
                         <span
                           className={cn(
-                            'inline-flex w-fit items-center px-2 py-0.5 rounded text-xs font-medium',
+                            'inline-flex w-fit items-center px-2 py-0.5 rounded-full text-xs font-semibold',
                             product.availabilityStatus === 'available'
-                              ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                              ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
                               : product.availabilityStatus === 'seasonal'
-                                ? 'bg-amber-50 text-amber-700 border border-amber-200'
-                                : 'bg-rose-50 text-rose-700 border border-rose-200',
+                                ? 'bg-amber-50 text-amber-800 border border-amber-200'
+                                : 'bg-rose-50 text-rose-800 border border-rose-200',
                           )}
                         >
                           {product.availabilityStatus.replace('-', ' ')}
                         </span>
                         {product.isFeatured && (
-                          <span className="inline-flex w-fit items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-800 border border-amber-200">
+                          <span className="inline-flex w-fit items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-black text-white">
                             ★ Featured
                           </span>
                         )}
                         {product.isSignature && (
-                          <span className="inline-flex w-fit items-center px-2 py-0.5 rounded text-xs font-medium bg-rose-100 text-rose-800 border border-rose-200">
+                          <span className="inline-flex w-fit items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-black text-white">
                             ✦ Signature
                           </span>
                         )}
@@ -328,7 +339,7 @@ export function ProductList({ initialProducts, categories }: ProductListProps) {
                       <div className="flex items-center justify-end gap-2">
                         <button
                           onClick={() => handleToggleVisibility(product.id)}
-                          className="p-2 text-stone-500 hover:text-stone-900 bg-stone-50 hover:bg-stone-100 dark:bg-stone-800 dark:hover:bg-stone-700 dark:hover:text-stone-50 rounded-md transition-colors"
+                          className="p-2 text-stone-600 hover:text-black hover:bg-black/5 rounded-xl border border-black/[0.06] transition-all"
                           title={product.isVisible ? 'Hide Product' : 'Show Product'}
                         >
                           {product.isVisible ? (
@@ -339,28 +350,28 @@ export function ProductList({ initialProducts, categories }: ProductListProps) {
                         </button>
                         <button
                           onClick={() => handleDuplicate(product.id)}
-                          className="p-2 text-stone-500 hover:text-stone-900 bg-stone-50 hover:bg-stone-100 dark:bg-stone-800 dark:hover:bg-stone-700 dark:hover:text-stone-50 rounded-md transition-colors"
+                          className="p-2 text-stone-600 hover:text-black hover:bg-black/5 rounded-xl border border-black/[0.06] transition-all"
                           title="Duplicate Product"
                         >
                           <Copy className="w-4 h-4" />
                         </button>
                         <Link
                           href={`/products/${product.id}/preview`}
-                          className="p-2 text-stone-500 hover:text-stone-900 bg-stone-50 hover:bg-stone-100 dark:bg-stone-800 dark:hover:bg-stone-700 dark:hover:text-stone-50 rounded-md transition-colors"
+                          className="p-2 text-stone-600 hover:text-black hover:bg-black/5 rounded-xl border border-black/[0.06] transition-all"
                           title="Preview Product"
                         >
                           <Eye className="w-4 h-4" />
                         </Link>
                         <Link
                           href={`/products/${product.id}/edit`}
-                          className="p-2 text-stone-500 hover:text-stone-900 bg-stone-50 hover:bg-stone-100 dark:bg-stone-800 dark:hover:bg-stone-700 dark:hover:text-stone-50 rounded-md transition-colors"
+                          className="p-2 text-stone-600 hover:text-black hover:bg-black/5 rounded-xl border border-black/[0.06] transition-all"
                           title="Edit Product"
                         >
                           <Edit2 className="w-4 h-4" />
                         </Link>
                         <button
                           onClick={() => setProductToDelete(product)}
-                          className="p-2 text-rose-500 hover:text-rose-600 bg-rose-50 dark:bg-rose-500/10 hover:bg-rose-100 dark:hover:bg-rose-500/20 rounded-md transition-colors"
+                          className="p-2 text-rose-600 hover:text-rose-700 bg-rose-50 hover:bg-rose-100 rounded-xl border border-rose-200 transition-all"
                           title="Delete Product"
                         >
                           <Trash2 className="w-4 h-4" />
@@ -374,14 +385,14 @@ export function ProductList({ initialProducts, categories }: ProductListProps) {
           </div>
 
           {/* Mobile Card View */}
-          <div className="md:hidden divide-y divide-stone-200 dark:divide-stone-800">
+          <div className="md:hidden divide-y divide-black/[0.04]">
             {filteredAndSortedProducts.map((product) => (
               <div
                 key={product.id}
                 className={cn('p-4 space-y-4', !product.isVisible && 'opacity-60')}
               >
                 <div className="flex gap-4">
-                  <div className="w-16 h-16 bg-stone-100 dark:bg-stone-800 rounded-md overflow-hidden flex-shrink-0 border border-stone-200 dark:border-stone-700">
+                  <div className="w-16 h-16 bg-black/[0.04] rounded-xl overflow-hidden flex-shrink-0 border border-black/[0.08]">
                     {product.image ? (
                       /* eslint-disable-next-line */
                       <img
@@ -396,26 +407,22 @@ export function ProductList({ initialProducts, categories }: ProductListProps) {
                     )}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h4 className="font-medium text-stone-900 dark:text-stone-50 truncate">
-                      {product.name}
-                    </h4>
-                    <p className="text-sm text-stone-500">
+                    <h4 className="font-bold text-black text-sm truncate">{product.name}</h4>
+                    <p className="text-xs text-stone-500 font-medium">
                       {categoryMap[product.categoryId] || 'Uncategorized'}
                     </p>
-                    <p className="font-semibold text-stone-900 dark:text-stone-50 mt-1">
-                      {formatPrice(product.price)}
-                    </p>
+                    <p className="font-bold text-black mt-1">{formatPrice(product.price)}</p>
                   </div>
                 </div>
 
                 <div className="flex flex-wrap gap-2">
                   <span
                     className={cn(
-                      'inline-flex items-center px-2 py-0.5 rounded text-xs font-medium',
+                      'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold',
                       product.status === 'published'
-                        ? 'bg-emerald-100 text-emerald-800'
+                        ? 'bg-black text-white'
                         : product.status === 'draft'
-                          ? 'bg-stone-100 text-stone-800'
+                          ? 'bg-black/[0.05] text-stone-800 border border-black/[0.08]'
                           : 'bg-rose-100 text-rose-800',
                     )}
                   >
@@ -423,32 +430,32 @@ export function ProductList({ initialProducts, categories }: ProductListProps) {
                   </span>
                   <span
                     className={cn(
-                      'inline-flex items-center px-2 py-0.5 rounded text-xs font-medium',
+                      'inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold',
                       product.availabilityStatus === 'available'
-                        ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                        ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
                         : product.availabilityStatus === 'seasonal'
-                          ? 'bg-amber-50 text-amber-700 border border-amber-200'
-                          : 'bg-rose-50 text-rose-700 border border-rose-200',
+                          ? 'bg-amber-50 text-amber-800 border border-amber-200'
+                          : 'bg-rose-50 text-rose-800 border border-rose-200',
                     )}
                   >
                     {product.availabilityStatus.replace('-', ' ')}
                   </span>
                   {product.isFeatured && (
-                    <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-800 border border-amber-200">
+                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-black text-white">
                       ★ Featured
                     </span>
                   )}
                   {product.isSignature && (
-                    <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-rose-100 text-rose-800 border border-rose-200">
+                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-black text-white">
                       ✦ Signature
                     </span>
                   )}
                 </div>
 
-                <div className="flex items-center gap-2 pt-2 border-t border-stone-100 dark:border-stone-800">
+                <div className="flex items-center gap-2 pt-2 border-t border-black/[0.04]">
                   <button
                     onClick={() => handleToggleVisibility(product.id)}
-                    className="flex-1 p-2 flex justify-center items-center text-stone-500 hover:text-stone-900 bg-stone-50 hover:bg-stone-100 dark:bg-stone-800 dark:hover:bg-stone-700 rounded-md transition-colors"
+                    className="flex-1 p-2 flex justify-center items-center text-stone-600 hover:text-black bg-black/[0.04] hover:bg-black/10 rounded-xl transition-all"
                   >
                     {product.isVisible ? (
                       <EyeOff className="w-4 h-4" />
@@ -458,25 +465,25 @@ export function ProductList({ initialProducts, categories }: ProductListProps) {
                   </button>
                   <button
                     onClick={() => handleDuplicate(product.id)}
-                    className="flex-1 p-2 flex justify-center items-center text-stone-500 hover:text-stone-900 bg-stone-50 hover:bg-stone-100 dark:bg-stone-800 dark:hover:bg-stone-700 rounded-md transition-colors"
+                    className="flex-1 p-2 flex justify-center items-center text-stone-600 hover:text-black bg-black/[0.04] hover:bg-black/10 rounded-xl transition-all"
                   >
                     <Copy className="w-4 h-4" />
                   </button>
                   <Link
                     href={`/products/${product.id}/preview`}
-                    className="flex-1 p-2 flex justify-center items-center text-stone-500 hover:text-stone-900 bg-stone-50 hover:bg-stone-100 dark:bg-stone-800 dark:hover:bg-stone-700 rounded-md transition-colors"
+                    className="flex-1 p-2 flex justify-center items-center text-stone-600 hover:text-black bg-black/[0.04] hover:bg-black/10 rounded-xl transition-all"
                   >
                     <Eye className="w-4 h-4" />
                   </Link>
                   <Link
                     href={`/products/${product.id}/edit`}
-                    className="flex-1 p-2 flex justify-center items-center text-stone-500 hover:text-stone-900 bg-stone-50 hover:bg-stone-100 dark:bg-stone-800 dark:hover:bg-stone-700 rounded-md transition-colors"
+                    className="flex-1 p-2 flex justify-center items-center text-stone-600 hover:text-black bg-black/[0.04] hover:bg-black/10 rounded-xl transition-all"
                   >
                     <Edit2 className="w-4 h-4" />
                   </Link>
                   <button
                     onClick={() => setProductToDelete(product)}
-                    className="flex-1 p-2 flex justify-center items-center text-rose-500 hover:text-rose-600 bg-rose-50 hover:bg-rose-100 dark:bg-rose-500/10 dark:hover:bg-rose-500/20 rounded-md transition-colors"
+                    className="flex-1 p-2 flex justify-center items-center text-rose-600 hover:text-rose-700 bg-rose-50 hover:bg-rose-100 rounded-xl transition-all"
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>

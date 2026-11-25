@@ -4,8 +4,8 @@ import { getMaintenanceStatus } from '@/lib/maintenance-store';
 
 export const dynamic = 'force-dynamic';
 
-export function GET() {
-  const status = getMaintenanceStatus();
+export async function GET() {
+  const status = await getMaintenanceStatus();
   return new NextResponse(MAINTENANCE_HTML, {
     status: 503,
     headers: {

@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useAuth } from '../../../components/providers/auth-provider';
 import { updateUserAction } from '../../../features/users/actions/user-actions';
+import { changePasswordAction } from '../../../features/auth/actions/auth-actions';
 import { MediaPicker } from '../../../features/media/components/media-picker';
 import { CollapsibleSection } from '../../../components/ui/collapsible-section';
 import { User, Lock, Mail, Phone, Loader2 } from 'lucide-react';
@@ -37,13 +38,16 @@ export default function ProfilePage() {
 
   const handlePasswordChange = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!currentPassword || !newPassword) return;
+    if (!user || !newPassword) return;
     setIsSaving(true);
     try {
-      // Mock change password
+      await changePasswordAction(user.id, newPassword);
       alert('Password updated successfully');
       setCurrentPassword('');
       setNewPassword('');
+    } catch (err: any) {
+      console.error(err);
+      alert(err?.message || 'Failed to update password');
     } finally {
       setIsSaving(false);
     }
@@ -60,7 +64,7 @@ export default function ProfilePage() {
 
       <CollapsibleSection title="Personal Information" defaultOpen>
         <form onSubmit={handleSaveProfile} className="space-y-6">
-          <div className="flex items-center gap-6 pb-6 border-b border-stone-100 dark:border-stone-800">
+          <div className="flex items-center gap-6 pb-6 border-b border-black/[0.06]">
             <div className="flex-shrink-0">
               <MediaPicker
                 value={avatarId}
@@ -68,7 +72,7 @@ export default function ProfilePage() {
                 multiple={false}
                 trigger={
                   <div className="relative group cursor-pointer">
-                    <div className="w-24 h-24 rounded-full overflow-hidden bg-stone-100 dark:bg-stone-900 border border-stone-200 dark:border-stone-800 flex items-center justify-center">
+                    <div className="w-24 h-24 rounded-full overflow-hidden bg-white border border-black/10 flex items-center justify-center">
                       {user.avatar ? (
                         <img
                           src={user.avatar}
@@ -100,7 +104,7 @@ export default function ProfilePage() {
                 <input
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full rounded-md border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-950 pl-10 pr-3 py-2 text-sm"
+                  className="w-full rounded-xl border border-black/[0.08] bg-white/80 text-black pl-10 pr-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black shadow-sm transition-all"
                 />
               </div>
             </div>
@@ -112,7 +116,7 @@ export default function ProfilePage() {
                 <input
                   value={user.email}
                   disabled
-                  className="w-full rounded-md border border-stone-300 dark:border-stone-700 bg-stone-100 dark:bg-stone-900 text-stone-500 pl-10 pr-3 py-2 text-sm"
+                  className="w-full rounded-xl border border-black/[0.08] bg-stone-100 text-stone-600 pl-10 pr-3.5 py-2.5 text-sm"
                 />
               </div>
             </div>
@@ -124,7 +128,7 @@ export default function ProfilePage() {
                 <input
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  className="w-full rounded-md border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-950 pl-10 pr-3 py-2 text-sm"
+                  className="w-full rounded-xl border border-black/[0.08] bg-white/80 text-black pl-10 pr-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black shadow-sm transition-all"
                 />
               </div>
             </div>
@@ -134,7 +138,7 @@ export default function ProfilePage() {
             <button
               type="submit"
               disabled={isSaving}
-              className="px-4 py-2 bg-stone-900 dark:bg-stone-50 text-stone-50 dark:text-stone-900 rounded-md font-medium text-sm hover:bg-stone-800 dark:hover:bg-stone-200 transition-colors flex items-center gap-2"
+              className="px-4 py-2 bg-black text-white rounded-lg font-medium text-sm hover:bg-stone-800 transition-all shadow-sm flex items-center gap-2"
             >
               {isSaving && <Loader2 className="w-4 h-4 animate-spin" />}
               Save Changes
@@ -155,7 +159,7 @@ export default function ProfilePage() {
                   required
                   value={currentPassword}
                   onChange={(e) => setCurrentPassword(e.target.value)}
-                  className="w-full rounded-md border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-950 pl-10 pr-3 py-2 text-sm"
+                  className="w-full rounded-xl border border-black/[0.08] bg-white/80 text-black pl-10 pr-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black shadow-sm transition-all"
                 />
               </div>
             </div>
@@ -168,7 +172,7 @@ export default function ProfilePage() {
                   required
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
-                  className="w-full rounded-md border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-950 pl-10 pr-3 py-2 text-sm"
+                  className="w-full rounded-xl border border-black/[0.08] bg-white/80 text-black pl-10 pr-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black shadow-sm transition-all"
                 />
               </div>
             </div>
@@ -178,7 +182,7 @@ export default function ProfilePage() {
             <button
               type="submit"
               disabled={isSaving}
-              className="px-4 py-2 border border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900 rounded-md font-medium text-sm hover:bg-stone-50 dark:hover:bg-stone-800 transition-colors flex items-center gap-2"
+              className="px-4 py-2 bg-black text-white rounded-lg font-medium text-sm hover:bg-stone-800 transition-all shadow-sm flex items-center gap-2"
             >
               Update Password
             </button>

@@ -36,19 +36,22 @@ export default async function BusinessPreviewPage() {
   };
 
   return (
-    <div className="min-h-screen bg-stone-50 dark:bg-stone-950 pb-20 font-sans">
+    <div className="min-h-screen bg-[#F8F9FA] pb-20 font-sans">
       {/* Admin Preview Header */}
-      <div className="sticky top-0 z-50 bg-stone-900 text-stone-50 px-4 py-3 flex items-center justify-between shadow-md">
+      <div className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-black/[0.08] px-4 py-3 flex items-center justify-between shadow-glass">
         <div className="flex items-center gap-4">
-          <Link href="/business" className="p-2 hover:bg-stone-800 rounded-md transition-colors">
+          <Link
+            href="/business"
+            className="p-2 hover:bg-black/5 rounded-xl transition-colors text-black"
+          >
             <ArrowLeft className="w-5 h-5" />
           </Link>
           <div>
-            <h1 className="font-semibold text-sm">Live Preview Mode</h1>
-            <p className="text-xs text-stone-400">Viewing '{business.status}' state</p>
+            <h1 className="font-bold text-sm text-black">Live Preview Mode</h1>
+            <p className="text-xs text-stone-600">Viewing '{business.status}' state</p>
           </div>
         </div>
-        <div className="text-xs font-medium bg-emerald-500/20 text-emerald-400 px-3 py-1 rounded-full border border-emerald-500/30">
+        <div className="text-xs font-semibold bg-black text-white px-3 py-1 rounded-full shadow-sm">
           Preview Active
         </div>
       </div>
@@ -56,25 +59,23 @@ export default async function BusinessPreviewPage() {
       <div className="max-w-5xl mx-auto px-4 py-12 space-y-24">
         {/* Meta / SEO Preview Section */}
         <section className="space-y-6">
-          <h2 className="text-xs font-bold uppercase tracking-widest text-stone-400 border-b border-stone-200 dark:border-stone-800 pb-2">
+          <h2 className="text-xs font-bold uppercase tracking-widest text-stone-600 border-b border-black/[0.08] pb-2">
             Search Engine Preview
           </h2>
-          <div className="max-w-2xl bg-white dark:bg-stone-900 p-6 rounded-xl border border-stone-200 dark:border-stone-800 shadow-sm">
-            <div className="text-sm text-stone-600 dark:text-stone-400 mb-1 flex items-center gap-2">
+          <div className="max-w-2xl bg-white/80 backdrop-blur-md p-6 rounded-2xl border border-black/[0.08] shadow-glass">
+            <div className="text-sm text-stone-600 mb-1 flex items-center gap-2">
               {business.favicon && (
                 <img src={business.favicon} alt="Favicon" className="w-4 h-4 rounded-full" />
               )}
               {business.website || 'https://example.com'}
             </div>
-            <div className="text-xl text-blue-600 dark:text-blue-400 font-medium hover:underline cursor-pointer mb-1">
+            <div className="text-xl text-black font-semibold hover:underline cursor-pointer mb-1">
               {business.seoTitle}
             </div>
-            <div className="text-sm text-stone-700 dark:text-stone-300">
-              {business.seoDescription}
-            </div>
-            <div className="mt-4 pt-4 border-t border-stone-100 dark:border-stone-800">
-              <p className="text-xs text-stone-500">
-                <span className="font-medium">Keywords:</span> {business.keywords}
+            <div className="text-sm text-stone-700">{business.seoDescription}</div>
+            <div className="mt-4 pt-4 border-t border-black/[0.06]">
+              <p className="text-xs text-stone-600">
+                <span className="font-bold text-black">Keywords:</span> {business.keywords}
               </p>
             </div>
           </div>
@@ -82,18 +83,18 @@ export default async function BusinessPreviewPage() {
 
         {/* Contact Page Preview Section */}
         <section className="space-y-6">
-          <h2 className="text-xs font-bold uppercase tracking-widest text-stone-400 border-b border-stone-200 dark:border-stone-800 pb-2">
+          <h2 className="text-xs font-bold uppercase tracking-widest text-stone-600 border-b border-black/[0.08] pb-2">
             Contact Page Preview
           </h2>
 
-          <div className="bg-white dark:bg-stone-900 rounded-2xl overflow-hidden shadow-xl border border-stone-100 dark:border-stone-800">
+          <div className="bg-white rounded-2xl overflow-hidden shadow-xl border border-black/[0.08]">
             {business.coverImage && (
               <div className="h-48 md:h-64 w-full relative">
                 <img src={business.coverImage} alt="Cover" className="w-full h-full object-cover" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end">
                   <div className="p-8 flex items-center gap-6">
                     {business.logo && (
-                      <div className="w-24 h-24 rounded-full border-4 border-white dark:border-stone-900 overflow-hidden bg-white shadow-lg">
+                      <div className="w-24 h-24 rounded-full border-4 border-white overflow-hidden bg-white shadow-lg">
                         <img
                           src={business.logo}
                           alt="Logo"
@@ -111,20 +112,18 @@ export default async function BusinessPreviewPage() {
             )}
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
-              <div className="p-8 md:p-12 space-y-8 bg-stone-50 dark:bg-stone-950/50">
+              <div className="p-8 md:p-12 space-y-8 bg-[#F8F9FA]">
                 <div>
-                  <h4 className="text-xl font-bold text-stone-900 dark:text-stone-50 mb-4">
-                    Get in Touch
-                  </h4>
-                  <p className="text-stone-600 dark:text-stone-400 mb-6">{business.description}</p>
+                  <h4 className="text-xl font-bold text-black mb-4">Get in Touch</h4>
+                  <p className="text-stone-700 mb-6">{business.description}</p>
                 </div>
 
                 <div className="space-y-4">
                   <div className="flex items-start gap-4">
-                    <MapPin className="w-6 h-6 text-stone-400 shrink-0 mt-1" />
+                    <MapPin className="w-6 h-6 text-stone-500 shrink-0 mt-1" />
                     <div>
-                      <p className="font-medium text-stone-900 dark:text-stone-50">Visit Us</p>
-                      <p className="text-stone-600 dark:text-stone-400 mt-1">
+                      <p className="font-bold text-black">Visit Us</p>
+                      <p className="text-stone-700 mt-1">
                         {business.street}
                         <br />
                         {business.city}, {business.state} {business.postalCode}
@@ -135,48 +134,40 @@ export default async function BusinessPreviewPage() {
                   </div>
 
                   <div className="flex items-start gap-4">
-                    <Phone className="w-6 h-6 text-stone-400 shrink-0 mt-1" />
+                    <Phone className="w-6 h-6 text-stone-500 shrink-0 mt-1" />
                     <div>
-                      <p className="font-medium text-stone-900 dark:text-stone-50">
-                        Call or WhatsApp
-                      </p>
-                      <p className="text-stone-600 dark:text-stone-400 mt-1">{business.phone}</p>
+                      <p className="font-bold text-black">Call or WhatsApp</p>
+                      <p className="text-stone-700 mt-1">{business.phone}</p>
                       {business.whatsapp && business.whatsapp !== business.phone && (
-                        <p className="text-stone-600 dark:text-stone-400">
-                          {business.whatsapp} (WhatsApp)
-                        </p>
+                        <p className="text-stone-700">{business.whatsapp} (WhatsApp)</p>
                       )}
                     </div>
                   </div>
 
                   <div className="flex items-start gap-4">
-                    <Mail className="w-6 h-6 text-stone-400 shrink-0 mt-1" />
+                    <Mail className="w-6 h-6 text-stone-500 shrink-0 mt-1" />
                     <div>
-                      <p className="font-medium text-stone-900 dark:text-stone-50">Email</p>
-                      <p className="text-stone-600 dark:text-stone-400 mt-1">{business.email}</p>
+                      <p className="font-bold text-black">Email</p>
+                      <p className="text-stone-700 mt-1">{business.email}</p>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <div className="p-8 md:p-12 bg-white dark:bg-stone-900">
+              <div className="p-8 md:p-12 bg-white">
                 <div className="flex items-center gap-3 mb-6">
-                  <Clock className="w-6 h-6 text-stone-400" />
-                  <h4 className="text-xl font-bold text-stone-900 dark:text-stone-50">
-                    Opening Hours
-                  </h4>
+                  <Clock className="w-6 h-6 text-stone-500" />
+                  <h4 className="text-xl font-bold text-black">Opening Hours</h4>
                 </div>
 
                 <div className="space-y-3">
                   {DAYS.map((day) => (
                     <div
                       key={day}
-                      className="flex justify-between items-center py-2 border-b border-stone-100 dark:border-stone-800 last:border-0"
+                      className="flex justify-between items-center py-2 border-b border-black/[0.06] last:border-0"
                     >
-                      <span className="font-medium capitalize text-stone-600 dark:text-stone-400">
-                        {day}
-                      </span>
-                      <span className="text-stone-900 dark:text-stone-50 font-medium text-right">
+                      <span className="font-semibold capitalize text-stone-700">{day}</span>
+                      <span className="text-black font-bold text-right">
                         {renderHours(business.hours[day])}
                       </span>
                     </div>
@@ -184,7 +175,7 @@ export default async function BusinessPreviewPage() {
                 </div>
 
                 {business.hours.holidayHours && (
-                  <div className="mt-6 p-4 rounded-lg bg-rose-50 dark:bg-rose-950/30 text-rose-800 dark:text-rose-200 text-sm">
+                  <div className="mt-6 p-4 rounded-xl bg-black/[0.04] border border-black/10 text-black text-sm">
                     <span className="font-bold block mb-1">Holiday Note:</span>
                     {business.hours.holidayHours}
                   </div>
@@ -196,7 +187,7 @@ export default async function BusinessPreviewPage() {
 
         {/* Footer Preview Section */}
         <section className="space-y-6">
-          <h2 className="text-xs font-bold uppercase tracking-widest text-stone-400 border-b border-stone-200 dark:border-stone-800 pb-2">
+          <h2 className="text-xs font-bold uppercase tracking-widest text-stone-600 border-b border-black/[0.08] pb-2">
             Footer Preview
           </h2>
 

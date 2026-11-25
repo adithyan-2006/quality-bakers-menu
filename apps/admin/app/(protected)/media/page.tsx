@@ -15,7 +15,7 @@ export default async function MediaLibraryPage() {
         </div>
         <Link
           href="/media/upload"
-          className="inline-flex items-center gap-2 px-4 py-2 bg-stone-900 text-stone-50 rounded-md font-medium text-sm hover:bg-stone-800 transition-colors shadow-sm"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-black text-white rounded-lg font-medium text-sm hover:bg-stone-800 transition-all shadow-sm"
         >
           <Plus className="w-4 h-4" />
           Upload Image

@@ -103,8 +103,8 @@ export function CategoryList({ initialCategories }: CategoryListProps) {
 
   if (categories.length === 0) {
     return (
-      <div className="text-center py-12 bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 rounded-xl shadow-sm">
-        <p className="text-stone-500">
+      <div className="text-center py-12 bg-white/80 backdrop-blur-md border border-black/[0.08] rounded-2xl shadow-glass">
+        <p className="text-stone-600 font-medium">
           No categories found. Start by creating your first category.
         </p>
       </div>

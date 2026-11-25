@@ -1,0 +1,8 @@
+{
+  "enabled": true,
+  "activatedAt": "2026-11-24T16:27:20.524Z",
+  "deactivatedAt": null,
+  "activatedBy": "sarah@qualitybakers.com",
+  "message": "We're performing a rapid reboot. Please refresh your browser shortly.",
+  "retryAfter": 300
+}

@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Invalid payload' }, { status: 400 });
     }
 
-    const updated = setMaintenanceStatus(body);
+    const updated = await setMaintenanceStatus(body);
     return NextResponse.json({ success: true, status: updated });
   } catch (err) {
     console.error('[API /api/maintenance/sync] Error:', err);

@@ -32,30 +32,32 @@ export default async function PreviewCategoryPage({ params }: PreviewCategoryPag
         <div className="flex items-center gap-4">
           <Link
             href="/categories"
-            className="p-2 text-stone-500 hover:text-stone-900 dark:hover:text-stone-50 bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 rounded-md shadow-sm transition-colors"
+            className="p-2 text-stone-600 hover:text-black bg-white/80 backdrop-blur-md border border-black/[0.08] rounded-xl shadow-glass transition-all"
           >
             <ArrowLeft className="w-4 h-4" />
           </Link>
           <div>
-            <h2 className="text-2xl font-semibold tracking-tight">Preview: {category.name}</h2>
-            <p className="text-stone-500">
+            <h2 className="text-2xl font-bold tracking-tight text-black">
+              Preview: {category.name}
+            </h2>
+            <p className="text-stone-600 text-sm">
               This is how your category will appear on the customer website.
             </p>
           </div>
         </div>
         <Link
           href={`/categories/${category.id}/edit`}
-          className="inline-flex items-center gap-2 px-4 py-2 bg-stone-900 text-stone-50 rounded-md font-medium text-sm hover:bg-stone-800 transition-colors shadow-sm"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-black hover:bg-neutral-800 text-white rounded-xl font-medium text-sm transition-all shadow-glass"
         >
           <Edit2 className="w-4 h-4" />
           Edit Category
         </Link>
       </div>
 
-      <div className="bg-stone-100 dark:bg-stone-900 border border-stone-200 dark:border-stone-800 rounded-xl overflow-hidden shadow-inner p-8 md:p-12 min-h-[600px] flex items-center justify-center relative">
+      <div className="bg-white/70 backdrop-blur-md border border-black/[0.08] rounded-2xl overflow-hidden shadow-glass p-8 md:p-12 min-h-[600px] flex items-center justify-center relative">
         {/* Mock Customer Interface */}
-        <div className="w-full max-w-3xl mx-auto bg-white dark:bg-stone-950 rounded-2xl shadow-xl overflow-hidden">
-          <div className="h-64 relative bg-stone-200 dark:bg-stone-800">
+        <div className="w-full max-w-3xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden border border-black/[0.08]">
+          <div className="h-64 relative bg-stone-200">
             {category.coverImage && (
               <img
                 src={category.coverImage}
@@ -76,30 +78,28 @@ export default async function PreviewCategoryPage({ params }: PreviewCategoryPag
           </div>
 
           <div className="p-8">
-            <h3 className="text-sm font-semibold uppercase tracking-wider text-stone-500 mb-6">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-stone-600 mb-6">
               Configuration Preview
             </h3>
 
             <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-6 text-sm">
               <div>
-                <dt className="text-stone-500 dark:text-stone-400">Theme</dt>
-                <dd className="font-medium text-stone-900 dark:text-stone-50 capitalize">
-                  {category.theme}
-                </dd>
+                <dt className="text-stone-600 font-medium">Theme</dt>
+                <dd className="font-bold text-black capitalize">{category.theme}</dd>
               </div>
               <div>
-                <dt className="text-stone-500 dark:text-stone-400">Layout Engine</dt>
-                <dd className="font-medium text-stone-900 dark:text-stone-50">{layoutName}</dd>
+                <dt className="text-stone-600 font-medium">Layout Engine</dt>
+                <dd className="font-bold text-black">{layoutName}</dd>
               </div>
               <div>
-                <dt className="text-stone-500 dark:text-stone-400">Animation</dt>
-                <dd className="font-medium text-stone-900 dark:text-stone-50 capitalize">
+                <dt className="text-stone-600 font-medium">Animation</dt>
+                <dd className="font-bold text-black capitalize">
                   {category.animationPreset.replace('-', ' ')}
                 </dd>
               </div>
               <div>
-                <dt className="text-stone-500 dark:text-stone-400">Accent Color</dt>
-                <dd className="font-medium text-stone-900 dark:text-stone-50">
+                <dt className="text-stone-600 font-medium">Accent Color</dt>
+                <dd className="font-bold text-black">
                   {category.accentColor ? (
                     <span className="flex items-center gap-2">
                       <span
@@ -115,7 +115,7 @@ export default async function PreviewCategoryPage({ params }: PreviewCategoryPag
               </div>
             </dl>
 
-            <div className="mt-8 pt-8 border-t border-stone-100 dark:border-stone-800 flex gap-4">
+            <div className="mt-8 pt-8 border-t border-black/[0.06] flex gap-4">
               <span
                 className={cn(
                   'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium',
@@ -127,7 +127,7 @@ export default async function PreviewCategoryPage({ params }: PreviewCategoryPag
                 {category.isVisible ? 'Currently Visible' : 'Currently Hidden'}
               </span>
               {category.isFeatured && (
-                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800">
+                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-black text-white">
                   Featured Collection
                 </span>
               )}

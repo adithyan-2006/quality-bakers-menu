@@ -74,8 +74,8 @@ export function AuthGuard({
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-stone-50 dark:bg-stone-950">
-        <div className="w-8 h-8 border-4 border-stone-200 border-t-stone-800 rounded-full animate-spin"></div>
+      <div className="min-h-screen flex items-center justify-center bg-[#F8F9FA]">
+        <div className="w-8 h-8 border-4 border-black/10 border-t-black rounded-full animate-spin"></div>
       </div>
     );
   }

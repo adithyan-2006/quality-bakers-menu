@@ -36,3 +36,17 @@ export class RepositoryError extends AppError {
     this.name = 'RepositoryError';
   }
 }
+
+export class AuthenticationError extends AppError {
+  constructor(message: string = 'Authentication required', details?: any) {
+    super('AUTHENTICATION_ERROR', message, details);
+    this.name = 'AuthenticationError';
+  }
+}
+
+export class AuthorizationError extends AppError {
+  constructor(message: string = 'Permission denied', details?: any) {
+    super('AUTHORIZATION_ERROR', message, details);
+    this.name = 'AuthorizationError';
+  }
+}

@@ -1,3 +1,5 @@
+import { prisma } from '@qbm/database';
+
 export interface DashboardStats {
   totalCategories: number;
   totalProducts: number;
@@ -8,13 +10,37 @@ export interface DashboardStats {
 
 export const DashboardRepository = {
   getStats: async (): Promise<DashboardStats> => {
-    // Return mock data for Sprint 3.0 foundation
-    return {
-      totalCategories: 12,
-      totalProducts: 148,
-      featuredProducts: 24,
-      hiddenCategories: 2,
-      recentActivityCount: 15,
-    };
+    try {
+      const [
+        totalCategories,
+        totalProducts,
+        featuredProducts,
+        hiddenCategories,
+        recentActivityCount,
+      ] = await Promise.all([
+        prisma.category.count(),
+        prisma.product.count(),
+        prisma.product.count({ where: { isFeatured: true } }),
+        prisma.category.count({ where: { isVisible: false } }),
+        prisma.auditLog.count(),
+      ]);
+
+      return {
+        totalCategories,
+        totalProducts,
+        featuredProducts,
+        hiddenCategories,
+        recentActivityCount,
+      };
+    } catch (error) {
+      console.warn('[DashboardRepository] Error fetching dashboard stats, using fallbacks:', error);
+      return {
+        totalCategories: 0,
+        totalProducts: 0,
+        featuredProducts: 0,
+        hiddenCategories: 0,
+        recentActivityCount: 0,
+      };
+    }
   },
 };

@@ -19,13 +19,13 @@ export function SidebarItem({ icon: Icon, label, href }: SidebarItemProps) {
     <Link
       href={href}
       className={cn(
-        'flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors',
+        'flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-150',
         isActive
-          ? 'bg-stone-100 dark:bg-stone-800 text-stone-900 dark:text-stone-50'
-          : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-50 hover:bg-stone-50 dark:hover:bg-stone-800/50',
+          ? 'bg-black text-white shadow-sm font-semibold'
+          : 'text-stone-600 hover:text-black hover:bg-black/[0.04]',
       )}
     >
-      <Icon className="w-4 h-4" />
+      <Icon className={cn('w-4 h-4', isActive ? 'text-white' : 'text-stone-500')} />
       {label}
     </Link>
   );

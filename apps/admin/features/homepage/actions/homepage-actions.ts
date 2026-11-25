@@ -3,13 +3,16 @@
 import { revalidatePath } from 'next/cache';
 import { RepositoryFactory } from '../../../lib/repository-factory';
 import { AdminHomepage } from '../repositories/homepage-repo';
+import { requireAdminUser } from '../../../lib/auth';
 
 export async function getHomepageAction() {
+  await requireAdminUser();
   const repo = RepositoryFactory.getHomepageRepository();
   return await repo.getHomepage();
 }
 
 export async function updateHomepageAction(data: AdminHomepage) {
+  await requireAdminUser(['Owner', 'Manager']);
   const repo = RepositoryFactory.getHomepageRepository();
 
   // 1. Write to the database first. If this throws, it propagates to the caller.

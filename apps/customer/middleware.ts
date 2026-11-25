@@ -18,6 +18,14 @@ const CACHE_TTL_MS = 800; // 800ms TTL for near real-time updates
 async function fetchMaintenanceState(
   origin: string,
 ): Promise<{ enabled: boolean; retryAfter: number }> {
+  // Direct environment variable kill-switch available to Edge runtime without HTTP subrequest
+  if (process.env.MAINTENANCE_MODE === 'true' || process.env.MAINTENANCE_MODE === '1') {
+    return {
+      enabled: true,
+      retryAfter: DEFAULT_RETRY_AFTER_SECONDS,
+    };
+  }
+
   const now = Date.now();
   if (now - cachedMaintenance.lastChecked < CACHE_TTL_MS) {
     return {
@@ -27,11 +35,17 @@ async function fetchMaintenanceState(
   }
 
   try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 1200);
+
     const res = await fetch(`${origin}/api/maintenance/status`, {
       method: 'GET',
       cache: 'no-store',
       headers: { 'x-internal-middleware': '1' },
+      signal: controller.signal,
     });
+
+    clearTimeout(timeoutId);
 
     if (res.ok) {
       const data = await res.json();

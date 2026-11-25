@@ -21,7 +21,15 @@ import { PrismaAuditRepository } from '../features/audit/repositories/prisma-aud
 
 export class RepositoryFactory {
   private static get usePrisma(): boolean {
-    return process.env.REPOSITORY_DRIVER === 'prisma';
+    if (process.env.REPOSITORY_DRIVER === 'mock') {
+      return false;
+    }
+    // Default to Prisma in production, when explicitly configured, or when not set
+    return (
+      process.env.NODE_ENV === 'production' ||
+      process.env.REPOSITORY_DRIVER === 'prisma' ||
+      !process.env.REPOSITORY_DRIVER
+    );
   }
 
   static getBusinessRepository() {

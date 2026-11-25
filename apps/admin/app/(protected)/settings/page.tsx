@@ -1,13 +1,32 @@
-export default function SettingsPage() {
+import { MaintenanceToggle } from '@/components/maintenance/maintenance-toggle';
+import { requireAdminUser } from '@/lib/auth';
+
+export const dynamic = 'force-dynamic';
+
+export default async function SettingsPage() {
+  await requireAdminUser();
+
   return (
-    <div className="space-y-6">
+    <div className="max-w-5xl space-y-8">
       <div>
-        <h2 className="text-2xl font-semibold tracking-tight">Settings</h2>
-        <p className="text-stone-500">This module is under construction.</p>
+        <h2 className="text-2xl font-semibold tracking-tight text-stone-900">System Settings</h2>
+        <p className="text-sm text-stone-500">
+          Manage platform availability, maintenance status, and store configurations.
+        </p>
       </div>
-      <div className="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 rounded-xl p-12 text-center shadow-sm">
-        <p className="text-stone-500">Future placeholder for settings functionality.</p>
-      </div>
+
+      {/* Maintenance Mode & Availability Section */}
+      <section className="space-y-4">
+        <div>
+          <h3 className="text-base font-semibold text-stone-900">Platform Availability</h3>
+          <p className="text-xs text-stone-500">
+            Control public access to the bakery menu and customer storefront during deployments or
+            updates.
+          </p>
+        </div>
+
+        <MaintenanceToggle variant="full" />
+      </section>
     </div>
   );
 }

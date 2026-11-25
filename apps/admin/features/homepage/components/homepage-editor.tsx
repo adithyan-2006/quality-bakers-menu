@@ -43,7 +43,7 @@ export function HomepageEditor() {
   return (
     <div className="max-w-4xl mx-auto space-y-8 pb-24">
       {/* Header Actions */}
-      <div className="flex items-center justify-between sticky top-0 bg-stone-50/80 dark:bg-stone-950/80 backdrop-blur-md z-20 py-4 border-b border-stone-200 dark:border-stone-800 -mx-4 px-4 sm:mx-0 sm:px-0">
+      <div className="flex items-center justify-between sticky top-0 bg-white/70 backdrop-blur-xl z-20 py-4 border-b border-black/[0.06] -mx-4 px-4 sm:mx-0 sm:px-0">
         <div>
           <h2 className="text-2xl font-semibold tracking-tight">Homepage Settings</h2>
           <p className="text-sm text-stone-500">Manage all customer-facing homepage content.</p>
@@ -51,21 +51,21 @@ export function HomepageEditor() {
         <div className="flex items-center gap-3">
           <button
             onClick={() => router.push('/homepage/preview')}
-            className="px-4 py-2 text-sm font-medium text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 rounded-md transition-colors"
+            className="px-4 py-2 text-sm font-medium text-stone-700 hover:text-black hover:bg-black/5 rounded-lg transition-colors"
           >
             Preview
           </button>
           <button
             onClick={() => handleSave('draft')}
             disabled={isSaving}
-            className="px-4 py-2 text-sm font-medium text-stone-700 dark:text-stone-300 bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 hover:bg-stone-50 dark:hover:bg-stone-800 rounded-md transition-colors"
+            className="px-4 py-2 text-sm font-medium text-stone-700 bg-white/80 backdrop-blur-sm border border-black/10 hover:bg-white rounded-lg transition-colors shadow-sm"
           >
             Save Draft
           </button>
           <button
             onClick={() => handleSave('published')}
             disabled={isSaving}
-            className="px-4 py-2 bg-stone-900 dark:bg-stone-50 text-stone-50 dark:text-stone-900 rounded-md font-medium text-sm hover:bg-stone-800 dark:hover:bg-stone-200 transition-colors"
+            className="px-4 py-2 bg-black text-white rounded-lg font-medium text-sm hover:bg-stone-800 transition-all shadow-sm"
           >
             {isSaving ? 'Publishing...' : 'Publish Live'}
           </button>
@@ -80,7 +80,7 @@ export function HomepageEditor() {
             <input
               value={data.hero.title}
               onChange={(e) => setData({ ...data, hero: { ...data.hero, title: e.target.value } })}
-              className="w-full rounded-md border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-950 px-3 py-2 text-sm"
+              className="w-full rounded-xl border border-black/[0.08] bg-white/80 text-black px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black shadow-sm transition-all"
             />
           </div>
           <div className="space-y-2">
@@ -91,7 +91,7 @@ export function HomepageEditor() {
                 setData({ ...data, hero: { ...data.hero, subtitle: e.target.value } })
               }
               rows={2}
-              className="w-full rounded-md border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-950 px-3 py-2 text-sm resize-none"
+              className="w-full rounded-xl border border-black/[0.08] bg-white/80 text-black px-3.5 py-2.5 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-black shadow-sm transition-all"
             />
           </div>
           <div className="grid grid-cols-2 gap-4">
@@ -102,7 +102,7 @@ export function HomepageEditor() {
                 onChange={(e) =>
                   setData({ ...data, hero: { ...data.hero, ctaText: e.target.value } })
                 }
-                className="w-full rounded-md border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-950 px-3 py-2 text-sm"
+                className="w-full rounded-xl border border-black/[0.08] bg-white/80 text-black px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black shadow-sm transition-all"
               />
             </div>
             <div className="space-y-2">
@@ -112,7 +112,7 @@ export function HomepageEditor() {
                 onChange={(e) =>
                   setData({ ...data, hero: { ...data.hero, ctaLink: e.target.value } })
                 }
-                className="w-full rounded-md border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-950 px-3 py-2 text-sm"
+                className="w-full rounded-xl border border-black/[0.08] bg-white/80 text-black px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black shadow-sm transition-all"
               />
             </div>
           </div>
@@ -150,7 +150,7 @@ export function HomepageEditor() {
               onChange={(e) =>
                 setData({ ...data, about: { ...data.about, title: e.target.value } })
               }
-              className="w-full rounded-md border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-950 px-3 py-2 text-sm"
+              className="w-full rounded-xl border border-black/[0.08] bg-white/80 text-black px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black shadow-sm transition-all"
             />
           </div>
           <div className="space-y-2">
@@ -161,7 +161,7 @@ export function HomepageEditor() {
                 setData({ ...data, about: { ...data.about, description: e.target.value } })
               }
               rows={4}
-              className="w-full rounded-md border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-950 px-3 py-2 text-sm resize-none"
+              className="w-full rounded-xl border border-black/[0.08] bg-white/80 text-black px-3.5 py-2.5 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-black shadow-sm transition-all"
             />
           </div>
           <div className="space-y-2 pt-2">
@@ -187,7 +187,7 @@ export function HomepageEditor() {
               onChange={(e) =>
                 setData({ ...data, story: { ...data.story, title: e.target.value } })
               }
-              className="w-full rounded-md border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-950 px-3 py-2 text-sm"
+              className="w-full rounded-xl border border-black/[0.08] bg-white/80 text-black px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black shadow-sm transition-all"
             />
           </div>
           <div className="space-y-2">
@@ -198,7 +198,7 @@ export function HomepageEditor() {
                 setData({ ...data, story: { ...data.story, description: e.target.value } })
               }
               rows={4}
-              className="w-full rounded-md border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-950 px-3 py-2 text-sm resize-none"
+              className="w-full rounded-xl border border-black/[0.08] bg-white/80 text-black px-3.5 py-2.5 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-black shadow-sm transition-all"
             />
           </div>
         </div>
@@ -207,7 +207,7 @@ export function HomepageEditor() {
       {/* Seasonal Banner */}
       <CollapsibleSection title="Seasonal Banner">
         <div className="space-y-4">
-          <label className="flex items-center gap-3 p-4 border border-stone-200 dark:border-stone-800 rounded-lg cursor-pointer hover:bg-stone-50 dark:hover:bg-stone-800/50">
+          <label className="flex items-center gap-3 p-4 border border-black/[0.08] bg-white/60 rounded-xl cursor-pointer hover:bg-white/90 transition-all">
             <input
               type="checkbox"
               checked={data.seasonalBanner.enabled}
@@ -226,7 +226,7 @@ export function HomepageEditor() {
           </label>
 
           {data.seasonalBanner.enabled && (
-            <div className="pt-4 space-y-4 border-t border-stone-100 dark:border-stone-800">
+            <div className="pt-4 space-y-4 border-t border-black/[0.06]">
               <div className="space-y-2">
                 <label className="text-sm font-medium">Banner Title</label>
                 <input
@@ -237,7 +237,7 @@ export function HomepageEditor() {
                       seasonalBanner: { ...data.seasonalBanner, title: e.target.value },
                     })
                   }
-                  className="w-full rounded-md border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-950 px-3 py-2 text-sm"
+                  className="w-full rounded-xl border border-black/[0.08] bg-white/80 text-black px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black shadow-sm transition-all"
                 />
               </div>
               <div className="space-y-2">
@@ -251,7 +251,7 @@ export function HomepageEditor() {
                     })
                   }
                   rows={2}
-                  className="w-full rounded-md border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-950 px-3 py-2 text-sm resize-none"
+                  className="w-full rounded-xl border border-black/[0.08] bg-white/80 text-black px-3.5 py-2.5 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-black shadow-sm transition-all"
                 />
               </div>
               <div className="space-y-2 pt-2">
@@ -275,7 +275,7 @@ export function HomepageEditor() {
       {/* Promotion Banner */}
       <CollapsibleSection title="Promotion Banner">
         <div className="space-y-4">
-          <label className="flex items-center gap-3 p-4 border border-stone-200 dark:border-stone-800 rounded-lg cursor-pointer hover:bg-stone-50 dark:hover:bg-stone-800/50">
+          <label className="flex items-center gap-3 p-4 border border-black/[0.08] bg-white/60 rounded-xl cursor-pointer hover:bg-white/90 transition-all">
             <input
               type="checkbox"
               checked={data.promotionBanner.enabled}
@@ -296,7 +296,7 @@ export function HomepageEditor() {
           </label>
 
           {data.promotionBanner.enabled && (
-            <div className="pt-4 space-y-4 border-t border-stone-100 dark:border-stone-800">
+            <div className="pt-4 space-y-4 border-t border-black/[0.06]">
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <label className="text-sm font-medium">Banner Title</label>
@@ -308,7 +308,7 @@ export function HomepageEditor() {
                         promotionBanner: { ...data.promotionBanner, title: e.target.value },
                       })
                     }
-                    className="w-full rounded-md border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-950 px-3 py-2 text-sm"
+                    className="w-full rounded-xl border border-black/[0.08] bg-white/80 text-black px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black shadow-sm transition-all"
                   />
                 </div>
                 <div className="space-y-2">
@@ -321,7 +321,7 @@ export function HomepageEditor() {
                         promotionBanner: { ...data.promotionBanner, description: e.target.value },
                       })
                     }
-                    className="w-full rounded-md border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-950 px-3 py-2 text-sm"
+                    className="w-full rounded-xl border border-black/[0.08] bg-white/80 text-black px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black shadow-sm transition-all"
                   />
                 </div>
                 <div className="space-y-2">
@@ -334,7 +334,7 @@ export function HomepageEditor() {
                         promotionBanner: { ...data.promotionBanner, buttonText: e.target.value },
                       })
                     }
-                    className="w-full rounded-md border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-950 px-3 py-2 text-sm"
+                    className="w-full rounded-xl border border-black/[0.08] bg-white/80 text-black px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black shadow-sm transition-all"
                   />
                 </div>
                 <div className="space-y-2">
@@ -351,7 +351,7 @@ export function HomepageEditor() {
                       })
                     }
                     placeholder="#fff0e6"
-                    className="w-full rounded-md border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-950 px-3 py-2 text-sm"
+                    className="w-full rounded-xl border border-black/[0.08] bg-white/80 text-black px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black shadow-sm transition-all"
                   />
                 </div>
               </div>
