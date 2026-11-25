@@ -2,14 +2,26 @@
   "$schema": "https://turbo.build/schema.json",
   "ui": "tui",
   "globalDependencies": ["tsconfig.base.json"],
+  "globalEnv": [
+    "DATABASE_URL",
+    "DIRECT_URL",
+    "ADMIN_SESSION_SECRET",
+    "AUTH_SECRET",
+    "CUSTOMER_APP_URL",
+    "REVALIDATION_SECRET",
+    "CLOUDINARY_CLOUD_NAME",
+    "CLOUDINARY_API_KEY",
+    "CLOUDINARY_API_SECRET",
+    "NODE_ENV",
+    "NEXTAUTH_URL",
+    "NEXTAUTH_URL_INTERNAL",
+    "REPOSITORY_DRIVER",
+    "UPLOAD_MAX_SIZE"
+  ],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": [
-        "dist/**",
-        ".next/**",
-        "!.next/cache/**"
-      ]
+      "outputs": ["dist/**", ".next/**", "!.next/cache/**"]
     },
     "dev": {
       "cache": false,

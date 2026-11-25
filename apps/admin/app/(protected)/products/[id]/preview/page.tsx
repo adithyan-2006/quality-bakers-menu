@@ -1,10 +1,9 @@
 import { getProductAction } from '../../../../../features/products/actions/product-actions';
 import { getCategoryAction } from '../../../../../features/categories/actions/category-actions';
 import { notFound } from 'next/navigation';
-import { ProductCard } from 'customer/features/menu/product/product-card';
+import { ProductPreviewCard } from '../../../../../features/products/components/product-preview-card';
 import Link from 'next/link';
 import { ArrowLeft, Edit2 } from 'lucide-react';
-import type { MenuProduct } from 'customer/features/menu/types';
 
 interface PreviewProductPageProps {
   params: Promise<{ id: string }>;
@@ -31,21 +30,6 @@ export default async function PreviewProductPage({ params }: PreviewProductPageP
     ),
     image: product.image,
     badge: product.badge === 'none' ? undefined : product.badge,
-  };
-
-  // Mock theme classes for the preview (using a classic elegant theme)
-  const previewThemeClasses = {
-    section: 'bg-stone-50',
-    card: 'bg-white shadow-sm ring-1 ring-black/5',
-    cardHover: 'hover:shadow-md hover:ring-black/10 transition-all duration-300',
-    badge:
-      'bg-amber-100 text-amber-900 border border-amber-200 uppercase tracking-widest text-[10px] font-bold px-2.5 py-0.5 rounded-full',
-    heading: 'font-serif text-stone-900',
-    subheading: 'font-sans text-stone-600',
-    description: 'font-sans text-stone-500 font-light',
-    price: 'font-sans text-amber-700 font-medium',
-    divider: 'border-stone-100',
-    accent: 'bg-amber-100',
   };
 
   return (
@@ -85,11 +69,7 @@ export default async function PreviewProductPage({ params }: PreviewProductPageP
             </h3>
           </div>
 
-          <ProductCard
-            product={customerProduct as MenuProduct}
-            themeClasses={previewThemeClasses}
-            presentationStyle="standard"
-          />
+          <ProductPreviewCard product={customerProduct} />
 
           <div className="mt-12 bg-white/80 backdrop-blur-md p-6 rounded-2xl border border-black/[0.08] shadow-glass">
             <h3 className="text-xs font-bold uppercase tracking-wider text-stone-600 mb-4">

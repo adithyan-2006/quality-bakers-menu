@@ -77,9 +77,6 @@ importers:
       cloudinary:
         specifier: ^2.10.0
         version: 2.10.0
-      customer:
-        specifier: workspace:*
-        version: link:../customer
       lucide-react:
         specifier: ^0.379.0
         version: 0.379.0(react@19.0.0)
