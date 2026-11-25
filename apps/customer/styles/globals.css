@@ -1210,12 +1210,83 @@
   }
 }
 
-/* Comprehensive short-viewport & mobile landscape responsive rules (height <= 480px) */
+/* ─── Hero Viewport & Responsive Typography Scaling ─────────────────────── */
+/* Put in explicit CSS source order so svh/dvh & runtime --hero-fit-height
+   always win over legacy 100vh (Tailwind utility sorting puts 100vh last!). */
+.hero-viewport-section {
+  min-height: calc(100vh - 64px);
+  min-height: calc(100dvh - 64px);
+  min-height: calc(100svh - 64px);
+  min-height: var(--hero-fit-height, calc(100svh - 64px));
+}
+
+@media (min-width: 768px) {
+  .hero-viewport-section {
+    min-height: calc(100vh - 72px);
+    min-height: calc(100dvh - 72px);
+    min-height: calc(100svh - 72px);
+    min-height: var(--hero-fit-height, calc(100svh - 72px));
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero-viewport-section {
+    min-height: calc(100vh - 76px);
+    min-height: calc(100dvh - 76px);
+    min-height: calc(100svh - 76px);
+    min-height: var(--hero-fit-height, calc(100svh - 76px));
+  }
+}
+
+.hero-title-mobile-svg {
+  max-height: 46vh;
+  max-height: 46svh;
+  object-fit: contain;
+}
+
+/* Compact phones & short mobile browsers with large toolbars (height <= 600px) */
+@media (max-height: 600px) {
+  .hero-marquee-wrapper {
+    margin-top: 0.4rem !important;
+  }
+
+  .hero-marquee-bar {
+    padding-top: 0.4rem !important;
+    padding-bottom: 0.4rem !important;
+  }
+
+  .hero-content-container {
+    padding-top: 0.25rem !important;
+    padding-bottom: 0.5rem !important;
+  }
+
+  .hero-mobile-subtitle {
+    margin-bottom: 0.4rem !important;
+  }
+
+  .hero-title-mobile-svg {
+    max-height: 36vh !important;
+    max-height: 36svh !important;
+  }
+
+  .hero-cta-button {
+    margin-top: 0.85rem !important;
+    padding: 0.65rem 1.85rem !important;
+    font-size: 0.75rem !important;
+  }
+
+  .hero-scroll-cue-wrapper {
+    padding-bottom: 0.45rem !important;
+  }
+}
+
+/* Comprehensive ultra-short viewport & mobile landscape rules (height <= 480px) */
 @media (max-height: 480px) {
-  #home {
-    min-height: calc(100vh - 56px) !important;
-    min-height: calc(100svh - 56px) !important;
-    min-height: calc(100dvh - 56px) !important;
+  .hero-viewport-section {
+    min-height: calc(100vh - 56px);
+    min-height: calc(100dvh - 56px);
+    min-height: calc(100svh - 56px);
+    min-height: var(--hero-fit-height, calc(100svh - 56px));
   }
 
   /* Compact cream header in landscape */
@@ -1225,47 +1296,68 @@
   }
 
   /* Reduce vertical spacing in hero */
-  #hero-marquee {
-    margin-top: 0.25rem !important;
+  .hero-marquee-wrapper {
+    margin-top: 0.2rem !important;
   }
 
-  #hero-marquee > div {
-    padding-top: 0.25rem !important;
-    padding-bottom: 0.25rem !important;
+  .hero-marquee-bar {
+    padding-top: 0.2rem !important;
+    padding-bottom: 0.2rem !important;
   }
 
-  #hero-content-container {
-    padding-top: 0.25rem !important;
-    padding-bottom: 0.25rem !important;
+  .hero-content-container {
+    padding-top: 0.15rem !important;
+    padding-bottom: 0.15rem !important;
   }
 
-  #hero-title-svg {
-    max-height: 22vh !important;
-    max-width: 220px !important;
+  .hero-mobile-subtitle,
+  .hero-desktop-subtitle {
+    margin-bottom: 0.25rem !important;
   }
 
-  #hero-cta-btn,
-  #desktop-hero-cta-btn {
+  .hero-title-mobile-svg {
+    max-height: 24vh !important;
+    max-height: 24svh !important;
+    max-width: 225px !important;
+  }
+
+  .hero-title-desktop-svg {
+    max-height: 24vh !important;
+    max-height: 24svh !important;
+    max-width: 520px !important;
+  }
+
+  .hero-cta-button {
     margin-top: 0.35rem !important;
     padding: 0.35rem 1.25rem !important;
     font-size: 0.7rem !important;
   }
 
-  #scroll-cue-wrapper {
-    padding-bottom: 0.25rem !important;
+  .hero-scroll-cue-wrapper {
+    padding-bottom: 0.2rem !important;
   }
 }
 
 @media (max-height: 380px) {
-  #hero-title-svg {
-    max-height: 18vh !important;
-    max-width: 180px !important;
+  .hero-title-mobile-svg {
+    max-height: 19vh !important;
+    max-height: 19svh !important;
+    max-width: 185px !important;
   }
 
-  #hero-cta-btn,
-  #desktop-hero-cta-btn {
+  .hero-title-desktop-svg {
+    max-height: 19vh !important;
+    max-height: 19svh !important;
+    max-width: 440px !important;
+  }
+
+  .hero-cta-button {
     margin-top: 0.25rem !important;
     padding: 0.25rem 1rem !important;
     font-size: 0.65rem !important;
+  }
+
+  .hero-scroll-cue-wrapper {
+    padding-bottom: 0.125rem !important;
   }
 }

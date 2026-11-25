@@ -8,6 +8,7 @@ export function ScrollCue() {
   React.useEffect(() => {
     let rafId: number | null = null;
     let lastOpacity = 1;
+    let lastViewportWidth = typeof window !== 'undefined' ? window.innerWidth : 0;
 
     const getScrollY = (): number => {
       if (typeof window === 'undefined') return 0;
@@ -18,6 +19,28 @@ export function ScrollCue() {
         document.body?.scrollTop ||
         0
       );
+    };
+
+    const syncHeroFitHeight = (force = false) => {
+      const homeSection = document.getElementById('home');
+      if (!homeSection) return;
+
+      const currentWidth = window.innerWidth;
+      const widthChanged = Math.abs(currentWidth - lastViewportWidth) > 1;
+      const scrollY = getScrollY();
+
+      // Update while at top of page (before user scrolls & hides mobile URL bar)
+      // or whenever orientation / width changes, preventing layout shifts mid-scroll.
+      if (!force && !widthChanged && scrollY > 20) return;
+
+      lastViewportWidth = currentWidth;
+      const header = document.querySelector('header');
+      const headerHeight = header ? header.getBoundingClientRect().height : 64;
+      const vpHeight = window.visualViewport?.height || window.innerHeight;
+      if (vpHeight > 200) {
+        const fitHeight = Math.max(240, Math.floor(vpHeight - headerHeight));
+        homeSection.style.setProperty('--hero-fit-height', `${fitHeight}px`);
+      }
     };
 
     const update = () => {
@@ -44,19 +67,41 @@ export function ScrollCue() {
       }
     };
 
-    // Immediate check at mount
+    const handleResize = () => {
+      syncHeroFitHeight();
+      handleScroll();
+    };
+
+    // Immediate sync & opacity check at mount
+    syncHeroFitHeight(true);
     update();
 
     // Check multiple intervals to guarantee visibility after any loading gates,
-    // scroll-to-top resets, or browser scroll restoration adjustments.
-    const t1 = setTimeout(update, 100);
-    const t2 = setTimeout(update, 400);
-    const t3 = setTimeout(update, 1000);
-    const t4 = setTimeout(update, 2100); // After HomeLoadingGate mandatory 2000ms timer
-    const t5 = setTimeout(update, 2600); // After HomeLoadingGate 400ms fade transition finishes
+    // scroll-to-top resets, or browser chrome UI / restoration adjustments.
+    const t1 = setTimeout(() => {
+      syncHeroFitHeight();
+      update();
+    }, 100);
+    const t2 = setTimeout(() => {
+      syncHeroFitHeight();
+      update();
+    }, 400);
+    const t3 = setTimeout(() => {
+      syncHeroFitHeight();
+      update();
+    }, 1000);
+    const t4 = setTimeout(() => {
+      syncHeroFitHeight();
+      update();
+    }, 2100); // After HomeLoadingGate mandatory 2000ms timer
+    const t5 = setTimeout(() => {
+      syncHeroFitHeight();
+      update();
+    }, 2600); // After HomeLoadingGate 400ms fade transition finishes
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    window.addEventListener('resize', handleScroll, { passive: true });
+    window.addEventListener('resize', handleResize, { passive: true });
+    window.visualViewport?.addEventListener('resize', handleResize);
     document.addEventListener('scroll', handleScroll, { passive: true });
 
     return () => {
@@ -67,7 +112,8 @@ export function ScrollCue() {
       clearTimeout(t4);
       clearTimeout(t5);
       window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('resize', handleScroll);
+      window.removeEventListener('resize', handleResize);
+      window.visualViewport?.removeEventListener('resize', handleResize);
       document.removeEventListener('scroll', handleScroll);
     };
   }, []);
@@ -93,17 +139,17 @@ export function ScrollCue() {
         opacity,
         pointerEvents: opacity <= 0.05 ? 'none' : 'auto',
       }}
-      className="group flex flex-col items-center justify-center cursor-pointer outline-none focus-visible:ring-1 focus-visible:ring-[#FDFADB]/60 rounded-full py-1.5 px-3.5 select-none animate-scroll-jump transition-opacity duration-150 will-change-[opacity]"
+      className="group flex flex-col items-center justify-center cursor-pointer outline-none focus-visible:ring-1 focus-visible:ring-[#FDFADB]/60 rounded-full py-1.5 px-4 select-none animate-scroll-jump transition-opacity duration-150 will-change-[opacity]"
     >
-      <span className="font-sans font-semibold text-xs sm:text-[13px] tracking-[0.25em] pl-[0.25em] uppercase text-[#FDFADB] leading-none select-none block text-center drop-shadow-[0_1px_2px_rgba(0,0,0,0.35)]">
+      <span className="font-sans font-bold text-xs min-[360px]:text-[13px] tracking-[0.26em] pl-[0.26em] uppercase text-[#FDFADB] leading-none select-none block text-center drop-shadow-[0_1px_2px_rgba(0,0,0,0.4)]">
         SCROLL
       </span>
       <svg
-        className="w-4 h-4 text-[#FDFADB] mt-1 shrink-0 drop-shadow-[0_1px_2px_rgba(0,0,0,0.35)] transition-transform group-hover:translate-y-0.5"
+        className="w-4 h-4 text-[#FDFADB] mt-1 shrink-0 drop-shadow-[0_1px_2px_rgba(0,0,0,0.4)] transition-transform group-hover:translate-y-0.5"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        strokeWidth="2.5"
+        strokeWidth="2.75"
         strokeLinecap="round"
         strokeLinejoin="round"
         aria-hidden="true"

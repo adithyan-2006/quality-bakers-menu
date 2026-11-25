@@ -37,7 +37,41 @@ const DEVICE_PROFILES = [
   { name: 'Samsung Galaxy Pocket / Core', width: 320, height: 500, category: 'Ultra-Compact' },
   { name: 'LG K3 / Compact', width: 320, height: 570, category: 'Ultra-Compact' },
 
-  // 2. Budget & Mid-range Phones (360px width)
+  // 2. Budget, Motorola & Mid-range Phones (360px - 412px width)
+  {
+    name: 'Motorola Moto G34 5G (Chrome Full Viewport)',
+    width: 360,
+    height: 748,
+    category: 'Motorola G34 5G',
+  },
+  {
+    name: 'Motorola Moto G34 5G (Chrome URL Bar Active)',
+    width: 360,
+    height: 684,
+    simulatedChromeBarExtraVh: 64,
+    category: 'Motorola G34 5G',
+  },
+  {
+    name: 'Motorola Moto G34 5G (Chrome + Gesture + Large Text)',
+    width: 360,
+    height: 650,
+    simulatedChromeBarExtraVh: 64,
+    category: 'Motorola G34 5G',
+  },
+  {
+    name: 'Motorola Moto G34 5G (Smallest Width 412dp Chrome)',
+    width: 412,
+    height: 775,
+    simulatedChromeBarExtraVh: 64,
+    category: 'Motorola G34 5G',
+  },
+  {
+    name: 'Motorola Moto G34 5G (Landscape Chrome)',
+    width: 748,
+    height: 310,
+    simulatedChromeBarExtraVh: 50,
+    category: 'Motorola G34 5G',
+  },
   { name: 'Samsung Galaxy S8 / S9 / J7', width: 360, height: 740, category: 'Compact Mobile' },
   {
     name: 'Samsung Galaxy A10 / A20 / A30 / A50',
@@ -456,7 +490,7 @@ const DEVICE_PROFILES = [
 
 console.log(`Loaded ${DEVICE_PROFILES.length} real-world device profiles.`);
 
-// Read SVG content from mobile mark
+// Read SVG content from both mobile and desktop marks
 const mobileMarkContent = fs.readFileSync(
   path.resolve(
     __dirname,
@@ -464,11 +498,18 @@ const mobileMarkContent = fs.readFileSync(
   ),
   'utf8',
 );
-// Extract the SVG path
-const pathDMatch = mobileMarkContent.match(/d="([^"]+)"/);
-const mobileMarkPathD = pathDMatch ? pathDMatch[1] : '';
+const mobilePathDMatch = mobileMarkContent.match(/d="([^"]+)"/);
+const mobileMarkPathD = mobilePathDMatch ? mobilePathDMatch[1] : '';
 
-// HTML Generator function for Landing Page
+const desktopMarkContent = fs.readFileSync(
+  path.resolve(__dirname, '../apps/customer/components/brand/quality-you-can-taste-mark.tsx'),
+  'utf8',
+);
+const desktopPathDMatch = desktopMarkContent.match(/d="([^"]+)"/);
+const desktopMarkPathD = desktopPathDMatch ? desktopPathDMatch[1] : '';
+
+// HTML Generator function matching the exact classes and DOM hierarchy of
+// ScrollHeader + EditorialIntro + ScrollCue
 function generateLandingPageHtml() {
   return `<!DOCTYPE html>
 <html lang="en">
@@ -487,9 +528,9 @@ function generateLandingPageHtml() {
   </style>
 </head>
 <body class="bg-[#BC1D1A]">
-  <!-- Header -->
-  <header class="sticky top-0 z-50 w-full h-16 md:h-18 lg:h-19 bg-[#FDFADB] border-b border-[#BC1D1A]/10">
-    <div class="max-w-none px-4 sm:px-6 md:px-10 lg:px-16 flex items-center justify-between h-full pt-1 pb-1 md:pb-1.5">
+  <!-- Header (matches ScrollHeader) -->
+  <header class="sticky top-0 z-50 w-full bg-[#BC1D1A] h-[64px] md:h-[72px] lg:h-[76px] flex flex-col justify-center">
+    <div class="w-full h-full max-w-none px-4 sm:px-6 md:px-10 lg:px-16 flex items-center justify-between pt-1 pb-1 md:pb-1.5 bg-[#FDFADB]">
       <a href="/" class="flex items-center gap-2.5 sm:gap-3 md:gap-3.5 min-w-0 outline-none select-none" id="brand-logo-link">
         <div id="brand-logo" class="w-9 h-9 min-[360px]:w-10 min-[360px]:h-10 sm:w-11 sm:h-11 md:w-12 md:h-12 rounded-full bg-[#BC1D1A] shrink-0 flex items-center justify-center text-[#FDFADB] text-xs font-bold">
           QB
@@ -513,14 +554,14 @@ function generateLandingPageHtml() {
     </div>
   </header>
 
-  <!-- Hero Section -->
+  <!-- Hero Section (matches EditorialIntro exactly) -->
   <section
     id="home"
-    class="relative w-full bg-[#BC1D1A] flex flex-col justify-between min-h-[calc(100vh-64px)] min-h-[calc(100svh-64px)] min-h-[calc(100dvh-64px)] md:min-h-[calc(100dvh-72px)] lg:min-h-[calc(100dvh-76px)] scroll-mt-[64px] md:scroll-mt-[72px] lg:scroll-mt-[76px] overflow-hidden"
+    class="hero-viewport-section relative w-full bg-[#BC1D1A] flex flex-col justify-between scroll-mt-[64px] md:scroll-mt-[72px] lg:scroll-mt-[76px] overflow-hidden"
   >
     <!-- Top Banner (Marquee) -->
-    <div id="hero-marquee" class="w-full z-20 relative mt-1.5 min-[360px]:mt-2 sm:mt-4 md:mt-6 shrink-0">
-      <div class="w-full border-b border-[#FDFADB]/15 py-2 min-[360px]:py-2.5 sm:py-3 md:py-3.5 flex items-center overflow-hidden flex-shrink-0 bg-[#BC1D1A]">
+    <div id="hero-marquee" class="hero-marquee-wrapper w-full z-20 relative mt-3.5 min-[360px]:mt-4 sm:mt-5 md:mt-6 shrink-0">
+      <div class="hero-marquee-bar w-full border-b border-[#FDFADB]/15 py-2 min-[360px]:py-2.5 sm:py-3 md:py-3.5 flex items-center overflow-hidden flex-shrink-0 bg-[#BC1D1A]">
         <div class="flex whitespace-nowrap animate-marquee motion-reduce:animate-none w-max">
           <span class="flex items-center">
             <span class="text-[#FDFADB] uppercase text-[10px] sm:text-xs tracking-[0.25em] opacity-90 font-medium font-sans px-4">
@@ -541,16 +582,16 @@ function generateLandingPageHtml() {
     </div>
 
     <!-- Main Hero Content -->
-    <div id="hero-content-container" class="relative flex flex-col flex-1 px-4 sm:px-6 md:px-8 py-2 min-[360px]:py-3 sm:py-6 md:py-8 justify-center min-h-0">
+    <div id="hero-content-container" class="hero-content-container mx-auto w-full max-w-7xl relative flex flex-col flex-1 px-4 sm:px-6 md:px-8 pt-2 pb-5 min-[360px]:pt-2 min-[360px]:pb-7 sm:py-6 md:py-8 justify-center min-h-0">
       <!-- MOBILE VIEW (< md) -->
-      <div id="mobile-hero-layout" class="flex md:hidden flex-col items-start text-left w-full max-w-xs min-[360px]:max-w-sm sm:max-w-md mx-auto px-1 sm:px-2">
+      <div id="mobile-hero-layout" class="flex md:hidden flex-col items-start text-left w-full max-w-[360px] min-[390px]:max-w-[395px] min-[412px]:max-w-[420px] sm:max-w-[460px] mx-auto px-1 sm:px-2">
         <!-- Subtitle -->
         <div id="hero-subtitle" class="w-full">
-          <div class="flex items-center gap-2 sm:gap-2.5 w-full mb-1.5 min-[360px]:mb-2 sm:mb-3 select-none min-w-0">
-            <span class="text-[#FDFADB]/90 uppercase font-sans text-[9px] min-[360px]:text-[10px] sm:text-[11px] tracking-[0.14em] min-[360px]:tracking-[0.2em] sm:tracking-[0.24em] font-medium truncate">
+          <div class="hero-mobile-subtitle flex items-center gap-2.5 sm:gap-3 w-full mb-2.5 min-[360px]:mb-3 sm:mb-4 select-none min-w-0">
+            <span class="text-[#FDFADB]/95 uppercase font-sans text-[10.5px] min-[360px]:text-[11.5px] sm:text-[13px] tracking-[0.16em] min-[360px]:tracking-[0.22em] sm:tracking-[0.25em] font-semibold truncate">
               QUALITY BAKERS - SINCE 2020
             </span>
-            <span class="h-[1px] flex-1 min-w-[12px] max-w-[45px] bg-[#FDFADB]/35 shrink-0"></span>
+            <span class="h-[1px] flex-1 min-w-[16px] max-w-[68px] bg-[#FDFADB]/40 shrink-0"></span>
           </div>
         </div>
 
@@ -562,9 +603,9 @@ function generateLandingPageHtml() {
             xmlns="http://www.w3.org/2000/svg"
             viewBox="-7.0 4.0 363.3 311.1"
             fill="currentColor"
-            class="w-full max-w-[260px] min-[360px]:max-w-[290px] min-[390px]:max-w-[325px] sm:max-w-[370px] max-h-[30vh] min-[360px]:max-h-[34vh] sm:max-h-[38vh] w-auto h-auto object-contain text-[#FDFADB] select-none filter drop-shadow-[0_4px_22px_rgba(0,0,0,0.25)]"
+            class="hero-title-mobile-svg w-full max-w-[295px] min-[360px]:max-w-[348px] min-[390px]:max-w-[376px] min-[412px]:max-w-[396px] sm:max-w-[440px] h-auto text-[#FDFADB] select-none filter drop-shadow-[0_4px_22px_rgba(0,0,0,0.25)]"
           >
-            <path d="${mobileMarkPathD}" fill="currentColor" />
+            <path d="${mobileMarkPathD}" fill="currentColor" fill-rule="evenodd" />
           </svg>
         </h1>
 
@@ -573,7 +614,7 @@ function generateLandingPageHtml() {
           <a
             id="hero-cta-btn"
             href="/categories"
-            class="mt-3.5 min-[360px]:mt-4 sm:mt-6 inline-flex items-center justify-center px-7 min-[360px]:px-8 sm:px-10 py-3 min-[360px]:py-3.5 sm:py-4 rounded-full bg-[#FDFADB] text-[#BC1D1A] font-sans font-bold text-xs sm:text-sm uppercase tracking-[0.18em] sm:tracking-[0.2em] shadow-[0_4px_12px_rgba(0,0,0,0.18)] select-none"
+            class="hero-cta-button mt-5 min-[360px]:mt-6 sm:mt-7 inline-flex items-center justify-center px-8 min-[360px]:px-9 sm:px-11 py-3.5 min-[360px]:py-4 rounded-full bg-[#FDFADB] text-[#BC1D1A] font-sans font-bold text-[12.5px] min-[360px]:text-[13.5px] sm:text-sm uppercase tracking-[0.2em] shadow-[0_4px_14px_rgba(0,0,0,0.2)] select-none"
           >
             <span>EXPLORE MENU</span>
           </a>
@@ -581,22 +622,30 @@ function generateLandingPageHtml() {
       </div>
 
       <!-- DESKTOP VIEW (>= md) -->
-      <div id="desktop-hero-layout" class="hidden md:flex flex-col items-center justify-center text-center relative z-10 w-full max-w-5xl mx-auto px-4">
-        <div class="flex items-center justify-center gap-3 sm:gap-4 md:gap-5 w-full max-w-md md:max-w-xl mx-auto mb-3 sm:mb-4 md:mb-5">
+      <div id="desktop-hero-layout" class="hidden md:flex flex-col items-center justify-center text-center relative z-10 w-full max-w-6xl mx-auto px-4">
+        <div id="desktop-hero-subtitle" class="hero-desktop-subtitle flex items-center justify-center gap-3 sm:gap-4 md:gap-5 w-full max-w-md md:max-w-xl mx-auto mb-3 sm:mb-4 md:mb-5">
           <span class="h-[1px] flex-1 max-w-[60px] sm:max-w-[80px] md:max-w-[110px] bg-[#FDFADB]/35"></span>
-          <span class="text-[#FDFADB]/90 uppercase font-sans text-[10px] sm:text-xs md:text-sm tracking-[0.22em] sm:tracking-[0.26em] md:tracking-[0.3em] font-medium whitespace-nowrap select-none">
+          <span class="text-[#FDFADB]/95 uppercase font-sans text-xs md:text-sm tracking-[0.24em] md:tracking-[0.3em] font-semibold whitespace-nowrap select-none">
             QUALITY BAKERS - SINCE 2020
           </span>
           <span class="h-[1px] flex-1 max-w-[60px] sm:max-w-[80px] md:max-w-[110px] bg-[#FDFADB]/35"></span>
         </div>
         <h1 class="relative flex flex-col items-center justify-center w-full my-1 sm:my-2" id="desktop-hero-title">
-          <span class="text-[#FDFADB] font-serif text-5xl lg:text-7xl font-bold">Quality you can taste</span>
+          <svg
+            id="desktop-hero-svg"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="61.0 -0.0 874.3 136.0"
+            fill="currentColor"
+            class="hero-title-desktop-svg w-[96%] sm:w-[94%] md:w-[90%] max-w-[580px] sm:max-w-[760px] md:max-w-[920px] lg:max-w-[1020px] xl:max-w-[1100px] h-auto text-[#FDFADB] select-none filter drop-shadow-[0_4px_22px_rgba(0,0,0,0.22)]"
+          >
+            <path d="${desktopMarkPathD}" fill="currentColor" fill-rule="evenodd" />
+          </svg>
         </h1>
         <div class="w-full flex justify-center">
           <a
             id="desktop-hero-cta-btn"
             href="/categories"
-            class="mt-6 sm:mt-7 md:mt-8 inline-flex items-center justify-center px-8 sm:px-10 md:px-11 py-3.5 sm:py-4 rounded-full bg-[#FDFADB] text-[#BC1D1A] font-sans font-bold text-xs sm:text-sm uppercase tracking-[0.18em] sm:tracking-[0.2em] shadow-[0_4px_12px_rgba(0,0,0,0.18)] select-none"
+            class="hero-cta-button mt-6 sm:mt-7 md:mt-9 inline-flex items-center justify-center px-9 sm:px-11 md:px-12 py-3.5 sm:py-4 rounded-full bg-[#FDFADB] text-[#BC1D1A] font-sans font-bold text-xs sm:text-sm uppercase tracking-[0.2em] shadow-[0_4px_14px_rgba(0,0,0,0.2)] select-none"
           >
             <span>EXPLORE MENU</span>
           </a>
@@ -605,23 +654,23 @@ function generateLandingPageHtml() {
     </div>
 
     <!-- Bottom Scroll Cue Indicator -->
-    <div id="scroll-cue-wrapper" class="w-full flex justify-center shrink-0 pb-3 min-[360px]:pb-4 sm:pb-5 md:pb-6 z-20 pointer-events-auto">
+    <div id="scroll-cue-wrapper" class="hero-scroll-cue-wrapper w-full flex justify-center shrink-0 pb-3 min-[360px]:pb-4 sm:pb-5 md:pb-6 z-20 pointer-events-auto">
       <button
         id="scroll-cue-button"
         type="button"
         aria-label="Scroll to explore"
-        class="group flex flex-col items-center justify-center cursor-pointer outline-none rounded-full py-1.5 px-3.5 select-none animate-scroll-jump"
+        class="group flex flex-col items-center justify-center cursor-pointer outline-none rounded-full py-1.5 px-4 select-none animate-scroll-jump"
       >
-        <span id="scroll-cue-text" class="font-sans font-semibold text-xs sm:text-[13px] tracking-[0.25em] pl-[0.25em] uppercase text-[#FDFADB] leading-none select-none block text-center drop-shadow-[0_1px_2px_rgba(0,0,0,0.35)]">
+        <span id="scroll-cue-text" class="font-sans font-bold text-xs min-[360px]:text-[13px] tracking-[0.26em] pl-[0.26em] uppercase text-[#FDFADB] leading-none select-none block text-center drop-shadow-[0_1px_2px_rgba(0,0,0,0.4)]">
           SCROLL
         </span>
         <svg
           id="scroll-cue-icon"
-          class="w-4 h-4 text-[#FDFADB] mt-1 shrink-0 drop-shadow-[0_1px_2px_rgba(0,0,0,0.35)]"
+          class="w-4 h-4 text-[#FDFADB] mt-1 shrink-0 drop-shadow-[0_1px_2px_rgba(0,0,0,0.4)]"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
-          stroke-width="2.5"
+          stroke-width="2.75"
           stroke-linecap="round"
           stroke-linejoin="round"
           aria-hidden="true"
@@ -702,10 +751,22 @@ async function runTestSuite() {
     const dev = DEVICE_PROFILES[i];
     await page.setViewportSize({ width: dev.width, height: dev.height });
 
-    // Allow CSS layout evaluation
-    await page.waitForTimeout(40);
+    // Apply ScrollCue's runtime --hero-fit-height safeguard (matches scroll-cue.tsx)
+    await page.evaluate(() => {
+      const homeSection = document.getElementById('home');
+      if (homeSection) {
+        const header = document.querySelector('header');
+        const headerHeight = header ? header.getBoundingClientRect().height : 64;
+        const vpHeight = window.visualViewport?.height || window.innerHeight;
+        const fitHeight = Math.max(240, Math.floor(vpHeight - headerHeight));
+        homeSection.style.setProperty('--hero-fit-height', `${fitHeight}px`);
+      }
+    });
 
-    const metrics = await page.evaluate((dev) => {
+    // Allow CSS layout evaluation
+    await page.waitForTimeout(35);
+
+    const metrics = await page.evaluate((deviceInfo) => {
       const doc = document.documentElement;
       const scrollWidth = doc.scrollWidth;
       const clientWidth = doc.clientWidth;
@@ -717,13 +778,21 @@ async function runTestSuite() {
       const logoRect = headerLogo ? headerLogo.getBoundingClientRect() : null;
       const titleRect = headerTitle ? headerTitle.getBoundingClientRect() : null;
 
+      // Marquee
+      const marquee = document.getElementById('hero-marquee');
+      const marqueeRect = marquee ? marquee.getBoundingClientRect() : null;
+
       // Hero Elements
       const isMobile = window.innerWidth < 768;
-      const subtitle = document.getElementById('hero-subtitle');
+      const subtitle = isMobile
+        ? document.getElementById('hero-subtitle')
+        : document.getElementById('desktop-hero-subtitle');
       const subtitleRect = subtitle ? subtitle.getBoundingClientRect() : null;
 
-      const titleSvg = document.getElementById('hero-title-svg');
-      const titleSvgRect = titleSvg && isMobile ? titleSvg.getBoundingClientRect() : null;
+      const titleSvg = isMobile
+        ? document.getElementById('hero-title-svg')
+        : document.getElementById('desktop-hero-svg');
+      const titleSvgRect = titleSvg ? titleSvg.getBoundingClientRect() : null;
 
       const ctaBtn = isMobile
         ? document.getElementById('hero-cta-btn')
@@ -731,24 +800,27 @@ async function runTestSuite() {
       const ctaRect = ctaBtn ? ctaBtn.getBoundingClientRect() : null;
 
       // Scroll Cue Verification
-      const scrollCueWrapper = document.getElementById('scroll-cue-wrapper');
       const scrollCueBtn = document.getElementById('scroll-cue-button');
       const scrollCueText = document.getElementById('scroll-cue-text');
       const scrollCueIcon = document.getElementById('scroll-cue-icon');
-
-      const cueWrapperRect = scrollCueWrapper ? scrollCueWrapper.getBoundingClientRect() : null;
       const cueBtnRect = scrollCueBtn ? scrollCueBtn.getBoundingClientRect() : null;
 
-      const isCueInViewport = cueBtnRect ? cueBtnRect.bottom <= window.innerHeight + 2 : false;
+      const effectiveVisibleHeight = window.innerHeight;
+      const isCueInViewport = cueBtnRect ? cueBtnRect.bottom <= effectiveVisibleHeight + 2 : false;
       const cueTopDistance = cueBtnRect ? cueBtnRect.top : 0;
       const buttonBottomDistance = ctaRect ? ctaRect.bottom : 0;
       const gapBetweenButtonAndCue = cueTopDistance - buttonBottomDistance;
       const noButtonCueCollision = gapBetweenButtonAndCue >= 4;
 
+      // Space above "QUALITY BAKERS - SINCE 2020" below marquee
+      const topGapAboveSubtitle =
+        marqueeRect && subtitleRect ? subtitleRect.top - marqueeRect.bottom : null;
+
       return {
         hasHorizontalOverflow,
         scrollWidth,
         clientWidth,
+        isMobile,
         logoVisible: !!logoRect && logoRect.width > 0 && logoRect.height > 0,
         logoSize: logoRect
           ? { width: Math.round(logoRect.width), height: Math.round(logoRect.height) }
@@ -756,7 +828,8 @@ async function runTestSuite() {
         titleVisible: !!titleRect && titleRect.width > 0,
         titleText: headerTitle ? headerTitle.textContent.trim() : '',
         titleFontSize: titleRect ? window.getComputedStyle(headerTitle).fontSize : '',
-        subtitleVisible: !isMobile || (!!subtitleRect && subtitleRect.height > 0),
+        subtitleVisible: !!subtitleRect && subtitleRect.height > 0,
+        topGapAboveSubtitle: topGapAboveSubtitle !== null ? Math.round(topGapAboveSubtitle) : null,
         titleSvgRect: titleSvgRect
           ? {
               width: Math.round(titleSvgRect.width),
@@ -766,6 +839,7 @@ async function runTestSuite() {
             }
           : null,
         ctaVisible: !!ctaRect && ctaRect.width > 0,
+        ctaBottom: ctaRect ? Math.round(ctaRect.bottom) : null,
         isCueInViewport,
         gapBetweenButtonAndCue: Math.round(gapBetweenButtonAndCue),
         noButtonCueCollision,
@@ -773,6 +847,7 @@ async function runTestSuite() {
         cueText: scrollCueText ? scrollCueText.textContent.trim() : '',
         cueIconPresent: !!scrollCueIcon,
         windowHeight: window.innerHeight,
+        simulatedChromeBarExtraVh: deviceInfo.simulatedChromeBarExtraVh || 0,
       };
     }, dev);
 
@@ -808,6 +883,23 @@ async function runTestSuite() {
     if (!metrics.cueIconPresent) {
       issues.push(`Scroll cue chevron icon is missing`);
     }
+    // Verify enlarged content on portrait smartphones >= 360px wide with >= 640px height (like Motorola G34 5G)
+    if (metrics.isMobile && dev.width >= 360 && dev.height >= 640) {
+      if (!metrics.titleSvgRect || metrics.titleSvgRect.width < 305) {
+        issues.push(
+          `Mobile title SVG too small (${metrics.titleSvgRect ? metrics.titleSvgRect.width : 0}px < 305px)`,
+        );
+      }
+      if (
+        metrics.topGapAboveSubtitle !== null &&
+        dev.height <= 850 &&
+        metrics.topGapAboveSubtitle > 120
+      ) {
+        issues.push(
+          `Excessive empty space above subtitle (${metrics.topGapAboveSubtitle}px > 120px)`,
+        );
+      }
+    }
 
     const passed = issues.length === 0;
     if (passed) {
@@ -834,6 +926,10 @@ async function runTestSuite() {
     );
     if (!passed) {
       console.log(`      ⚠️ Issues: ${issues.join('; ')}`);
+    } else if (dev.category === 'Motorola G34 5G') {
+      console.log(
+        `      📏 Moto G34 Metrics: svg=${metrics.titleSvgRect?.width}x${metrics.titleSvgRect?.height}px, topGap=${metrics.topGapAboveSubtitle}px, ctaBottom=${metrics.ctaBottom}px, cueBottom=${metrics.cueBottom}/${metrics.windowHeight}px (gap=${metrics.gapBetweenButtonAndCue}px)`,
+      );
     }
   }
 
@@ -842,7 +938,7 @@ async function runTestSuite() {
   console.log(`TEST EXECUTION SUMMARY`);
   console.log(`================================================================================`);
   console.log(`Total Device Tests:  ${DEVICE_PROFILES.length}`);
-  console.log(`Passed:              ${passedTests} (100%)`);
+  console.log(`Passed:              ${passedTests}`);
   console.log(`Failed:              ${failedTests}`);
   console.log(`Success Rate:        ${((passedTests / DEVICE_PROFILES.length) * 100).toFixed(1)}%`);
   console.log(`================================================================================\n`);
