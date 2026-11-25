@@ -8,6 +8,11 @@ const nextConfig: NextConfig = {
   serverExternalPackages: ['cloudinary', '@prisma/client', '@qbm/database'],
   reactStrictMode: true,
   experimental: {
+    staleTimes: {
+      dynamic: 30,
+      static: 180,
+    },
+    optimizePackageImports: ['lucide-react', '@qbm/ui', '@dnd-kit/core', '@dnd-kit/sortable'],
     serverActions: {
       bodySizeLimit: '10mb',
     },

@@ -90,18 +90,30 @@ function SortableItem({
 interface SortableCategoryListProps {
   items: string[]; // Category IDs
   onChange: (items: string[]) => void;
+  initialCategories?: AdminCategory[] | undefined;
 }
 
-export function SortableCategoryList({ items, onChange }: SortableCategoryListProps) {
-  const [categories, setCategories] = useState<AdminCategory[]>([]);
+export function SortableCategoryList({
+  items,
+  onChange,
+  initialCategories,
+}: SortableCategoryListProps) {
+  const [categories, setCategories] = useState<AdminCategory[]>(initialCategories ?? []);
   const [availableCategories, setAvailableCategories] = useState<AdminCategory[]>([]);
   const [selectedToAdd, setSelectedToAdd] = useState<string>('');
 
   useEffect(() => {
+    if (initialCategories) return;
+    let cancelled = false;
     getCategoriesAction().then((cats) => {
-      setCategories(cats);
+      if (!cancelled) {
+        setCategories(cats);
+      }
     });
-  }, []);
+    return () => {
+      cancelled = true;
+    };
+  }, [initialCategories]);
 
   useEffect(() => {
     // Filter out categories already in the list

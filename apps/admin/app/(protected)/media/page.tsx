@@ -3,6 +3,8 @@ import { MediaGrid } from '../../../features/media/components/media-grid';
 import Link from 'next/link';
 import { Plus } from 'lucide-react';
 
+export const dynamic = 'force-dynamic';
+
 export default async function MediaLibraryPage() {
   const media = await getMediaLibraryAction();
 

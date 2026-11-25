@@ -1,6 +1,7 @@
 import crypto from 'crypto';
 import { prisma, verifyPassword, hashPassword } from '@qbm/database';
 import { AdminRole, AdminUser } from '../../users/repositories/user-repository';
+import { mapPrismaUser } from '../../users/repositories/prisma-user-repository';
 import { RepositoryFactory } from '../../../lib/repository-factory';
 
 export interface AuthSession {
@@ -217,7 +218,11 @@ export const AuthRepository = {
     try {
       const dbSession = await prisma.session.findUnique({
         where: { sessionToken: sessionId },
-        include: { user: true },
+        include: {
+          user: {
+            include: { avatar: true },
+          },
+        },
       });
 
       if (!dbSession) {
@@ -237,7 +242,7 @@ export const AuthRepository = {
         return null;
       }
 
-      return await RepositoryFactory.getUserRepository().getUserById(dbSession.userId);
+      return mapPrismaUser(dbSession.user);
     } catch (err) {
       console.error('[AuthRepository] Error retrieving current user from database:', err);
       return null;

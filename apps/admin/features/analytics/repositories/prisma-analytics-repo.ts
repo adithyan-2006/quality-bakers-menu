@@ -93,240 +93,167 @@ export class PrismaAnalyticsRepository implements IAnalyticsRepository {
     const startDate = getStartOfISTDaysAgo(days - 1);
     const start12MonthsAgo = getStartOfISTMonthsAgo(11);
 
-    // Filter out internal admin routes and referrers so customer analytics strictly reflect customer traffic
-    const [
-      totalsRaw,
-      dailyRaw,
-      monthlyRaw,
-      topPageRaw,
-      deviceRaw,
-      deviceModelRaw,
-      browserRaw,
-      osRaw,
-      recentVisitsRaw,
-      likeTotalsRaw,
-      productsLikesRaw,
-      categoriesRaw,
-    ] = await Promise.all([
-      // Consolidated scalar totals query (combines 6 queries into 1 to preserve database connection pool)
+    // Filter out internal admin routes and referrers so customer analytics strictly reflect customer traffic.
+    // Consolidate all WebsiteVisit aggregations into one single PostgreSQL CTE scan to avoid connection pool saturation.
+    const [visitsAggRaw, likeTotalsRaw, productsLikesRaw, categoriesRaw] = await Promise.all([
       prisma.$queryRaw<
         Array<{
-          totalVisits: bigint;
-          totalUniqueVisitors: bigint;
-          todayVisits: bigint;
-          todayUniqueVisitors: bigint;
-          thisMonthVisits: bigint;
-          thisMonthUniqueVisitors: bigint;
+          totals: {
+            totalVisits: number;
+            totalUniqueVisitors: number;
+            todayVisits: number;
+            todayUniqueVisitors: number;
+            thisMonthVisits: number;
+            thisMonthUniqueVisitors: number;
+          } | null;
+          daily: Array<{ day: string; visits: number; unique_visitors: number }>;
+          monthly: Array<{ month: string; visits: number; unique_visitors: number }>;
+          topPages: Array<{ path: string; visits: number; unique_visitors: number }>;
+          devices: Array<{ device: string | null; visits: number; unique_devices: number }>;
+          deviceModels: Array<{
+            name: string | null;
+            device_type: string | null;
+            visits: number;
+            unique_devices: number;
+          }>;
+          browsers: Array<{ browser: string | null; count: number }>;
+          os: Array<{ os: string | null; count: number }>;
+          recentVisits: Array<{
+            id: string;
+            path: string;
+            deviceType: string | null;
+            deviceName: string | null;
+            browser: string | null;
+            os: string | null;
+            createdAt: string | Date;
+          }>;
         }>
       >`
+        WITH valid_visits AS (
+          SELECT
+            id,
+            path,
+            "visitorId",
+            "deviceType",
+            browser,
+            os,
+            "createdAt",
+            COALESCE(NULLIF(TRIM("sessionId"), ''), "id") AS session_key,
+            COALESCE("deviceName", CASE
+              WHEN "os" = 'iOS' AND "deviceType" = 'tablet' THEN 'Apple iPad'
+              WHEN "os" = 'iOS' THEN 'Apple iPhone'
+              WHEN "os" = 'Android' AND "deviceType" = 'tablet' THEN 'Android Tablet'
+              WHEN "os" = 'Android' THEN 'Android Phone'
+              WHEN "os" = 'macOS' THEN 'Apple Mac'
+              WHEN "os" = 'Windows' THEN 'Windows PC'
+              WHEN "deviceType" = 'mobile' THEN 'Mobile Device'
+              ELSE 'Desktop PC'
+            END) AS resolved_device_name
+          FROM "WebsiteVisit"
+          WHERE "path" NOT LIKE '/dashboard%'
+            AND "path" NOT LIKE '/login%'
+            AND "path" NOT LIKE '/analytics%'
+            AND "path" NOT LIKE '/api/%'
+            AND "path" NOT LIKE '/maintenance%'
+            AND "path" NOT LIKE '/offline%'
+            AND ("referrer" IS NULL OR "referrer" NOT LIKE '%:3001%')
+            AND "visitorId" NOT LIKE 'test_%'
+            AND "visitorId" NOT LIKE 'mock_%'
+        ),
+        period_visits AS (
+          SELECT * FROM valid_visits WHERE "createdAt" >= ${startDate}
+        )
         SELECT
-          COUNT(*)::bigint AS "totalVisits",
-          COUNT(DISTINCT "visitorId")::bigint AS "totalUniqueVisitors",
-          COUNT(*) FILTER (WHERE "createdAt" >= ${startOfToday})::bigint AS "todayVisits",
-          COUNT(DISTINCT CASE WHEN "createdAt" >= ${startOfToday} THEN "visitorId" END)::bigint AS "todayUniqueVisitors",
-          COUNT(*) FILTER (WHERE "createdAt" >= ${startOfMonth})::bigint AS "thisMonthVisits",
-          COUNT(DISTINCT CASE WHEN "createdAt" >= ${startOfMonth} THEN "visitorId" END)::bigint AS "thisMonthUniqueVisitors"
-        FROM "WebsiteVisit"
-        WHERE "path" NOT LIKE '/dashboard%' 
-          AND "path" NOT LIKE '/login%' 
-          AND "path" NOT LIKE '/analytics%' 
-          AND "path" NOT LIKE '/api/%' 
-          AND ("referrer" IS NULL OR "referrer" NOT LIKE '%:3001%')
-          AND "visitorId" NOT LIKE 'test_%'
-          AND "visitorId" NOT LIKE 'mock_%'
-      `.catch(() => [
-        {
-          totalVisits: BigInt(0),
-          totalUniqueVisitors: BigInt(0),
-          todayVisits: BigInt(0),
-          todayUniqueVisitors: BigInt(0),
-          thisMonthVisits: BigInt(0),
-          thisMonthUniqueVisitors: BigInt(0),
-        },
-      ]),
-      // Daily breakdown grouped by Asia/Kolkata date
-      prisma.$queryRaw<Array<{ day: string; visits: bigint; unique_visitors: bigint }>>`
-        SELECT 
-          TO_CHAR("createdAt" AT TIME ZONE 'Asia/Kolkata', 'YYYY-MM-DD') AS day,
-          COUNT(*)::bigint AS visits,
-          COUNT(DISTINCT "visitorId")::bigint AS unique_visitors
-        FROM "WebsiteVisit"
-        WHERE "createdAt" >= ${startDate}
-          AND "path" NOT LIKE '/dashboard%' 
-          AND "path" NOT LIKE '/login%' 
-          AND "path" NOT LIKE '/analytics%' 
-          AND "path" NOT LIKE '/api/%' 
-          AND ("referrer" IS NULL OR "referrer" NOT LIKE '%:3001%')
-          AND "visitorId" NOT LIKE 'test_%'
-          AND "visitorId" NOT LIKE 'mock_%'
-        GROUP BY day
-        ORDER BY day ASC
-      `.catch(() => []),
-      // Monthly breakdown grouped by Asia/Kolkata month
-      prisma.$queryRaw<Array<{ month: string; visits: bigint; unique_visitors: bigint }>>`
-        SELECT 
-          TO_CHAR("createdAt" AT TIME ZONE 'Asia/Kolkata', 'YYYY-MM') AS month,
-          COUNT(*)::bigint AS visits,
-          COUNT(DISTINCT "visitorId")::bigint AS unique_visitors
-        FROM "WebsiteVisit"
-        WHERE "createdAt" >= ${start12MonthsAgo}
-          AND "path" NOT LIKE '/dashboard%' 
-          AND "path" NOT LIKE '/login%' 
-          AND "path" NOT LIKE '/analytics%' 
-          AND "path" NOT LIKE '/api/%' 
-          AND ("referrer" IS NULL OR "referrer" NOT LIKE '%:3001%')
-          AND "visitorId" NOT LIKE 'test_%'
-          AND "visitorId" NOT LIKE 'mock_%'
-        GROUP BY month
-        ORDER BY month ASC
-      `.catch(() => []),
-      // Top pages (filtered by selected timeframe)
-      prisma.$queryRaw<Array<{ path: string; visits: bigint; unique_visitors: bigint }>>`
-        SELECT 
-          path,
-          COUNT(*)::bigint AS visits,
-          COUNT(DISTINCT "visitorId")::bigint AS unique_visitors
-        FROM "WebsiteVisit"
-        WHERE "createdAt" >= ${startDate}
-          AND "path" NOT LIKE '/dashboard%' 
-          AND "path" NOT LIKE '/login%' 
-          AND "path" NOT LIKE '/analytics%' 
-          AND "path" NOT LIKE '/api/%' 
-          AND ("referrer" IS NULL OR "referrer" NOT LIKE '%:3001%')
-          AND "visitorId" NOT LIKE 'test_%'
-          AND "visitorId" NOT LIKE 'mock_%'
-        GROUP BY path
-        ORDER BY visits DESC
-        LIMIT 10
-      `.catch(() => []),
-      // Device category breakdown (filtered by selected timeframe)
-      prisma.$queryRaw<Array<{ device: string | null; visits: bigint; unique_devices: bigint }>>`
-        SELECT 
-          LOWER(COALESCE("deviceType", 'other')) AS device,
-          COUNT(*)::bigint AS visits,
-          COUNT(DISTINCT "visitorId")::bigint AS unique_devices
-        FROM "WebsiteVisit"
-        WHERE "createdAt" >= ${startDate}
-          AND "path" NOT LIKE '/dashboard%' 
-          AND "path" NOT LIKE '/login%' 
-          AND "path" NOT LIKE '/analytics%' 
-          AND "path" NOT LIKE '/api/%' 
-          AND ("referrer" IS NULL OR "referrer" NOT LIKE '%:3001%')
-          AND "visitorId" NOT LIKE 'test_%'
-          AND "visitorId" NOT LIKE 'mock_%'
-        GROUP BY device
-      `.catch(() => []),
-      // Specific Device Model breakdown (filtered by selected timeframe)
-      prisma.$queryRaw<
-        Array<{
-          name: string | null;
-          device_type: string | null;
-          visits: bigint;
-          unique_devices: bigint;
-        }>
-      >`
-        SELECT 
-          COALESCE("deviceName", CASE 
-            WHEN "os" = 'iOS' AND "deviceType" = 'tablet' THEN 'Apple iPad'
-            WHEN "os" = 'iOS' THEN 'Apple iPhone'
-            WHEN "os" = 'Android' AND "deviceType" = 'tablet' THEN 'Android Tablet'
-            WHEN "os" = 'Android' THEN 'Android Phone'
-            WHEN "os" = 'macOS' THEN 'Apple Mac'
-            WHEN "os" = 'Windows' THEN 'Windows PC'
-            WHEN "deviceType" = 'mobile' THEN 'Mobile Device'
-            ELSE 'Desktop PC'
-          END) AS name,
-          LOWER(COALESCE("deviceType", 'desktop')) AS device_type,
-          COUNT(*)::bigint AS visits,
-          COUNT(DISTINCT "visitorId")::bigint AS unique_devices
-        FROM "WebsiteVisit"
-        WHERE "createdAt" >= ${startDate}
-          AND "path" NOT LIKE '/dashboard%' 
-          AND "path" NOT LIKE '/login%' 
-          AND "path" NOT LIKE '/analytics%' 
-          AND "path" NOT LIKE '/api/%' 
-          AND ("referrer" IS NULL OR "referrer" NOT LIKE '%:3001%')
-          AND "visitorId" NOT LIKE 'test_%'
-          AND "visitorId" NOT LIKE 'mock_%'
-        GROUP BY name, device_type
-        ORDER BY unique_devices DESC, visits DESC
-        LIMIT 10
-      `.catch(() => []),
-      // Browser breakdown (filtered by selected timeframe)
-      prisma.$queryRaw<Array<{ browser: string | null; count: bigint }>>`
-        SELECT 
-          COALESCE("browser", 'Other') AS browser,
-          COUNT(*)::bigint AS count
-        FROM "WebsiteVisit"
-        WHERE "createdAt" >= ${startDate}
-          AND "path" NOT LIKE '/dashboard%' 
-          AND "path" NOT LIKE '/login%' 
-          AND "path" NOT LIKE '/analytics%' 
-          AND "path" NOT LIKE '/api/%' 
-          AND ("referrer" IS NULL OR "referrer" NOT LIKE '%:3001%')
-          AND "visitorId" NOT LIKE 'test_%'
-          AND "visitorId" NOT LIKE 'mock_%'
-        GROUP BY browser
-        ORDER BY count DESC
-        LIMIT 5
-      `.catch(() => []),
-      // OS breakdown (filtered by selected timeframe)
-      prisma.$queryRaw<Array<{ os: string | null; count: bigint }>>`
-        SELECT 
-          COALESCE("os", 'Other') AS os,
-          COUNT(*)::bigint AS count
-        FROM "WebsiteVisit"
-        WHERE "createdAt" >= ${startDate}
-          AND "path" NOT LIKE '/dashboard%' 
-          AND "path" NOT LIKE '/login%' 
-          AND "path" NOT LIKE '/analytics%' 
-          AND "path" NOT LIKE '/api/%' 
-          AND ("referrer" IS NULL OR "referrer" NOT LIKE '%:3001%')
-          AND "visitorId" NOT LIKE 'test_%'
-          AND "visitorId" NOT LIKE 'mock_%'
-        GROUP BY os
-        ORDER BY count DESC
-        LIMIT 5
-      `.catch(() => []),
-      // Recent visits with accurate deviceName
-      prisma.$queryRaw<
-        Array<{
-          id: string;
-          path: string;
-          deviceType: string | null;
-          deviceName: string | null;
-          browser: string | null;
-          os: string | null;
-          createdAt: Date;
-        }>
-      >`
-        SELECT 
-          id,
-          path,
-          COALESCE("deviceName", CASE 
-            WHEN "os" = 'iOS' AND "deviceType" = 'tablet' THEN 'Apple iPad'
-            WHEN "os" = 'iOS' THEN 'Apple iPhone'
-            WHEN "os" = 'Android' AND "deviceType" = 'tablet' THEN 'Android Tablet'
-            WHEN "os" = 'Android' THEN 'Android Phone'
-            WHEN "os" = 'macOS' THEN 'Apple Mac'
-            WHEN "os" = 'Windows' THEN 'Windows PC'
-            WHEN "deviceType" = 'mobile' THEN 'Mobile Device'
-            ELSE 'Desktop PC'
-          END) AS "deviceName",
-          LOWER(COALESCE("deviceType", 'desktop')) AS "deviceType",
-          COALESCE(browser, 'Other') AS browser,
-          COALESCE(os, 'Other') AS os,
-          "createdAt"
-        FROM "WebsiteVisit"
-        WHERE "path" NOT LIKE '/dashboard%' 
-          AND "path" NOT LIKE '/login%' 
-          AND "path" NOT LIKE '/analytics%' 
-          AND "path" NOT LIKE '/api/%' 
-          AND ("referrer" IS NULL OR "referrer" NOT LIKE '%:3001%')
-          AND "visitorId" NOT LIKE 'test_%'
-          AND "visitorId" NOT LIKE 'mock_%'
-        ORDER BY "createdAt" DESC
-        LIMIT 12
+          (SELECT row_to_json(t) FROM (
+            SELECT
+              COUNT(DISTINCT session_key)::int AS "totalVisits",
+              COUNT(DISTINCT "visitorId")::int AS "totalUniqueVisitors",
+              COUNT(DISTINCT CASE WHEN "createdAt" >= ${startOfToday} THEN session_key END)::int AS "todayVisits",
+              COUNT(DISTINCT CASE WHEN "createdAt" >= ${startOfToday} THEN "visitorId" END)::int AS "todayUniqueVisitors",
+              COUNT(DISTINCT CASE WHEN "createdAt" >= ${startOfMonth} THEN session_key END)::int AS "thisMonthVisits",
+              COUNT(DISTINCT CASE WHEN "createdAt" >= ${startOfMonth} THEN "visitorId" END)::int AS "thisMonthUniqueVisitors"
+            FROM valid_visits
+          ) t) AS totals,
+          COALESCE((SELECT json_agg(d ORDER BY d.day ASC) FROM (
+            SELECT
+              TO_CHAR("createdAt" AT TIME ZONE 'Asia/Kolkata', 'YYYY-MM-DD') AS day,
+              COUNT(DISTINCT session_key)::int AS visits,
+              COUNT(DISTINCT "visitorId")::int AS unique_visitors
+            FROM period_visits
+            GROUP BY day
+          ) d), '[]'::json) AS daily,
+          COALESCE((SELECT json_agg(m ORDER BY m.month ASC) FROM (
+            SELECT
+              TO_CHAR("createdAt" AT TIME ZONE 'Asia/Kolkata', 'YYYY-MM') AS month,
+              COUNT(DISTINCT session_key)::int AS visits,
+              COUNT(DISTINCT "visitorId")::int AS unique_visitors
+            FROM valid_visits
+            WHERE "createdAt" >= ${start12MonthsAgo}
+            GROUP BY month
+          ) m), '[]'::json) AS monthly,
+          COALESCE((SELECT json_agg(tp ORDER BY tp.visits DESC) FROM (
+            SELECT
+              path,
+              COUNT(DISTINCT session_key)::int AS visits,
+              COUNT(DISTINCT "visitorId")::int AS unique_visitors
+            FROM period_visits
+            GROUP BY path
+            ORDER BY visits DESC
+            LIMIT 10
+          ) tp), '[]'::json) AS "topPages",
+          COALESCE((SELECT json_agg(dv) FROM (
+            SELECT
+              LOWER(COALESCE("deviceType", 'other')) AS device,
+              COUNT(DISTINCT session_key)::int AS visits,
+              COUNT(DISTINCT "visitorId")::int AS unique_devices
+            FROM period_visits
+            GROUP BY device
+          ) dv), '[]'::json) AS devices,
+          COALESCE((SELECT json_agg(dm ORDER BY dm.unique_devices DESC, dm.visits DESC) FROM (
+            SELECT
+              resolved_device_name AS name,
+              LOWER(COALESCE("deviceType", 'desktop')) AS device_type,
+              COUNT(DISTINCT session_key)::int AS visits,
+              COUNT(DISTINCT "visitorId")::int AS unique_devices
+            FROM period_visits
+            GROUP BY resolved_device_name, device_type
+            ORDER BY unique_devices DESC, visits DESC
+            LIMIT 10
+          ) dm), '[]'::json) AS "deviceModels",
+          COALESCE((SELECT json_agg(br ORDER BY br.count DESC) FROM (
+            SELECT
+              COALESCE("browser", 'Other') AS browser,
+              COUNT(DISTINCT session_key)::int AS count
+            FROM period_visits
+            GROUP BY browser
+            ORDER BY count DESC
+            LIMIT 5
+          ) br), '[]'::json) AS browsers,
+          COALESCE((SELECT json_agg(osq ORDER BY osq.count DESC) FROM (
+            SELECT
+              COALESCE("os", 'Other') AS os,
+              COUNT(DISTINCT session_key)::int AS count
+            FROM period_visits
+            GROUP BY os
+            ORDER BY count DESC
+            LIMIT 5
+          ) osq), '[]'::json) AS os,
+          COALESCE((SELECT json_agg(rv ORDER BY rv."createdAt" DESC) FROM (
+            SELECT * FROM (
+              SELECT DISTINCT ON (session_key)
+                id,
+                path,
+                resolved_device_name AS "deviceName",
+                LOWER(COALESCE("deviceType", 'desktop')) AS "deviceType",
+                COALESCE(browser, 'Other') AS browser,
+                COALESCE(os, 'Other') AS os,
+                TO_CHAR("createdAt" AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS.MS"Z"') AS "createdAt"
+              FROM valid_visits
+              ORDER BY session_key, "createdAt" DESC
+            ) unique_sessions
+            ORDER BY "createdAt" DESC
+            LIMIT 12
+          ) rv), '[]'::json) AS "recentVisits"
       `.catch(() => []),
       // Like Totals query (strictly scoped to active products in active categories)
       prisma.$queryRaw<
@@ -403,14 +330,23 @@ export class PrismaAnalyticsRepository implements IAnalyticsRepository {
         .catch(() => []),
     ]);
 
-    const totals = totalsRaw[0] || {
-      totalVisits: BigInt(0),
-      totalUniqueVisitors: BigInt(0),
-      todayVisits: BigInt(0),
-      todayUniqueVisitors: BigInt(0),
-      thisMonthVisits: BigInt(0),
-      thisMonthUniqueVisitors: BigInt(0),
+    const visitsAgg = visitsAggRaw[0];
+    const totals = visitsAgg?.totals || {
+      totalVisits: 0,
+      totalUniqueVisitors: 0,
+      todayVisits: 0,
+      todayUniqueVisitors: 0,
+      thisMonthVisits: 0,
+      thisMonthUniqueVisitors: 0,
     };
+    const dailyRaw = visitsAgg?.daily || [];
+    const monthlyRaw = visitsAgg?.monthly || [];
+    const topPageRaw = visitsAgg?.topPages || [];
+    const deviceRaw = visitsAgg?.devices || [];
+    const deviceModelRaw = visitsAgg?.deviceModels || [];
+    const browserRaw = visitsAgg?.browsers || [];
+    const osRaw = visitsAgg?.os || [];
+    const recentVisitsRaw = visitsAgg?.recentVisits || [];
     const totalVisits = Number(totals.totalVisits);
     const totalUniqueVisitors = Number(totals.totalUniqueVisitors);
     const todayVisits = Number(totals.todayVisits);
@@ -497,7 +433,8 @@ export class PrismaAnalyticsRepository implements IAnalyticsRepository {
         path: p.path,
         visits: v,
         uniqueVisitors: Number(p.unique_visitors),
-        percentage: pageDenominator > 0 ? Math.round((v / pageDenominator) * 100) : 0,
+        percentage:
+          pageDenominator > 0 ? Math.min(100, Math.round((v / pageDenominator) * 100)) : 0,
       };
     });
 

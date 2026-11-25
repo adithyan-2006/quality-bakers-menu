@@ -276,6 +276,8 @@ export function ProductList({ initialProducts, categories }: ProductListProps) {
                           <img
                             src={product.image}
                             alt={product.name}
+                            loading="lazy"
+                            decoding="async"
                             className="w-full h-full object-cover"
                           />
                         ) : (
@@ -398,6 +400,8 @@ export function ProductList({ initialProducts, categories }: ProductListProps) {
                       <img
                         src={product.image}
                         alt={product.name}
+                        loading="lazy"
+                        decoding="async"
                         className="w-full h-full object-cover"
                       />
                     ) : (

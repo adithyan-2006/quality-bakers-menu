@@ -19,6 +19,8 @@ export async function createCategoryAction(data: any) {
   await requireAdminUser(['Owner', 'Manager']);
   const result = await RepositoryFactory.getCategoryRepository().createCategory(data);
   revalidatePath('/categories');
+  revalidatePath('/dashboard');
+  revalidatePath('/homepage');
   return result;
 }
 
@@ -26,6 +28,8 @@ export async function updateCategoryAction(id: string, data: any) {
   await requireAdminUser(['Owner', 'Manager']);
   const result = await RepositoryFactory.getCategoryRepository().updateCategory(id, data);
   revalidatePath('/categories');
+  revalidatePath('/dashboard');
+  revalidatePath('/homepage');
 
   // Cross-app revalidation
   await revalidateCustomerApp();
@@ -37,6 +41,7 @@ export async function updateCategoryDisplayOrderAction(items: any[]) {
   await requireAdminUser(['Owner', 'Manager']);
   const result = await RepositoryFactory.getCategoryRepository().updateDisplayOrder(items);
   revalidatePath('/categories');
+  revalidatePath('/homepage');
   return result;
 }
 
@@ -45,6 +50,8 @@ export async function deleteCategoryAction(id: string) {
     await requireAdminUser(['Owner', 'Manager']);
     await RepositoryFactory.getCategoryRepository().deleteCategory(id);
     revalidatePath('/categories');
+    revalidatePath('/dashboard');
+    revalidatePath('/homepage');
 
     // Cross-app revalidation
     await revalidateCustomerApp();

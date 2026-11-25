@@ -1,3 +1,4 @@
+import { cache } from 'react';
 import { cookies } from 'next/headers';
 import { AuthRepository } from '../features/auth/repositories/auth-repository';
 import { AdminRole, AdminUser } from '../features/users/repositories/user-repository';
@@ -5,6 +6,10 @@ import { AuthService } from '../features/auth/services/auth-service';
 import { AuthenticationError, AuthorizationError } from './errors';
 
 export const ADMIN_SESSION_COOKIE = 'qbm_admin_session';
+
+const getCachedUserForToken = cache(async (sessionToken: string): Promise<AdminUser | null> => {
+  return AuthRepository.getCurrentUser(sessionToken);
+});
 
 type SessionTokenResolver = () => Promise<string | undefined>;
 
@@ -41,6 +46,14 @@ export async function requireAdminUser(allowedRoles?: AdminRole[]): Promise<Admi
   try {
     sessionToken = await activeSessionTokenResolver();
   } catch (err) {
+    if (
+      err &&
+      typeof err === 'object' &&
+      'digest' in err &&
+      (err as { digest?: string }).digest === 'DYNAMIC_SERVER_USAGE'
+    ) {
+      throw err;
+    }
     console.error('[requireAdminUser] Failed to read session cookie from request context:', err);
     throw new AuthenticationError('Authentication required: Failed to read session context.');
   }
@@ -51,7 +64,10 @@ export async function requireAdminUser(allowedRoles?: AdminRole[]): Promise<Admi
 
   let user: AdminUser | null = null;
   try {
-    user = await AuthRepository.getCurrentUser(sessionToken);
+    user =
+      activeSessionTokenResolver === defaultSessionTokenResolver
+        ? await getCachedUserForToken(sessionToken)
+        : await AuthRepository.getCurrentUser(sessionToken);
   } catch (err) {
     console.error('[requireAdminUser] Exception during session verification:', err);
     throw new AuthenticationError('Authentication failed: Unable to verify session.');

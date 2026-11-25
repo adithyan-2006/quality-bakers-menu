@@ -3,7 +3,7 @@ import { prisma } from '@qbm/database';
 import { RepositoryError, NotFoundError } from '../../../lib/errors';
 import { AuditService } from '../../audit/services/audit-service';
 
-function mapPrismaUser(user: any): AdminUser {
+export function mapPrismaUser(user: any): AdminUser {
   return {
     id: user.id,
     name: user.name || '',

@@ -3,23 +3,36 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { AdminHomepage } from '../repositories/homepage-repo';
+import { AdminCategory } from '../../categories/repositories/category-repo';
 import { getHomepageAction, updateHomepageAction } from '../actions/homepage-actions';
 import { CollapsibleSection } from '../../../components/ui/collapsible-section';
 import { MediaPicker } from '../../media/components/media-picker';
 import { SortableCategoryList } from './sortable-category-list';
 
-export function HomepageEditor() {
+interface HomepageEditorProps {
+  initialData?: AdminHomepage | undefined;
+  initialCategories?: AdminCategory[] | undefined;
+}
+
+export function HomepageEditor({ initialData, initialCategories }: HomepageEditorProps) {
   const router = useRouter();
-  const [data, setData] = useState<AdminHomepage | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [data, setData] = useState<AdminHomepage | null>(initialData ?? null);
+  const [isLoading, setIsLoading] = useState(!initialData);
   const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
+    if (initialData) return;
+    let cancelled = false;
     getHomepageAction().then((res) => {
-      setData(res);
-      setIsLoading(false);
+      if (!cancelled) {
+        setData(res);
+        setIsLoading(false);
+      }
     });
-  }, []);
+    return () => {
+      cancelled = true;
+    };
+  }, [initialData]);
 
   const handleSave = async (status: 'draft' | 'published' = 'published') => {
     if (!data) return;
@@ -136,6 +149,7 @@ export function HomepageEditor() {
         </p>
         <SortableCategoryList
           items={data.featuredCategories}
+          initialCategories={initialCategories}
           onChange={(items) => setData({ ...data, featuredCategories: items })}
         />
       </CollapsibleSection>

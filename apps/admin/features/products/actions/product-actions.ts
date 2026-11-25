@@ -21,6 +21,7 @@ export async function createProductAction(data: Partial<AdminProduct>): Promise<
   await requireAdminUser(['Owner', 'Manager']);
   const result = await RepositoryFactory.getProductRepository().createProduct(data);
   revalidatePath('/products');
+  revalidatePath('/dashboard');
   return result;
 }
 
@@ -31,6 +32,7 @@ export async function updateProductAction(
   await requireAdminUser(['Owner', 'Manager']);
   const result = await RepositoryFactory.getProductRepository().updateProduct(id, data);
   revalidatePath('/products');
+  revalidatePath('/dashboard');
 
   // Cross-app revalidation
   await revalidateCustomerApp();
@@ -51,6 +53,7 @@ export async function duplicateProductAction(id: string): Promise<AdminProduct> 
   await requireAdminUser(['Owner', 'Manager']);
   const result = await RepositoryFactory.getProductRepository().duplicateProduct(id);
   revalidatePath('/products');
+  revalidatePath('/dashboard');
   return result;
 }
 
@@ -59,6 +62,7 @@ export async function deleteProductAction(id: string) {
     await requireAdminUser(['Owner', 'Manager']);
     await RepositoryFactory.getProductRepository().deleteProduct(id);
     revalidatePath('/products');
+    revalidatePath('/dashboard');
 
     // Cross-app revalidation
     await revalidateCustomerApp();

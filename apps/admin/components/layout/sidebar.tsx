@@ -16,7 +16,6 @@ import {
   X,
   LogOut,
   User as UserIcon,
-  BarChart3,
 } from 'lucide-react';
 import { SidebarItem } from '../navigation/sidebar-item';
 import { useAuth } from '../providers/auth-provider';
@@ -61,8 +60,12 @@ export function Sidebar() {
 
         <div className="flex-1 overflow-y-auto py-4 px-3 space-y-6">
           <div className="space-y-1">
-            <SidebarItem icon={LayoutDashboard} label="Dashboard" href="/dashboard" />
-            <SidebarItem icon={BarChart3} label="Analytics" href="/analytics" />
+            <SidebarItem
+              icon={LayoutDashboard}
+              label="Dashboard"
+              href="/dashboard"
+              onNavigate={() => setIsOpen(false)}
+            />
           </div>
 
           <div>
@@ -70,8 +73,18 @@ export function Sidebar() {
               Menu Management
             </h3>
             <div className="space-y-1">
-              <SidebarItem icon={MenuSquare} label="Categories" href="/categories" />
-              <SidebarItem icon={Package} label="Products" href="/products" />
+              <SidebarItem
+                icon={MenuSquare}
+                label="Categories"
+                href="/categories"
+                onNavigate={() => setIsOpen(false)}
+              />
+              <SidebarItem
+                icon={Package}
+                label="Products"
+                href="/products"
+                onNavigate={() => setIsOpen(false)}
+              />
             </div>
           </div>
 
@@ -81,24 +94,54 @@ export function Sidebar() {
             </h3>
             <div className="space-y-1">
               {['Owner', 'Manager'].includes(user.role) && (
-                <SidebarItem icon={Home} label="Homepage" href="/homepage" />
+                <SidebarItem
+                  icon={Home}
+                  label="Homepage"
+                  href="/homepage"
+                  onNavigate={() => setIsOpen(false)}
+                />
               )}
-              <SidebarItem icon={ImageIcon} label="Media Library" href="/media" />
+              <SidebarItem
+                icon={ImageIcon}
+                label="Media Library"
+                href="/media"
+                onNavigate={() => setIsOpen(false)}
+              />
               {['Owner', 'Manager'].includes(user.role) && (
-                <SidebarItem icon={Briefcase} label="Business Info" href="/business" />
+                <SidebarItem
+                  icon={Briefcase}
+                  label="Business Info"
+                  href="/business"
+                  onNavigate={() => setIsOpen(false)}
+                />
               )}
               {['Owner', 'Manager'].includes(user.role) && (
-                <SidebarItem icon={Palette} label="Appearance" href="/appearance" />
+                <SidebarItem
+                  icon={Palette}
+                  label="Appearance"
+                  href="/appearance"
+                  onNavigate={() => setIsOpen(false)}
+                />
               )}
               {user.role === 'Owner' && (
-                <SidebarItem icon={Users} label="Users & Roles" href="/users" />
+                <SidebarItem
+                  icon={Users}
+                  label="Users & Roles"
+                  href="/users"
+                  onNavigate={() => setIsOpen(false)}
+                />
               )}
             </div>
           </div>
         </div>
 
         <div className="p-3 border-t border-black/[0.06] space-y-1">
-          <SidebarItem icon={Settings} label="Settings" href="/settings" />
+          <SidebarItem
+            icon={Settings}
+            label="Settings"
+            href="/settings"
+            onNavigate={() => setIsOpen(false)}
+          />
         </div>
 
         {/* User Profile Area */}

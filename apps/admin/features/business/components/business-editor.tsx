@@ -8,18 +8,29 @@ import { CollapsibleSection } from '../../../components/ui/collapsible-section';
 import { MediaPicker } from '../../media/components/media-picker';
 import { BusinessHoursEditor } from './business-hours-editor';
 
-export function BusinessEditor() {
+interface BusinessEditorProps {
+  initialData?: AdminBusiness | undefined;
+}
+
+export function BusinessEditor({ initialData }: BusinessEditorProps) {
   const router = useRouter();
-  const [data, setData] = useState<AdminBusiness | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [data, setData] = useState<AdminBusiness | null>(initialData ?? null);
+  const [isLoading, setIsLoading] = useState(!initialData);
   const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
+    if (initialData) return;
+    let cancelled = false;
     getBusinessAction().then((res) => {
-      setData(res);
-      setIsLoading(false);
+      if (!cancelled) {
+        setData(res);
+        setIsLoading(false);
+      }
     });
-  }, []);
+    return () => {
+      cancelled = true;
+    };
+  }, [initialData]);
 
   const handleSave = async (status: 'draft' | 'published' = 'published') => {
     if (!data) return;

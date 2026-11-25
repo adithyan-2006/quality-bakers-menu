@@ -1,36 +1,39 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { AlertTriangle, ArrowRight, Loader2 } from 'lucide-react';
+import { MaintenanceConfig } from '@qbm/config';
 import Link from 'next/link';
 
-export function MaintenanceAlertBanner() {
-  const [enabled, setEnabled] = useState(false);
-  const [loading, setLoading] = useState(true);
+interface MaintenanceAlertBannerProps {
+  initialConfig?: MaintenanceConfig | undefined;
+}
+
+export function MaintenanceAlertBanner({ initialConfig }: MaintenanceAlertBannerProps) {
+  const queryClient = useQueryClient();
   const [actionLoading, setActionLoading] = useState(false);
 
-  const checkStatus = async () => {
-    try {
+  const { data: config, isLoading: loading } = useQuery<MaintenanceConfig>({
+    queryKey: ['admin-maintenance-status'],
+    queryFn: async () => {
       const res = await fetch('/api/admin/maintenance', { cache: 'no-store' });
-      if (res.ok) {
-        const data = await res.json();
-        setEnabled(Boolean(data.enabled));
+      if (!res.ok) {
+        throw new Error('Failed to fetch maintenance status');
       }
-    } catch {
-      // Ignore error
-    } finally {
-      setLoading(false);
-    }
-  };
+      return res.json();
+    },
+    ...(initialConfig ? { initialData: initialConfig } : {}),
+    staleTime: 30 * 1000,
+  });
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    checkStatus();
-
-    const handleSync = () => checkStatus();
+    const handleSync = () => {
+      queryClient.invalidateQueries({ queryKey: ['admin-maintenance-status'] });
+    };
     window.addEventListener('maintenance-mode-changed', handleSync);
     return () => window.removeEventListener('maintenance-mode-changed', handleSync);
-  }, []);
+  }, [queryClient]);
 
   const handleDeactivate = async () => {
     try {
@@ -41,7 +44,8 @@ export function MaintenanceAlertBanner() {
         body: JSON.stringify({ enabled: false }),
       });
       if (res.ok) {
-        setEnabled(false);
+        const result = await res.json();
+        queryClient.setQueryData(['admin-maintenance-status'], result.current);
         window.dispatchEvent(new CustomEvent('maintenance-mode-changed'));
       }
     } catch (err) {
@@ -50,6 +54,8 @@ export function MaintenanceAlertBanner() {
       setActionLoading(false);
     }
   };
+
+  const enabled = Boolean(config?.enabled);
 
   if (loading || !enabled) {
     return null;

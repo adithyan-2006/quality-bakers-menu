@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 import { cn } from '@qbm/ui';
 
+export const dynamic = 'force-dynamic';
+
 export default async function HomepagePreviewPage() {
   const homepage = await getHomepageAction();
   const allCategories = await getCategoriesAction();

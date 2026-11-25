@@ -1,8 +1,8 @@
 {
-  "enabled": true,
-  "activatedAt": "2026-11-24T16:27:20.524Z",
-  "deactivatedAt": null,
+  "enabled": false,
+  "activatedAt": null,
+  "deactivatedAt": "2026-11-25T10:38:49.152Z",
   "activatedBy": "sarah@qualitybakers.com",
-  "message": "We're performing a rapid reboot. Please refresh your browser shortly.",
+  "message": "The system is undergoing scheduled maintenance.",
   "retryAfter": 300
 }

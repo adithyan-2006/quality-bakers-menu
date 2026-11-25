@@ -40,7 +40,8 @@ export function RecentVisitsStream({ visits }: RecentVisitsStreamProps) {
           <div>
             <h3 className="text-base font-bold text-black tracking-tight">Live Website Visitors</h3>
             <p className="text-xs text-stone-500 mt-0.5">
-              Real-time feed showing visitor route, exact device model, browser and operating system
+              Real-time feed of unique visitor sessions showing entry route, device model, browser
+              and OS
             </p>
           </div>
         </div>

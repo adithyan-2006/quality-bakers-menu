@@ -1,12 +1,14 @@
 'use client';
 
 import { useState, useCallback } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import { UploadCloud, CheckCircle2 } from 'lucide-react';
 import { uploadMediaAction } from '../actions/media-actions';
 import { useRouter } from 'next/navigation';
 
 export function MediaUploadArea() {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const [isDragging, setIsDragging] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
 
@@ -29,6 +31,7 @@ export function MediaUploadArea() {
         const formData = new FormData();
         formData.append('file', file);
         await uploadMediaAction(formData);
+        await queryClient.invalidateQueries({ queryKey: ['admin-media-library'] });
         router.push('/media');
         router.refresh();
       } catch (e) {
@@ -36,7 +39,7 @@ export function MediaUploadArea() {
         setIsUploading(false);
       }
     },
-    [router],
+    [router, queryClient],
   );
 
   const handleDrop = useCallback(

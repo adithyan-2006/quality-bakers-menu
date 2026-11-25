@@ -300,32 +300,130 @@ const mobilePct = Math.round((devices.uniqueMobile / devices.totalUniqueDevices)
 assertEqual(desktopPct + mobilePct, 100, 'Device percentages sum to 100%');
 
 // ─────────────────────────────────────────────────────────────────────────────
-// TEST SUITE 7: Deduplication window
+// TEST SUITE 7: Session-once tracking (no recount on refresh/navigation)
 // ─────────────────────────────────────────────────────────────────────────────
 
-console.log('\n─── Suite 7: Tracker Deduplication (1500ms window) ────────────────────────');
+console.log('\n─── Suite 7: Session-Once Visit Tracking ──────────────────────────────────');
 
-function simulateTracker() {
-  const lastTracked = { path: '', time: 0 };
-  function shouldTrack(pathname) {
-    const now = Date.now();
-    if (lastTracked.path === pathname && now - lastTracked.time < 1500) {
-      return false; // deduplicated
+function createBrowserSessionSimulator() {
+  let localStorageVisitorId = null;
+  let sessionStore = {};
+  const recordedEvents = [];
+
+  function openOrInteract(pathname, { navType = 'navigate', simulateFailure = false } = {}) {
+    if (pathname === '/maintenance' || pathname === '/offline') {
+      return false;
     }
-    lastTracked.path = pathname;
-    lastTracked.time = now;
+
+    if (!localStorageVisitorId) {
+      localStorageVisitorId = 'visitor_1';
+    }
+    if (!sessionStore.qbm_session_id) {
+      sessionStore.qbm_session_id = `session_${recordedEvents.length + 1}_${Date.now()}`;
+    }
+
+    if (sessionStore.qbm_session_tracked === '1') {
+      return false; // Ignore refresh or in-app navigation inside open session
+    }
+
+    if (
+      navType === 'reload' &&
+      !Object.prototype.hasOwnProperty.call(sessionStore, 'qbm_session_id')
+    ) {
+      return false;
+    }
+
+    sessionStore.qbm_session_tracked = '1';
+    if (simulateFailure) {
+      delete sessionStore.qbm_session_tracked;
+      return false;
+    }
+
+    recordedEvents.push({
+      path: pathname,
+      visitorId: localStorageVisitorId,
+      sessionId: sessionStore.qbm_session_id,
+    });
     return true;
   }
-  return shouldTrack;
+
+  function closeWebsite() {
+    sessionStore = {}; // Tab / browser close clears sessionStorage, preserves localStorage visitorId
+  }
+
+  return { openOrInteract, closeWebsite, getEvents: () => recordedEvents };
 }
 
-const tracker = simulateTracker();
-assert(tracker('/'), 'First visit to / is tracked');
-assert(!tracker('/'), 'Second immediate visit to / is deduplicated');
+const sim = createBrowserSessionSimulator();
+assert(sim.openOrInteract('/'), 'Initial website open on / is counted (visit 1)');
+assert(!sim.openOrInteract('/', { navType: 'reload' }), 'Page refresh on / is NOT counted');
+assert(
+  !sim.openOrInteract('/categories'),
+  'Navigating to /categories inside open site is NOT counted',
+);
+assert(!sim.openOrInteract('/products/red-velvet'), 'Navigating to product page is NOT counted');
+assert(
+  !sim.openOrInteract('/products/red-velvet', { navType: 'reload' }),
+  'Refreshing product page is NOT counted',
+);
+assert(
+  !sim.openOrInteract('/', { navType: 'back_forward' }),
+  'Back/forward navigation is NOT counted',
+);
 
-// New path is allowed
-assert(tracker('/categories'), 'Navigation to /categories is tracked');
-assert(!tracker('/categories'), 'Repeat /categories within window is deduplicated');
+sim.closeWebsite();
+assert(
+  sim.openOrInteract('/'),
+  'Closing website and opening again counts as 2nd visit with new sessionId',
+);
+assertEqual(sim.getEvents().length, 2, 'Total session visits recorded = 2 after 1 close + reopen');
+assertEqual(
+  new Set(sim.getEvents().map((e) => e.visitorId)).size,
+  1,
+  'Unique visitors remains 1 across both sessions',
+);
+assertEqual(
+  new Set(sim.getEvents().map((e) => e.sessionId)).size,
+  2,
+  'Recorded events have 2 distinct sessionIds',
+);
+
+const maintenanceSim = createBrowserSessionSimulator();
+assert(!maintenanceSim.openOrInteract('/maintenance'), '/maintenance screen is not counted');
+assert(!maintenanceSim.openOrInteract('/offline'), '/offline screen is not counted');
+assert(
+  maintenanceSim.openOrInteract('/'),
+  'Real visit to / after maintenance clears is still counted once',
+);
+
+// Server-side session aggregation check (deduplicating legacy multi-row sessions)
+function aggregateSessions(rows) {
+  const uniqueSessions = new Set();
+  const uniqueVisitors = new Set();
+  for (const row of rows) {
+    const trimmedSession = typeof row.sessionId === 'string' ? row.sessionId.trim() : '';
+    const sessionKey = trimmedSession.length > 0 ? trimmedSession : row.id;
+    uniqueSessions.add(sessionKey);
+    uniqueVisitors.add(row.visitorId);
+  }
+  return { visits: uniqueSessions.size, uniqueVisitors: uniqueVisitors.size };
+}
+
+const legacyRows = [
+  { id: 'r1', visitorId: 'v1', sessionId: 's1' },
+  { id: 'r2', visitorId: 'v1', sessionId: 's1' }, // refresh
+  { id: 'r3', visitorId: 'v1', sessionId: 's1' }, // navigation
+  { id: 'r4', visitorId: 'v1', sessionId: 's2' }, // reopened website
+  { id: 'r5', visitorId: 'v2', sessionId: null }, // null session fallback to id
+  { id: 'r6', visitorId: 'v2', sessionId: '' }, // empty session fallback to id
+];
+const agg = aggregateSessions(legacyRows);
+assertEqual(
+  agg.visits,
+  4,
+  'SQL session aggregation collapses 3 same-session rows into 1 (total 4 visits)',
+);
+assertEqual(agg.uniqueVisitors, 2, 'Unique visitors stays 2');
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Summary

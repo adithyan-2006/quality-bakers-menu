@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useQueryClient } from '@tanstack/react-query';
 import { Trash2 } from 'lucide-react';
 import { deleteMediaAction } from '../actions/media-actions';
 import { Dialog, Toast } from '@qbm/ui';
@@ -19,11 +20,13 @@ export function DeleteMediaButton({ mediaId }: DeleteMediaButtonProps) {
     variant: 'success' | 'destructive';
   } | null>(null);
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const handleDelete = async () => {
     setIsDeleting(true);
     try {
       await deleteMediaAction(mediaId);
+      await queryClient.invalidateQueries({ queryKey: ['admin-media-library'] });
       setToast({
         title: 'Success',
         description: 'Image deleted successfully.',

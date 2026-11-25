@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { X, Upload, Plus } from 'lucide-react';
 import { AdminMedia } from '../repositories/media-repo';
 import { MediaGrid } from './media-grid';
@@ -14,10 +15,10 @@ interface MediaPickerProps {
   trigger?: React.ReactNode;
 }
 
+const EMPTY_MEDIA: AdminMedia[] = [];
+
 export function MediaPicker({ value, multiple = false, onChange, trigger }: MediaPickerProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [mediaItems, setMediaItems] = useState<AdminMedia[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
   const [prevValue, setPrevValue] = useState(value);
   const [selectedIds, setSelectedIds] = useState<Set<string>>(
     new Set(Array.isArray(value) ? value : value ? [value] : []),
@@ -28,22 +29,12 @@ export function MediaPicker({ value, multiple = false, onChange, trigger }: Medi
     setSelectedIds(new Set(Array.isArray(value) ? value : value ? [value] : []));
   }
 
-  // Ensure we load the selected media items even if the modal isn't open
-  // so we can display their previews.
-  useEffect(() => {
-    const loadMedia = async () => {
-      setIsLoading(true);
-      try {
-        const items = await getMediaLibraryAction();
-        setMediaItems(items);
-      } catch (e) {
-        console.error('Failed to load media', e);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    loadMedia();
-  }, []);
+  // Share one cached media library query across all pickers on the page and across section switches.
+  const { data: mediaItems = EMPTY_MEDIA, isLoading } = useQuery({
+    queryKey: ['admin-media-library'],
+    queryFn: () => getMediaLibraryAction(),
+    staleTime: 60 * 1000,
+  });
 
   useEffect(() => {
     if (isOpen) {
@@ -80,8 +71,7 @@ export function MediaPicker({ value, multiple = false, onChange, trigger }: Medi
     }
   };
 
-  const selectedMediaMap = new Map<string, AdminMedia>();
-  mediaItems.forEach((m) => selectedMediaMap.set(m.id, m));
+  const selectedMediaMap = new Map<string, AdminMedia>(mediaItems.map((m) => [m.id, m]));
 
   const renderPreview = () => {
     if (multiple) {

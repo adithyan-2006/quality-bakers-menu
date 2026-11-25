@@ -4,6 +4,7 @@ import { AnalyticsDashboardView } from '../../../features/analytics/components/a
 import { StatCard } from '../../../components/cards/stat-card';
 import { LayoutGrid, Package, Star, EyeOff } from 'lucide-react';
 import { requireAdminUser } from '../../../lib/auth';
+import { getMaintenanceStatus } from '../../../lib/maintenance-store';
 import { MaintenanceAlertBanner } from '../../../components/maintenance/maintenance-alert-banner';
 
 export const dynamic = 'force-dynamic';
@@ -11,15 +12,16 @@ export const dynamic = 'force-dynamic';
 export default async function DashboardPage() {
   await requireAdminUser();
 
-  const [stats, analyticsSummary] = await Promise.all([
+  const [stats, analyticsSummary, maintenanceConfig] = await Promise.all([
     DashboardRepository.getStats(),
     AnalyticsRepository.getSummary(30),
+    getMaintenanceStatus(),
   ]);
 
   return (
     <div className="space-y-8">
       {/* Maintenance Mode Alert Banner (Visible when active) */}
-      <MaintenanceAlertBanner />
+      <MaintenanceAlertBanner initialConfig={maintenanceConfig} />
 
       {/* Website Traffic & Visitor Analytics Section (Primary) */}
       <section>

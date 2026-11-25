@@ -43,7 +43,7 @@ export function DailyVisitChart({
             <span className="text-xs text-stone-400">({data.length} days)</span>
           </div>
           <p className="text-xs text-stone-500 mt-0.5">
-            Breakdown of daily total page visits vs. unique visitors
+            Breakdown of daily website visits (sessions) vs. unique visitors
           </p>
         </div>
 
@@ -215,7 +215,7 @@ export function DailyVisitChart({
                 <th className="py-2.5 px-4">Date</th>
                 <th className="py-2.5 px-4">Total Visits</th>
                 <th className="py-2.5 px-4">Unique Visitors</th>
-                <th className="py-2.5 px-4">Pageviews/Visitor</th>
+                <th className="py-2.5 px-4">Visits / Visitor</th>
                 <th className="py-2.5 px-4 text-right">Trend Share</th>
               </tr>
             </thead>

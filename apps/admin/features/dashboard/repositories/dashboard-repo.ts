@@ -11,26 +11,30 @@ export interface DashboardStats {
 export const DashboardRepository = {
   getStats: async (): Promise<DashboardStats> => {
     try {
-      const [
-        totalCategories,
-        totalProducts,
-        featuredProducts,
-        hiddenCategories,
-        recentActivityCount,
-      ] = await Promise.all([
-        prisma.category.count(),
-        prisma.product.count(),
-        prisma.product.count({ where: { isFeatured: true } }),
-        prisma.category.count({ where: { isVisible: false } }),
-        prisma.auditLog.count(),
-      ]);
+      const rows = await prisma.$queryRaw<
+        Array<{
+          totalCategories: number;
+          totalProducts: number;
+          featuredProducts: number;
+          hiddenCategories: number;
+          recentActivityCount: number;
+        }>
+      >`
+        SELECT
+          (SELECT COUNT(*)::int FROM "Category") AS "totalCategories",
+          (SELECT COUNT(*)::int FROM "Product") AS "totalProducts",
+          (SELECT COUNT(*)::int FROM "Product" WHERE "isFeatured" = true) AS "featuredProducts",
+          (SELECT COUNT(*)::int FROM "Category" WHERE "isVisible" = false) AS "hiddenCategories",
+          (SELECT COUNT(*)::int FROM "AuditLog") AS "recentActivityCount"
+      `;
 
+      const row = rows[0];
       return {
-        totalCategories,
-        totalProducts,
-        featuredProducts,
-        hiddenCategories,
-        recentActivityCount,
+        totalCategories: Number(row?.totalCategories ?? 0),
+        totalProducts: Number(row?.totalProducts ?? 0),
+        featuredProducts: Number(row?.featuredProducts ?? 0),
+        hiddenCategories: Number(row?.hiddenCategories ?? 0),
+        recentActivityCount: Number(row?.recentActivityCount ?? 0),
       };
     } catch (error) {
       console.warn('[DashboardRepository] Error fetching dashboard stats, using fallbacks:', error);

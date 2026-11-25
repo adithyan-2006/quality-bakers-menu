@@ -1,64 +1,63 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { AlertTriangle, CheckCircle2, Loader2, ShieldAlert } from 'lucide-react';
 import { MaintenanceConfig } from '@qbm/config';
 
 interface MaintenanceToggleProps {
-  variant?: 'compact' | 'full';
-  className?: string;
-  onStateChange?: (config: MaintenanceConfig) => void;
+  variant?: 'compact' | 'full' | undefined;
+  className?: string | undefined;
+  onStateChange?: ((config: MaintenanceConfig) => void) | undefined;
+  initialConfig?: MaintenanceConfig | undefined;
 }
 
 export function MaintenanceToggle({
   variant = 'compact',
   className = '',
   onStateChange,
+  initialConfig,
 }: MaintenanceToggleProps) {
-  const [config, setConfig] = useState<MaintenanceConfig | null>(null);
-  const [loading, setLoading] = useState(true);
+  const queryClient = useQueryClient();
   const [actionLoading, setActionLoading] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [pendingState, setPendingState] = useState<boolean | null>(null);
-  const [customMessage, setCustomMessage] = useState('');
-  const [retryAfterMinutes, setRetryAfterMinutes] = useState(5);
+  const [customMessage, setCustomMessage] = useState(initialConfig?.message || '');
+  const [retryAfterMinutes, setRetryAfterMinutes] = useState(
+    initialConfig?.retryAfter ? Math.round(initialConfig.retryAfter / 60) : 5,
+  );
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  const fetchStatus = useCallback(async () => {
-    try {
-      setLoading(true);
+  const { data: config = null, isLoading: loading } = useQuery<MaintenanceConfig>({
+    queryKey: ['admin-maintenance-status'],
+    queryFn: async () => {
       const res = await fetch('/api/admin/maintenance', { cache: 'no-store' });
-      if (res.ok) {
-        const data: MaintenanceConfig = await res.json();
-        setConfig(data);
-        setCustomMessage(data.message || '');
-        if (data.retryAfter) {
-          setRetryAfterMinutes(Math.round(data.retryAfter / 60));
-        }
+      if (!res.ok) {
+        throw new Error('Failed to fetch maintenance status');
       }
-    } catch (err) {
-      console.error('[MaintenanceToggle] Failed to fetch maintenance status:', err);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+      return res.json();
+    },
+    ...(initialConfig ? { initialData: initialConfig } : {}),
+    staleTime: 30 * 1000,
+  });
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    fetchStatus();
-
     const handleSync = () => {
-      fetchStatus();
+      queryClient.invalidateQueries({ queryKey: ['admin-maintenance-status'] });
     };
 
     window.addEventListener('maintenance-mode-changed', handleSync);
     return () => {
       window.removeEventListener('maintenance-mode-changed', handleSync);
     };
-  }, [fetchStatus]);
+  }, [queryClient]);
 
   const handleToggleClick = () => {
     if (!config || actionLoading) return;
+    setCustomMessage(config.message || '');
+    if (config.retryAfter) {
+      setRetryAfterMinutes(Math.round(config.retryAfter / 60));
+    }
     const nextState = !config.enabled;
     setPendingState(nextState);
     setShowConfirmModal(true);
@@ -87,7 +86,7 @@ export function MaintenanceToggle({
       }
 
       const result = await res.json();
-      setConfig(result.current);
+      queryClient.setQueryData(['admin-maintenance-status'], result.current);
       setShowConfirmModal(false);
       setPendingState(null);
 

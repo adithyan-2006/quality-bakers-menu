@@ -1,10 +1,12 @@
 import { MaintenanceToggle } from '@/components/maintenance/maintenance-toggle';
 import { requireAdminUser } from '@/lib/auth';
+import { getMaintenanceStatus } from '@/lib/maintenance-store';
 
 export const dynamic = 'force-dynamic';
 
 export default async function SettingsPage() {
   await requireAdminUser();
+  const maintenanceConfig = await getMaintenanceStatus();
 
   return (
     <div className="max-w-5xl space-y-8">
@@ -25,7 +27,7 @@ export default async function SettingsPage() {
           </p>
         </div>
 
-        <MaintenanceToggle variant="full" />
+        <MaintenanceToggle variant="full" initialConfig={maintenanceConfig} />
       </section>
     </div>
   );

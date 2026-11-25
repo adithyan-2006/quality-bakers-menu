@@ -61,7 +61,9 @@ export function TopPagesTable({ pages, totalVisits }: TopPagesTableProps) {
             <tbody className="divide-y divide-black/[0.04]">
               {pages.map((page, idx) => {
                 const percent =
-                  totalVisits > 0 ? Math.round((page.visits / totalVisits) * 100) : page.percentage;
+                  totalVisits > 0
+                    ? Math.min(100, Math.round((page.visits / totalVisits) * 100))
+                    : page.percentage;
                 const friendlyLabel = getFriendlyPathLabel(page.path);
 
                 return (
