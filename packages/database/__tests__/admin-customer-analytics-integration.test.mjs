@@ -1501,6 +1501,61 @@ assert(formatISTMonthLabel(octDate) === 'Oct 2026', 'Formats "Oct 2026" in IST')
 const novDate = new Date('2026-11-23T00:00:00Z');
 assert(formatISTMonthLabel(novDate) === 'Nov 2026', 'Formats "Nov 2026" in IST');
 
+// ============================================================================
+// PART 10: PER-SESSION VISIT COUNTING & REFRESH DEDUPLICATION
+// ============================================================================
+console.log('\n--- PART 10: Per-Session Visit Counting & Refresh Deduplication ---');
+
+// Simulate real-world mobile session behavior + Admin COALESCE(NULLIF(TRIM(sessionId), ''), id)
+function aggregateVisitRows(rows) {
+  const sessionIds = new Set();
+  const visitorIds = new Set();
+  for (const r of rows) {
+    if (
+      r.path.startsWith('/dashboard') ||
+      r.path.startsWith('/login') ||
+      r.path.startsWith('/analytics') ||
+      r.path.startsWith('/api/') ||
+      r.path.startsWith('/maintenance') ||
+      r.path.startsWith('/offline')
+    ) {
+      continue;
+    }
+    const cleanSess = typeof r.sessionId === 'string' ? r.sessionId.trim() : '';
+    sessionIds.add(cleanSess.length > 0 ? cleanSess : r.id);
+    visitorIds.add(r.visitorId);
+  }
+  return { visits: sessionIds.size, uniqueVisitors: visitorIds.size };
+}
+
+const phoneRows = [
+  // Open 1 on phone: multiple refreshes and clicks share same sessionId
+  { id: 'v_1', path: '/', visitorId: 'phone_1', sessionId: 'sess_open_1' },
+  { id: 'v_2', path: '/', visitorId: 'phone_1', sessionId: 'sess_open_1' },
+  { id: 'v_3', path: '/categories', visitorId: 'phone_1', sessionId: 'sess_open_1' },
+  { id: 'v_4', path: '/products/cake', visitorId: 'phone_1', sessionId: 'sess_open_1' },
+  { id: 'v_5', path: '/maintenance', visitorId: 'phone_1', sessionId: 'sess_ignored' },
+];
+const afterFirstOpen = aggregateVisitRows(phoneRows);
+assert(
+  afterFirstOpen.visits === 1,
+  'Customer refreshes & browsing inside open phone session count as exactly 1 visit',
+);
+assert(afterFirstOpen.uniqueVisitors === 1, 'Unique visitors stays 1');
+
+// Customer closes website and opens a second time -> new sessionId
+phoneRows.push({ id: 'v_6', path: '/', visitorId: 'phone_1', sessionId: 'sess_open_2' });
+phoneRows.push({ id: 'v_7', path: '/', visitorId: 'phone_1', sessionId: 'sess_open_2' });
+const afterSecondOpen = aggregateVisitRows(phoneRows);
+assert(
+  afterSecondOpen.visits === 2,
+  'Closing website and reopening on same phone counts as 2nd visit',
+);
+assert(
+  afterSecondOpen.uniqueVisitors === 1,
+  'Unique visitors remains 1 when same phone visits a 2nd time',
+);
+
 console.log('\n================================================================');
 console.log(` TOTAL TESTS RUN: ${totalTests}`);
 console.log(` PASSED:         ${passedTests}`);

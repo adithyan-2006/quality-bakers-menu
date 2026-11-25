@@ -5,6 +5,19 @@ import { usePathname } from 'next/navigation';
 
 const VISITOR_ID_KEY = 'qbm_visitor_id';
 const SESSION_ID_KEY = 'qbm_session_id';
+const SESSION_TRACKED_KEY = 'qbm_session_tracked';
+const EXCLUDED_PATHS = new Set(['/maintenance', '/offline']);
+
+// In-memory fallback for environments where sessionStorage throws (e.g. restricted WebViews)
+let fallbackSessionId = '';
+let fallbackSessionTracked = false;
+
+function generateId(prefix: string): string {
+  if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+    return crypto.randomUUID();
+  }
+  return `${prefix}_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
+}
 
 function getOrCreateVisitorId(): string {
   if (typeof window === 'undefined') return '';
@@ -14,11 +27,7 @@ function getOrCreateVisitorId(): string {
       id = localStorage.getItem('qbm_anonymous_user_id');
     }
     if (!id || id.trim().length === 0) {
-      if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
-        id = crypto.randomUUID();
-      } else {
-        id = `v_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
-      }
+      id = generateId('v');
       localStorage.setItem(VISITOR_ID_KEY, id);
     }
     return id;
@@ -27,21 +36,37 @@ function getOrCreateVisitorId(): string {
   }
 }
 
-function getOrCreateSessionId(): string {
-  if (typeof window === 'undefined') return '';
+function getOrCreateSessionState(): {
+  sessionId: string;
+  canUseSessionStorage: boolean;
+} {
+  if (typeof window === 'undefined') {
+    return { sessionId: '', canUseSessionStorage: false };
+  }
   try {
     let id = sessionStorage.getItem(SESSION_ID_KEY);
     if (!id || id.trim().length === 0) {
-      if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
-        id = crypto.randomUUID();
-      } else {
-        id = `s_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
-      }
+      id = generateId('s');
       sessionStorage.setItem(SESSION_ID_KEY, id);
     }
-    return id;
+    return { sessionId: id, canUseSessionStorage: true };
   } catch {
-    return '';
+    if (!fallbackSessionId) {
+      fallbackSessionId = generateId('s');
+    }
+    return { sessionId: fallbackSessionId, canUseSessionStorage: false };
+  }
+}
+
+function isReloadNavigation(): boolean {
+  if (typeof performance === 'undefined' || typeof performance.getEntriesByType !== 'function') {
+    return false;
+  }
+  try {
+    const entries = performance.getEntriesByType('navigation') as PerformanceNavigationTiming[];
+    return entries.length > 0 && entries[0]?.type === 'reload';
+  } catch {
+    return false;
   }
 }
 
@@ -189,24 +214,62 @@ function getClientDeviceDetails(): {
   return { deviceType, deviceName, browser, os, screenWidth };
 }
 
+function markSessionTracked(canUseSessionStorage: boolean, tracked: boolean): void {
+  fallbackSessionTracked = tracked;
+  if (!canUseSessionStorage) return;
+  try {
+    if (tracked) {
+      sessionStorage.setItem(SESSION_TRACKED_KEY, '1');
+    } else {
+      sessionStorage.removeItem(SESSION_TRACKED_KEY);
+    }
+  } catch {
+    // Ignore storage errors in restricted environments
+  }
+}
+
 export function WebsiteVisitTracker() {
-  const pathname = usePathname();
-  const lastTrackedRef = React.useRef<{ path: string; time: number }>({ path: '', time: 0 });
+  const pathname = usePathname() || '/';
+  const trackingInFlightRef = React.useRef(false);
 
   React.useEffect(() => {
-    const now = Date.now();
-    if (lastTrackedRef.current.path === pathname && now - lastTrackedRef.current.time < 1500) {
+    if (EXCLUDED_PATHS.has(pathname) || trackingInFlightRef.current || fallbackSessionTracked) {
       return;
     }
-    lastTrackedRef.current = { path: pathname, time: now };
+
+    const { sessionId, canUseSessionStorage } = getOrCreateSessionState();
+
+    // Once counted for the current browser/tab session, neither refreshes nor in-app
+    // actions re-trigger a visit until the user closes and reopens the website.
+    let alreadyTracked = false;
+    if (canUseSessionStorage) {
+      try {
+        alreadyTracked = sessionStorage.getItem(SESSION_TRACKED_KEY) === '1';
+      } catch {
+        alreadyTracked = false;
+      }
+    }
+
+    if (alreadyTracked) {
+      fallbackSessionTracked = true;
+      return;
+    }
+
+    // Fallback when sessionStorage is unavailable (e.g. strict WebViews): do not count reloads
+    if (!canUseSessionStorage && isReloadNavigation()) {
+      fallbackSessionTracked = true;
+      return;
+    }
+
+    trackingInFlightRef.current = true;
+    markSessionTracked(canUseSessionStorage, true);
 
     const visitorId = getOrCreateVisitorId();
-    const sessionId = getOrCreateSessionId();
     const clientDetails = getClientDeviceDetails();
     const referrer = typeof document !== 'undefined' ? document.referrer : '';
 
     const payload = JSON.stringify({
-      path: pathname || '/',
+      path: pathname,
       referrer,
       visitorId,
       sessionId,
@@ -223,9 +286,18 @@ export function WebsiteVisitTracker() {
         'Content-Type': 'application/json',
       },
       body: payload,
-    }).catch(() => {
-      // Swallowed to prevent UI disturbance
-    });
+      keepalive: true,
+    })
+      .then((res) => {
+        trackingInFlightRef.current = false;
+        if (!res.ok && res.status >= 500) {
+          markSessionTracked(canUseSessionStorage, false);
+        }
+      })
+      .catch(() => {
+        trackingInFlightRef.current = false;
+        markSessionTracked(canUseSessionStorage, false);
+      });
   }, [pathname]);
 
   return null;

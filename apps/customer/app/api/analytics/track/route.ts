@@ -161,6 +161,38 @@ export async function OPTIONS() {
 }
 
 const MAX_PAYLOAD_BYTES = 16384; // 16 KB max payload size for tracking
+const SESSION_DEDUPE_TTL_MS = 30 * 60 * 1000; // 30 minutes
+const MAX_CACHED_SESSIONS = 2000;
+const recentTrackedSessions = new Map<string, number>();
+
+function isSessionRecentlyTracked(sessionId: string | null): boolean {
+  if (!sessionId) return false;
+  const recordedAt = recentTrackedSessions.get(sessionId);
+  if (!recordedAt) return false;
+  if (Date.now() - recordedAt > SESSION_DEDUPE_TTL_MS) {
+    recentTrackedSessions.delete(sessionId);
+    return false;
+  }
+  return true;
+}
+
+function recordTrackedSession(sessionId: string | null): void {
+  if (!sessionId) return;
+  const now = Date.now();
+  if (recentTrackedSessions.size >= MAX_CACHED_SESSIONS) {
+    // Evict expired entries first, or oldest key in insertion order
+    for (const [key, ts] of recentTrackedSessions) {
+      if (now - ts > SESSION_DEDUPE_TTL_MS) {
+        recentTrackedSessions.delete(key);
+      }
+    }
+    if (recentTrackedSessions.size >= MAX_CACHED_SESSIONS) {
+      const oldestKey = recentTrackedSessions.keys().next().value;
+      if (oldestKey) recentTrackedSessions.delete(oldestKey);
+    }
+  }
+  recentTrackedSessions.set(sessionId, now);
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -254,9 +286,24 @@ export async function POST(request: NextRequest) {
       screenWidth: validScreenWidth,
     });
 
+    if (cleanPath === '/maintenance' || cleanPath === '/offline') {
+      return NextResponse.json(
+        { success: true, skipped: 'system_fallback' },
+        { headers: { 'Access-Control-Allow-Origin': '*' } },
+      );
+    }
+
     const rawReferrer = clientReferrer || request.headers.get('referer') || null;
     const cleanReferrer = typeof rawReferrer === 'string' ? rawReferrer.trim().slice(0, 500) : null;
-    const cleanSessionId = typeof sessionId === 'string' ? sessionId.trim().slice(0, 100) : null;
+    const trimmedSessionId = typeof sessionId === 'string' ? sessionId.trim() : '';
+    const cleanSessionId = trimmedSessionId.length > 0 ? trimmedSessionId.slice(0, 100) : null;
+
+    if (isSessionRecentlyTracked(cleanSessionId)) {
+      return NextResponse.json(
+        { success: true, skipped: 'session_duplicate' },
+        { headers: { 'Access-Control-Allow-Origin': '*' } },
+      );
+    }
 
     const forwarded = request.headers.get('x-forwarded-for');
     const firstIp = forwarded ? forwarded.split(',')[0] : undefined;
@@ -305,6 +352,7 @@ export async function POST(request: NextRequest) {
           NOW()
         )
       `;
+      recordTrackedSession(cleanSessionId);
     } catch (dbErr) {
       console.warn('[Customer Analytics Track] Raw tracking insert failed:', dbErr);
     }
